@@ -2,7 +2,7 @@
 
 Interactive weekly schedule dashboard : classes, office hours, and finals at a glance.
 
-**Live:** [maximechung.github.io/course-schedule](https://maximechung.github.io/course-schedule)
+**Live:** [bigmacchung.github.io/course-schedule](https://bigmacchung.github.io/course-schedule)
 
 ## Current Quarter
 
@@ -15,7 +15,7 @@ Interactive weekly schedule dashboard : classes, office hours, and finals at a g
 | DSC 152 | Applied Statistical Data Analysis | Peter Benjamin Chi |
 | DSC 190 | ML Competitions | Tevfik Berk Ustun |
 | MGT 159T | Data Science with AI | Robert Sanders |
-| USP 4 | — | — |
+| USP 4 | Intro to Geographic Information Systems | — |
 
 ## How to Update Each Quarter
 
