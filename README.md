@@ -1,6 +1,6 @@
 # Course Schedule
 
-Interactive weekly schedule dashboard — classes, office hours, and finals at a glance.
+Interactive weekly schedule dashboard : classes, office hours, and finals at a glance.
 
 **Live:** [maximechung.github.io/course-schedule](https://maximechung.github.io/course-schedule)
 
