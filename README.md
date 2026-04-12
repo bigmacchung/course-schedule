@@ -15,7 +15,7 @@ Interactive weekly schedule dashboard : classes, office hours, and finals at a g
 | DSC 152 | Applied Statistical Data Analysis | Peter Benjamin Chi |
 | DSC 190 | ML Competitions | Tevfik Berk Ustun |
 | MGT 159T | Data Science with AI | Robert Sanders |
-| USP 4 | Intro to Geographic Information Systems | — |
+| USP 4 | Intro to Geographic Information Systems | Sarah McTague |
 
 ## How to Update Each Quarter
 
