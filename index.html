@@ -11,7 +11,19 @@
   .subtitle { text-align: center; color: #666; font-size: 0.95rem; margin-bottom: 20px; }
 
   /* Filter controls */
-  .controls { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .controls-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
   .toggle-btn {
     padding: 7px 16px; border-radius: 20px; border: 2px solid #ddd; background: #fff;
     cursor: pointer; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;
@@ -72,6 +84,13 @@
   .event.oh { background: color-mix(in srgb, var(--clr) 8%, white); border-left-color: var(--clr); border-left-style: dotted; color: #555; }
   .event.conflict-flag { box-shadow: 0 0 0 2px #ff1744; }
 
+  /* Conflict banner */
+  .conflict-banner {
+    background: #fff3e0; border-left: 4px solid #ff6f00; padding: 12px 16px;
+    border-radius: 8px; margin-bottom: 16px; font-size: 0.88rem;
+  }
+  .conflict-banner strong { color: #e65100; }
+
   /* Finals */
   .finals-section { margin-top: 24px; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
   .finals-section h2 { font-size: 1.1rem; margin-bottom: 12px; }
@@ -103,21 +122,23 @@
 <body>
 
 <h1>Maxime's Spring 2026 Schedule</h1>
-<p class="subtitle">UCSD &mdash; DSC 40B, DSC 106, DSC 152, DSC 190, MGT 159T, USP 4 &mdash; Classes + course-specific office hours</p>
+<p class="subtitle">UCSD &mdash; DSC 40B, DSC 106, DSC 152, DSC 190, MGT 159T, USP 4 &mdash; All classes + office hours</p>
 
 <div class="controls">
-  <button class="toggle-btn active c-40b" data-filter="dsc40b" style="color: #4285f4;"><span class="dot" style="background:#4285f4"></span>DSC 40B</button>
-  <button class="toggle-btn active c-40b" data-filter="dsc40b-oh" style="color: #4285f4;"><span class="dot" style="background:#4285f4"></span>DSC 40B OH</button>
+  <div class="controls-row">
+    <button class="toggle-btn active c-40b" data-filter="dsc40b" style="color: #4285f4;"><span class="dot" style="background:#4285f4"></span>DSC 40B</button>
+    <button class="toggle-btn active c-106" data-filter="dsc106" style="color: #34a853;"><span class="dot" style="background:#34a853"></span>DSC 106</button>
+    <button class="toggle-btn active c-152" data-filter="dsc152" style="color: #ea4335;"><span class="dot" style="background:#ea4335"></span>DSC 152</button>
+    <button class="toggle-btn active c-190" data-filter="dsc190" style="color: #9c27b0;"><span class="dot" style="background:#9c27b0"></span>DSC 190</button>
+    <button class="toggle-btn active c-mgt" data-filter="mgt159t" style="color: #ff6f00;"><span class="dot" style="background:#ff6f00"></span>MGT 159T</button>
+    <button class="toggle-btn active c-usp" data-filter="usp4" style="color: #e91e63;"><span class="dot" style="background:#e91e63"></span>USP 4</button>
+  </div>
 
-  <button class="toggle-btn active c-106" data-filter="dsc106" style="color: #34a853;"><span class="dot" style="background:#34a853"></span>DSC 106</button>
-  <button class="toggle-btn active c-106" data-filter="dsc106-oh" style="color: #34a853;"><span class="dot" style="background:#34a853"></span>DSC 106 OH</button>
-
-  <button class="toggle-btn active c-152" data-filter="dsc152" style="color: #ea4335;"><span class="dot" style="background:#ea4335"></span>DSC 152</button>
-  <button class="toggle-btn active c-152" data-filter="dsc152-oh" style="color: #ea4335;"><span class="dot" style="background:#ea4335"></span>DSC 152 OH</button>
-
-  <button class="toggle-btn active c-190" data-filter="dsc190" style="color: #9c27b0;"><span class="dot" style="background:#9c27b0"></span>DSC 190</button>
-  <button class="toggle-btn active c-mgt" data-filter="mgt159t" style="color: #ff6f00;"><span class="dot" style="background:#ff6f00"></span>MGT 159T</button>
-  <button class="toggle-btn active c-usp" data-filter="usp4" style="color: #e91e63;"><span class="dot" style="background:#e91e63"></span>USP 4</button>
+  <div class="controls-row">
+    <button class="toggle-btn active c-40b" data-filter="dsc40b-oh" style="color: #4285f4;"><span class="dot" style="background:#4285f4"></span>DSC 40B OH</button>
+    <button class="toggle-btn active c-106" data-filter="dsc106-oh" style="color: #34a853;"><span class="dot" style="background:#34a853"></span>DSC 106 OH</button>
+    <button class="toggle-btn active c-152" data-filter="dsc152-oh" style="color: #ea4335;"><span class="dot" style="background:#ea4335"></span>DSC 152 OH</button>
+  </div>
 </div>
 
 <div class="scroll-wrapper">
@@ -145,7 +166,7 @@ const START_HOUR = 8;
 const END_HOUR = 21;
 const DAYS = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
 
-// All events: [day(0=Mon), startHour(decimal), endHour(decimal), title, detail, location, type, filter, tooltip, splitPos]
+// All events: [day(0=Mon), startHour(decimal), endHour(decimal), title, detail, location, type, filter, tooltip]
 const events = [
   // ===== MONDAY =====
   [0, 11, 11.833, 'DSC 40B', 'Lecture', 'SOLIS 104', 'lec', 'dsc40b', 'DSC 40B Lecture\n11:00–11:50 AM\nHSS 1330 • Langlois, Marina'],
@@ -167,7 +188,6 @@ const events = [
   // ===== WEDNESDAY =====
   [2, 11, 11.833, 'DSC 40B', 'Lecture', 'SOLIS 104', 'lec', 'dsc40b', 'DSC 40B Lecture\n11:00–11:50 AM\nHSS 1330 • Langlois, Marina'],
   [2, 13, 13.833, 'DSC 106', 'Lecture', 'CTL 0125', 'lec', 'dsc106', 'DSC 106 Lecture\n1:00–1:50 PM\nCTL 0125 • Lau, Samuel'],
-
   [2, 15, 16.833, 'DSC 152', 'Discussion', 'HDSI 336', 'disc', 'dsc152', 'DSC 152 Discussion\n3:00–4:50 PM\nHDSI 336'],
 
   // Wednesday OH
@@ -212,19 +232,7 @@ const COLORS = {
   usp4: '#e91e63'
 };
 
-function getCourseFilter(ev) {
-  const title = ev[3].toLowerCase();
-  if (title.includes('40b')) return 'dsc40b';
-  if (title.includes('106')) return 'dsc106';
-  if (title.includes('152')) return 'dsc152';
-  if (title.includes('190')) return 'dsc190';
-  if (title.includes('mgt') || title.includes('159')) return 'mgt159t';
-  if (title.includes('usp')) return 'usp4';
-  return ev[7];
-}
-
 const cal = document.getElementById('cal');
-const totalRows = END_HOUR - START_HOUR;
 
 // Build grid: header row + time rows
 const corner = document.createElement('div');
@@ -265,15 +273,13 @@ for (let hr = START_HOUR; hr < END_HOUR; hr++) {
 // Place events
 events.forEach((ev) => {
   const [day, startH, endH, title, detail, loc, type, filter, tip, splitPos] = ev;
-  const courseFilter = getCourseFilter(ev);
-  const color = COLORS[filter] || COLORS[courseFilter] || '#666';
+  const color = COLORS[filter] || '#666';
 
   const el = document.createElement('div');
   const isConflict = detail.includes('⚠');
   el.className = `event ${type} ${isConflict ? 'conflict-flag' : ''}`;
   el.style.setProperty('--clr', color);
   el.dataset.filter = filter;
-  el.dataset.courseFilter = courseFilter;
 
   const height = Math.max((endH - startH) * HOUR_H, 22);
   el.style.height = height + 'px';
@@ -347,12 +353,15 @@ function positionTooltip(e) {
 
 // Filter toggles
 const activeFilters = new Set([
-  'dsc40b', 'dsc40b-oh',
-  'dsc106', 'dsc106-oh',
-  'dsc152', 'dsc152-oh',
+  'dsc40b',
+  'dsc106',
+  'dsc152',
   'dsc190',
   'mgt159t',
-  'usp4'
+  'usp4',
+  'dsc40b-oh',
+  'dsc106-oh',
+  'dsc152-oh'
 ]);
 
 document.querySelectorAll('.toggle-btn').forEach(btn => {
