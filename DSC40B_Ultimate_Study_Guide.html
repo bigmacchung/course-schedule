@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSC 40B Ultimate Study Guide - Exam 1 Crash Course</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f5e6ff 0%,#e6d9ff 100%);color:#333;line-height:1.7;font-size:17px}
+.container{display:flex;min-height:100vh}
+.sidebar{width:270px;background:linear-gradient(180deg,#6b4c9a 0%,#4a2d7a 100%);color:#fff;padding:18px;position:fixed;height:100vh;overflow-y:auto;z-index:100;left:0;top:0}
+.sidebar h1{font-size:20px;margin-bottom:6px;border-bottom:2px solid rgba(255,255,255,.3);padding-bottom:8px}
+.sidebar .subtitle{font-size:12px;opacity:.8;margin-bottom:14px;display:block}
+.nav-item{padding:10px 12px;margin:5px 0;background:rgba(255,255,255,.08);border-radius:6px;cursor:pointer;transition:all .3s;border-left:3px solid transparent;font-size:13px}
+.nav-item:hover{background:rgba(255,255,255,.2);border-left-color:#ffd700}
+.nav-item.active{background:rgba(255,255,255,.25);border-left-color:#ffd700;font-weight:700}
+.nav-item .time-est{font-size:10px;opacity:.6;display:block}
+.progress-box{margin-top:14px;padding-top:14px;border-top:2px solid rgba(255,255,255,.3)}
+.progress-bar{width:100%;height:10px;background:rgba(255,255,255,.15);border-radius:5px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,#ffd700,#ffaa00);width:0%;transition:width .5s}
+#score-text{text-align:center;font-size:13px;margin-top:6px}
+#achievements-box{margin-top:10px;font-size:11px;opacity:.8}
+.main{margin-left:270px;padding:30px 40px 60px;max-width:960px}
+.section{display:none;animation:fadeIn .4s}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+h1{color:#6b4c9a;font-size:28px;border-bottom:3px solid #ffd700;padding-bottom:8px;margin-bottom:18px}
+h2{color:#5a3f8f;font-size:22px;margin:22px 0 12px}
+h3{color:#7a5caa;font-size:18px;margin:16px 0 10px}
+p{margin:10px 0}
+.analogy{background:linear-gradient(135deg,#fff4e6,#ffe6cc);border-left:4px solid #ff9800;padding:14px 16px;margin:14px 0;border-radius:6px;font-style:italic}
+.analogy::before{content:"PICTURE THIS: ";font-weight:700;font-style:normal;color:#e65100}
+.code-box{background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:8px;margin:12px 0;font-family:'Courier New',monospace;font-size:14px;line-height:1.5;overflow-x:auto;white-space:pre-wrap}
+.code-box .kw{color:#cba6f7}.code-box .fn{color:#89b4fa}.code-box .cm{color:#6c7086;font-style:italic}.code-box .st{color:#a6e3a1}.code-box .num{color:#fab387}
+.exam-tip{background:linear-gradient(135deg,#fce4ec,#f8bbd0);border-left:4px solid #e91e63;padding:14px;margin:14px 0;border-radius:6px}
+.exam-tip::before{content:"EXAM TIP: ";font-weight:700;color:#c2185b}
+.say-loud{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border-left:4px solid #1976d2;padding:14px;margin:14px 0;border-radius:6px}
+.say-loud::before{content:"SAY IT OUT LOUD: ";font-weight:700;color:#0d47a1}
+.watch-box{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-left:4px solid #4caf50;padding:14px;margin:14px 0;border-radius:6px}
+.watch-box::before{content:"WATCH/LISTEN: ";font-weight:700;color:#2e7d32}
+.job-box{background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-left:4px solid #f57c00;padding:14px;margin:14px 0;border-radius:6px}
+.job-box::before{content:"IN A JOB INTERVIEW: ";font-weight:700;color:#e65100}
+.break-box{background:linear-gradient(135deg,#f3e5f5,#e1bee7);border:2px dashed #9c27b0;padding:14px;margin:20px 0;border-radius:8px;text-align:center;font-size:18px}
+.break-box::before{content:"BREAK TIME! ";font-weight:700;color:#7b1fa2}
+.example{background:linear-gradient(135deg,#e8f5e9,#dcedc8);border-left:4px solid #4caf50;padding:14px;margin:14px 0;border-radius:6px;font-family:'Courier New',monospace;font-size:14px;white-space:pre-wrap;line-height:1.5}
+.highlight{background:#fff59d;padding:2px 6px;border-radius:3px;font-weight:600}
+.formula{background:#f3e5f5;border:2px solid #9c27b0;padding:12px 16px;margin:12px 0;border-radius:8px;text-align:center;font-size:20px;font-weight:700;color:#6a1b9a}
+.quiz-box{background:#fff;border:2px solid #6b4c9a;padding:20px;border-radius:10px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.quiz-box h3{color:#6b4c9a;margin-top:0}
+.quiz-box label{display:block;padding:8px 12px;margin:6px 0;background:#f9f5ff;border-radius:6px;cursor:pointer;transition:background .2s}
+.quiz-box label:hover{background:#ede7f6}
+.quiz-box input[type="radio"],.quiz-box input[type="checkbox"]{margin-right:10px}
+.btn{background:linear-gradient(135deg,#6b4c9a,#5a3f8f);color:#fff;border:none;padding:10px 24px;font-size:15px;border-radius:6px;cursor:pointer;transition:all .3s;margin-top:10px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(107,76,154,.4)}
+.feedback{margin-top:10px;padding:12px;border-radius:6px;font-weight:500;display:none}
+.feedback.correct{background:#c8e6c9;color:#2e7d32;border:1px solid #66bb6a;display:block}
+.feedback.wrong{background:#ffcdd2;color:#c62828;border:1px solid #ef5350;display:block}
+.solution{background:#f0f4ff;border-left:4px solid #2196f3;padding:14px;margin:10px 0;border-radius:6px;display:none;white-space:pre-wrap;font-size:14px;line-height:1.6}
+.solution.show{display:block}
+table{width:100%;border-collapse:collapse;margin:14px 0}
+th,td{border:1px solid #ddd;padding:10px;text-align:left}
+th{background:#6b4c9a;color:#fff}
+tr:nth-child(even){background:#f9f5ff}
+.speed-chart{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:14px 0}
+.speed-cell{padding:8px;text-align:center;border-radius:4px;font-size:12px;font-weight:600}
+.speed-1{background:#c8e6c9;color:#2e7d32}.speed-2{background:#fff9c4;color:#f57f17}.speed-3{background:#ffe0b2;color:#e65100}.speed-4{background:#ffcdd2;color:#c62828}.speed-5{background:#f8bbd0;color:#880e4f}
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+.confetti-piece{position:absolute;width:10px;height:10px;opacity:0;animation:confettiFall 3s ease-out forwards}
+@keyframes confettiFall{0%{transform:translateY(-100px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.nav-btn-row{display:flex;justify-content:space-between;margin-top:30px;padding-top:20px;border-top:2px solid #e0d4f0}
+.nav-btn{padding:12px 28px;border-radius:8px;font-size:16px;cursor:pointer;border:none;font-weight:600;transition:all .3s}
+.nav-btn.prev{background:#e0d4f0;color:#5a3f8f}
+.nav-btn.next{background:linear-gradient(135deg,#6b4c9a,#5a3f8f);color:#fff}
+.nav-btn:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(0,0,0,.2)}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.vocab-card{background:#fff;border:2px solid #e0d4f0;border-radius:8px;padding:12px;transition:all .3s}
+.vocab-card:hover{border-color:#6b4c9a;box-shadow:0 2px 8px rgba(107,76,154,.2)}
+.vocab-card strong{color:#6b4c9a;display:block;margin-bottom:4px}
+.step-box{background:#fff;border-left:4px solid #6b4c9a;padding:14px;margin:8px 0;border-radius:0 8px 8px 0;counter-increment:step}
+.step-box::before{content:"Step " counter(step) ": ";font-weight:700;color:#6b4c9a}
+.badge{display:inline-block;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#5a3f8f;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;margin:2px}
+</style>
+</head>
+<body>
+<div id="confetti-container" class="confetti-container"></div>
+<div class="container">
+<div class="sidebar">
+<h1>DSC 40B Exam 1</h1>
+<span class="subtitle">4-Day Crash Course for Maxime</span>
+<div class="nav-item active" onclick="goTo(0)">Welcome & Study Plan<span class="time-est">5 min</span></div>
+<div class="nav-item" onclick="goTo(1)">Lec 1: What is Algorithm?<span class="time-est">15 min</span></div>
+<div class="nav-item" onclick="goTo(2)">Lec 2: Loop Invariants<span class="time-est">20 min</span></div>
+<div class="nav-item" onclick="goTo(3)">Lec 3: Counting Operations<span class="time-est">20 min</span></div>
+<div class="nav-item" onclick="goTo(4)">Lec 4-5: Big-Theta, O, Omega<span class="time-est">25 min</span></div>
+<div class="nav-item" onclick="goTo(5)">Proving Theta (with constants)<span class="time-est">25 min</span></div>
+<div class="nav-item" onclick="goTo(6)">Lec 6: Best/Worst & Expected<span class="time-est">25 min</span></div>
+<div class="nav-item" onclick="goTo(7)">Lec 7: Brute Force & Sorting<span class="time-est">15 min</span></div>
+<div class="nav-item" onclick="goTo(8)">Log Properties Cheat Sheet<span class="time-est">10 min</span></div>
+<div class="nav-item" onclick="goTo(9)">Homework 2 Walkthrough<span class="time-est">30 min</span></div>
+<div class="nav-item" onclick="goTo(10)">Practice Exam (20 Qs)<span class="time-est">40 min</span></div>
+<div class="nav-item" onclick="goTo(11)">Quick Reference Sheet<span class="time-est">5 min</span></div>
+<div class="progress-box">
+<div>Progress</div>
+<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+<div id="score-text">0 points</div>
+<div id="achievements-box"></div>
+</div>
+</div>
+
+<div class="main">
+
+<!-- ===================== SECTION 0: WELCOME ===================== -->
+<div class="section active" id="sec0">
+<h1>Welcome, Maxime! Your 4-Day Exam Plan</h1>
+<p>You just added DSC 40B and exam 1 is in 4 days. That sounds scary, but here is the good news: <span class="highlight">this guide covers EVERYTHING you need</span>. The material is about how fast code runs &mdash; and you can learn it!</p>
+
+<h2>What is DSC 40B About? (30-Second Version)</h2>
+<p>In DSC 40A, you learned the MATH (like: "the answer is the mean"). In DSC 40B, you learn: <strong>How does a computer actually CALCULATE that answer? And how FAST can it do it?</strong></p>
+
+<div class="analogy">Think of a restaurant. DSC 40A is the MENU (what food to make). DSC 40B is the KITCHEN (how to cook it, and how fast each recipe takes).</div>
+
+<h2>Your 4-Day Study Schedule</h2>
+<table>
+<tr><th>Day</th><th>What to Study</th><th>Time</th></tr>
+<tr><td><strong>Day 1 (Today)</strong></td><td>Sections 1-4: Algorithms, Loop Invariants, Counting Operations</td><td>~2 hours</td></tr>
+<tr><td><strong>Day 2</strong></td><td>Sections 5-7: Big-Theta proofs, Best/Worst case, Expected time</td><td>~2.5 hours</td></tr>
+<tr><td><strong>Day 3</strong></td><td>Sections 8-10: Sorting, Log properties, Homework 2 walkthrough</td><td>~2 hours</td></tr>
+<tr><td><strong>Day 4</strong></td><td>Section 11: Full practice exam, then review mistakes</td><td>~2 hours</td></tr>
+</table>
+
+<h2>How to Use This Guide (ADHD-Friendly Tips)</h2>
+<p><strong>Read out loud.</strong> When you see a "SAY IT OUT LOUD" box, actually say the words. Research shows speaking helps your brain remember 2x better.</p>
+<p><strong>Take breaks.</strong> When you see a break box, stand up, stretch, get water. Your brain needs 5-minute breaks every 25 minutes.</p>
+<p><strong>Do every quiz.</strong> Click the answers, don't just read. Active practice beats passive reading by 3x.</p>
+<p><strong>Use the points system.</strong> Try to get as many points as possible. The sidebar tracks your score!</p>
+
+<div class="say-loud">"I can learn 7 lectures in 4 days. The material is about how fast code runs. I will take breaks and do every quiz."</div>
+
+<div class="job-box">Companies like Google, Amazon, and Netflix ask algorithm questions in data science interviews. Learning this material NOW gives you a big advantage for internships!</div>
+
+<div class="nav-btn-row">
+<div></div>
+<button class="nav-btn next" onclick="goTo(1)">Start Learning &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 1: ALGORITHMS ===================== -->
+<div class="section" id="sec1">
+<h1>Lecture 1: What is an Algorithm?</h1>
+
+<h2>The Big Picture</h2>
+<p>In DSC 40A, you learned to find answers using math. For example, "the number that minimizes the total absolute error is the <span class="highlight">median</span>." But 40A stopped there. DSC 40B asks the NEXT question:</p>
+
+<div class="formula">OK, the answer is the median. But HOW does a computer CALCULATE the median?</div>
+
+<p>To find the median, you need to: (1) sort all the numbers, (2) pick the middle one. Sorting is the hard part &mdash; it is an <strong>algorithm</strong>. And different sorting algorithms have different speeds!</p>
+
+<h2>What is an Algorithm?</h2>
+<p>An <span class="highlight">algorithm</span> is a step-by-step set of instructions to solve a problem. Like a recipe for cooking.</p>
+
+<div class="analogy">You want to make a smoothie. The algorithm is: Step 1: Put fruit in blender. Step 2: Add milk. Step 3: Press blend for 30 seconds. Step 4: Pour into glass. That's an algorithm &mdash; clear steps that always work!</div>
+
+<h2>The 4 Parts of a Data Science Problem</h2>
+<div class="vocab-grid">
+<div class="vocab-card"><strong>1. Objective</strong>What do you WANT? (Example: predict house prices)</div>
+<div class="vocab-card"><strong>2. Computational Problem</strong>Turn the goal into a MATH problem (Example: minimize squared error)</div>
+<div class="vocab-card"><strong>3. Algorithm</strong>Step-by-step PROCEDURE to solve it (Example: compute the mean)</div>
+<div class="vocab-card"><strong>4. Implementation</strong>Write actual CODE in Python (Example: for loop that adds numbers)</div>
+</div>
+
+<h2>Example: Computing the Mean</h2>
+<div class="code-box"><span class="kw">def</span> <span class="fn">mean</span>(data):
+    <span class="cm"># Algorithm: add all numbers, divide by count</span>
+    total = <span class="num">0</span>
+    <span class="kw">for</span> x <span class="kw">in</span> data:
+        total += x          <span class="cm"># add each number</span>
+    <span class="kw">return</span> total / len(data) <span class="cm"># divide by how many</span></div>
+
+<p>This algorithm is <strong>correct</strong> (it always gives the right answer) and <strong>efficient</strong> (it only looks at each number once).</p>
+
+<h2>Two Big Questions in DSC 40B</h2>
+<p><strong>Question 1: CORRECTNESS</strong> &mdash; Does the algorithm always give the right answer? For EVERY possible input?</p>
+<p><strong>Question 2: EFFICIENCY</strong> &mdash; How fast is it? If you have 1,000 numbers, how many steps? What about 1,000,000 numbers?</p>
+
+<div class="job-box">At a data internship, you might need to process millions of customer records. If your algorithm is slow, it could take DAYS instead of SECONDS. That's why efficiency matters in real jobs!</div>
+
+<div class="say-loud">"An algorithm is step-by-step instructions. DSC 40B asks: is it CORRECT and is it FAST?"</div>
+
+<h2>How Fast is Fast? A Taste of What's Coming</h2>
+<p>Imagine 3 algorithms processing n = 1,000,000 data points:</p>
+<table>
+<tr><th>Algorithm</th><th>Speed Type</th><th>Operations</th><th>Time</th></tr>
+<tr><td>A (Linear)</td><td>n</td><td>1,000,000</td><td>1 second</td></tr>
+<tr><td>B (Quadratic)</td><td>n&sup2;</td><td>1,000,000,000,000</td><td>11.57 days!</td></tr>
+<tr><td>C (Cubic)</td><td>n&sup3;</td><td>10&sup1;&sup8;</td><td>31,709 years!</td></tr>
+</table>
+<p>See the difference? A slow algorithm on big data is USELESS. This is why we study efficiency!</p>
+
+<div class="watch-box">Search YouTube for: "DSC 40B lecture 1 Marina Langlois" or "What is an algorithm CS explained simply" for video explanations.</div>
+
+<div class="quiz-box">
+<h3>Quiz: Lecture 1 (10 points each)</h3>
+<p><strong>Q1: What does DSC 40B focus on that 40A did not?</strong></p>
+<label><input type="radio" name="s1q1" value="a"> Finding the best loss function</label>
+<label><input type="radio" name="s1q1" value="b"> How to compute answers efficiently with algorithms</label>
+<label><input type="radio" name="s1q1" value="c"> Building machine learning models</label>
+<label><input type="radio" name="s1q1" value="d"> Collecting data from users</label>
+<button class="btn" onclick="check('s1q1','b','s1q1fb',10)">Check Answer</button>
+<div id="s1q1fb" class="feedback"></div>
+
+<p style="margin-top:18px"><strong>Q2: Which is NOT part of a data science problem?</strong></p>
+<label><input type="radio" name="s1q2" value="a"> Objective</label>
+<label><input type="radio" name="s1q2" value="b"> Algorithm</label>
+<label><input type="radio" name="s1q2" value="c"> Database schema</label>
+<label><input type="radio" name="s1q2" value="d"> Implementation</label>
+<button class="btn" onclick="check('s1q2','c','s1q2fb',10)">Check Answer</button>
+<div id="s1q2fb" class="feedback"></div>
+</div>
+
+<div class="break-box">Stand up, stretch your arms, take 3 deep breaths. You finished Lecture 1!</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(0)">&larr; Back</button>
+<button class="nav-btn next" onclick="goTo(2)">Lecture 2: Loop Invariants &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 2: LOOP INVARIANTS ===================== -->
+<div class="section" id="sec2">
+<h1>Lecture 2: Loop Invariants (Proving Algorithms Work)</h1>
+
+<h2>The Problem: How Do We PROVE an Algorithm is Correct?</h2>
+<p>Testing with a few examples is not enough. Maybe your algorithm works on [1,2,3] but fails on [999, -5, 0]. We need PROOF that it works on ALL inputs.</p>
+
+<h2>What is a Loop Invariant?</h2>
+<p>A <span class="highlight">loop invariant</span> is a statement (a fact) that is TRUE:</p>
+<p>&bull; <strong>Before</strong> the loop starts (we call this "after iteration 0")</p>
+<p>&bull; <strong>After every single iteration</strong> of the loop</p>
+<p>&bull; <strong>After the loop ends</strong> (and this tells us the algorithm is correct!)</p>
+
+<div class="analogy">You are counting money in a cash register. Your loop invariant is: "After I count each bill, my running total equals the real total of bills I've counted so far." This is true before you start (total = $0, counted 0 bills), true after each bill, and true at the end (total = all money).</div>
+
+<h2>The 3-Step Proof Method</h2>
+<div style="counter-reset:step">
+<div class="step-box"><strong>INITIALIZE</strong> &mdash; Show the invariant is true BEFORE the loop starts (iteration 0). Usually the variables start at 0 or empty.</div>
+<div class="step-box"><strong>MAINTAIN</strong> &mdash; IF the invariant is true before iteration &alpha;, show it is STILL true after iteration &alpha;. (Like dominoes: if one falls, the next one falls too.)</div>
+<div class="step-box"><strong>TERMINATE</strong> &mdash; The loop ends. Plug in the FINAL iteration number into the invariant. This gives you the correctness statement!</div>
+</div>
+
+<h2>Worked Example: Proving mean() is Correct</h2>
+<div class="code-box"><span class="kw">def</span> <span class="fn">mean</span>(data):
+    total = <span class="num">0</span>           <span class="cm"># line 1</span>
+    <span class="kw">for</span> x <span class="kw">in</span> data:      <span class="cm"># line 2: loops n times</span>
+        total += x       <span class="cm"># line 3</span>
+    <span class="kw">return</span> total / len(data)</div>
+
+<p><strong>Invariant:</strong> "After the &alpha;th iteration, <code>total</code> contains the sum of the first &alpha; elements of <code>data</code>."</p>
+
+<div class="example"><strong>INITIALIZE (&alpha; = 0):</strong>
+Before the loop, total = 0.
+Sum of first 0 elements = 0. ✓ TRUE!
+
+<strong>MAINTAIN (assume true for &alpha;-1, prove for &alpha;):</strong>
+Assume: after iteration &alpha;-1, total = sum of first (&alpha;-1) elements.
+On iteration &alpha;, we add x (the &alpha;th element) to total.
+So total becomes: sum of first (&alpha;-1) elements + &alpha;th element
+                = sum of first &alpha; elements. ✓ TRUE!
+
+<strong>TERMINATE (&alpha; = n):</strong>
+Loop runs n times total.
+By the invariant: total = sum of ALL n elements.
+Then we return total/n = the mean. ✓ CORRECT!</div>
+
+<div class="say-loud">"A loop invariant is a fact that stays true before and after every iteration. I prove it with: Initialize, Maintain, Terminate."</div>
+
+<div class="job-box">In software engineering interviews, they sometimes ask you to PROVE your solution works. Loop invariants are the formal tool for this. Even if they don't ask for a formal proof, understanding invariants helps you debug code!</div>
+
+<div class="watch-box">Search YouTube: "loop invariant proof explained" or "how to prove algorithm correct loop invariant" for visual walkthroughs.</div>
+
+<div class="quiz-box">
+<h3>Quiz: Loop Invariants (10 points each)</h3>
+<p><strong>Q1: What is a loop invariant?</strong></p>
+<label><input type="radio" name="s2q1" value="a"> A variable that never changes inside a loop</label>
+<label><input type="radio" name="s2q1" value="b"> A fact that is true before and after every loop iteration</label>
+<label><input type="radio" name="s2q1" value="c"> The number of times a loop runs</label>
+<label><input type="radio" name="s2q1" value="d"> A loop that runs forever</label>
+<button class="btn" onclick="check('s2q1','b','s2q1fb',10)">Check Answer</button>
+<div id="s2q1fb" class="feedback"></div>
+
+<p style="margin-top:18px"><strong>Q2: In the mean() proof, what is the initialization step?</strong></p>
+<label><input type="radio" name="s2q2" value="a"> Show total = sum of all elements after the loop</label>
+<label><input type="radio" name="s2q2" value="b"> Show total = 0 before the loop starts (sum of 0 elements = 0)</label>
+<label><input type="radio" name="s2q2" value="c"> Show the loop runs n times</label>
+<label><input type="radio" name="s2q2" value="d"> Show total increases by x each iteration</label>
+<button class="btn" onclick="check('s2q2','b','s2q2fb',10)">Check Answer</button>
+<div id="s2q2fb" class="feedback"></div>
+</div>
+
+<div class="break-box">Get some water! You just learned a proof technique that CS students struggle with for weeks. You're doing great!</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(1)">&larr; Back</button>
+<button class="nav-btn next" onclick="goTo(3)">Lecture 3: Counting Operations &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 3: TIME COMPLEXITY ===================== -->
+<div class="section" id="sec3">
+<h1>Lecture 3: How We Measure Speed (Time Complexity)</h1>
+
+<h2>Why Can't We Just Use a Stopwatch?</h2>
+<p>You might think: run the code and time it! But this doesn't work because:</p>
+<p>&bull; A fast computer gives different times than a slow computer</p>
+<p>&bull; Other apps running in the background change the time</p>
+<p>&bull; Different inputs give different times</p>
+
+<div class="formula">Solution: COUNT how many basic operations the code does!</div>
+
+<h2>What is a "Basic Operation"?</h2>
+<p>A <span class="highlight">basic operation</span> takes the same amount of time no matter what. We call this <strong>constant time</strong> or <strong>&Theta;(1)</strong>.</p>
+
+<table>
+<tr><th>Basic Operations &Theta;(1)</th><th>NOT Basic (takes more time)</th></tr>
+<tr><td><code>arr[i]</code> &mdash; access one element</td><td><code>sum(arr)</code> &mdash; adds ALL n elements = &Theta;(n)</td></tr>
+<tr><td><code>x + y</code> &mdash; add two numbers</td><td><code>max(arr)</code> &mdash; checks ALL n elements = &Theta;(n)</td></tr>
+<tr><td><code>x == y</code> &mdash; compare two numbers</td><td><code>sorted(arr)</code> &mdash; sorts = &Theta;(n log n)</td></tr>
+<tr><td><code>x = 5</code> &mdash; assign a value</td><td><code>arr.copy()</code> &mdash; copies ALL n elements = &Theta;(n)</td></tr>
+<tr><td><code>len(arr)</code> &mdash; Python stores this*</td><td><code>"hello" in arr</code> &mdash; searches ALL = &Theta;(n)</td></tr>
+</table>
+<p><em>*In Python, len() is constant time because the length is stored. But in this class, follow what the professor says.</em></p>
+
+<h2>T(n): The Total Operation Count</h2>
+<p><span class="highlight">T(n)</span> = the total number of basic operations when input size is n.</p>
+
+<h3>The Table Method (Step by Step)</h3>
+<p>For each line of code, ask: (1) How much work does ONE execution cost? (2) How many times does this line execute? (3) Multiply them.</p>
+
+<div class="example"><strong>Example: Count how many positive numbers are in a list</strong>
+
+def count_positives(nums):     # n = len(nums)
+    count = 0                  # cost: c₁, runs: 1 time
+    for i in range(n):         # cost: c₂, runs: n times
+        if nums[i] > 0:       # cost: c₃, runs: n times
+            count += 1         # cost: c₄, runs: ≤ n times
+    return count               # cost: c₅, runs: 1 time
+
+T(n) = c₁ + c₂·n + c₃·n + c₄·n + c₅
+     = (c₂ + c₃ + c₄)·n + (c₁ + c₅)
+     = some_constant · n + another_constant
+     = Θ(n)  ← LINEAR TIME!</div>
+
+<div class="analogy">A cashier scanning groceries: if you have n items, the cashier scans each item once. That's n scans = linear time. If you have 100 items, it takes about 100 scans. If you have 1000 items, about 1000 scans.</div>
+
+<h2>Simple Loop = &Theta;(n)</h2>
+<div class="code-box"><span class="kw">for</span> i <span class="kw">in</span> range(n):    <span class="cm"># runs n times</span>
+    print(i)            <span class="cm"># constant work each time</span>
+<span class="cm"># Total: n × c = Θ(n)</span></div>
+
+<h2>Nested Independent Loops = &Theta;(n&sup2;)</h2>
+<div class="code-box"><span class="kw">for</span> i <span class="kw">in</span> range(n):        <span class="cm"># outer: n times</span>
+    <span class="kw">for</span> j <span class="kw">in</span> range(n):    <span class="cm"># inner: n times for EACH i</span>
+        print(i, j)       <span class="cm"># constant work</span>
+<span class="cm"># Total: n × n = n² = Θ(n²)</span></div>
+
+<div class="analogy">A hotel has n floors and n rooms per floor. To check every room: n floors &times; n rooms = n&sup2; total rooms. That's quadratic time!</div>
+
+<h2>Nested Dependent Loops = Still &Theta;(n&sup2;)!</h2>
+<div class="code-box"><span class="kw">for</span> i <span class="kw">in</span> range(n):
+    <span class="kw">for</span> j <span class="kw">in</span> range(i):   <span class="cm"># depends on i!</span>
+        print(i, j)</div>
+
+<table>
+<tr><th>When i =</th><th>Inner loop runs</th></tr>
+<tr><td>0</td><td>0 times</td></tr>
+<tr><td>1</td><td>1 time</td></tr>
+<tr><td>2</td><td>2 times</td></tr>
+<tr><td>...</td><td>...</td></tr>
+<tr><td>n-1</td><td>n-1 times</td></tr>
+</table>
+
+<div class="formula">Total = 0 + 1 + 2 + ... + (n-1) = n(n-1)/2 = &Theta;(n&sup2;)</div>
+
+<p>The formula <strong>1 + 2 + 3 + ... + k = k(k+1)/2</strong> is called the <span class="highlight">arithmetic series formula</span>. MEMORIZE IT for the exam!</p>
+
+<div class="exam-tip">When you see <code>for j in range(i)</code> inside <code>for i in range(n)</code>, the total is always n(n-1)/2 = &Theta;(n&sup2;). This pattern appears A LOT on exams.</div>
+
+<div class="say-loud">"Simple loop = Theta n. Nested loops = Theta n-squared. Dependent nested loops = still Theta n-squared because 1+2+...+n = n(n+1)/2."</div>
+
+<div class="quiz-box">
+<h3>Quiz: Time Complexity (10 points each)</h3>
+<p><strong>Q1: What is T(n) for this code?</strong></p>
+<div class="code-box"><span class="kw">for</span> i <span class="kw">in</span> range(n):
+    <span class="kw">for</span> j <span class="kw">in</span> range(n):
+        <span class="kw">for</span> k <span class="kw">in</span> range(n):
+            print(i,j,k)</div>
+<label><input type="radio" name="s3q1" value="a"> &Theta;(n)</label>
+<label><input type="radio" name="s3q1" value="b"> &Theta;(n&sup2;)</label>
+<label><input type="radio" name="s3q1" value="c"> &Theta;(n&sup3;)</label>
+<label><input type="radio" name="s3q1" value="d"> &Theta;(n log n)</label>
+<button class="btn" onclick="check('s3q1','c','s3q1fb',10)">Check Answer</button>
+<div id="s3q1fb" class="feedback"></div>
+
+<p style="margin-top:18px"><strong>Q2: What is 1+2+3+...+100?</strong></p>
+<label><input type="radio" name="s3q2" value="a"> 5,000</label>
+<label><input type="radio" name="s3q2" value="b"> 5,050</label>
+<label><input type="radio" name="s3q2" value="c"> 10,000</label>
+<label><input type="radio" name="s3q2" value="d"> 10,100</label>
+<button class="btn" onclick="check('s3q2','b','s3q2fb',10)">Check Answer</button>
+<div id="s3q2fb" class="feedback"></div>
+</div>
+
+<div class="break-box">Walk around for 2 minutes! You've learned the most important building block of the course.</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(2)">&larr; Back</button>
+<button class="nav-btn next" onclick="goTo(4)">Big-Theta, Big-O, Big-Omega &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 4: BIG THETA/O/OMEGA ===================== -->
+<div class="section" id="sec4">
+<h1>Lectures 4-5: Big-&Theta;, Big-O, Big-&Omega;</h1>
+
+<h2>Why Do We Need Special Notation?</h2>
+<p>When we count operations, we get things like T(n) = 5n&sup2; + 3n + 42. But the "5" and the "+3n+42" don't really matter when n is HUGE. We want to say "this grows like n&sup2;" without worrying about details.</p>
+
+<div class="formula">&Theta;(n&sup2;) means "grows at the same RATE as n&sup2;"</div>
+
+<h2>The Three Notations: A Simple Comparison</h2>
+
+<div class="vocab-grid">
+<div class="vocab-card" style="border-color:#4caf50"><strong>&Theta; (Theta) = "Exactly"</strong>f(n) grows at EXACTLY the same rate as g(n). Like a sandwich: g(n) is both above AND below f(n).</div>
+<div class="vocab-card" style="border-color:#2196f3"><strong>O (Big-O) = "At Most"</strong>f(n) grows NO FASTER than g(n). Upper bound only. Like Amazon saying "delivery in at most 7 days."</div>
+<div class="vocab-card" style="border-color:#ff9800"><strong>&Omega; (Omega) = "At Least"</strong>f(n) grows AT LEAST as fast as g(n). Lower bound only. Like a restaurant saying "cooking takes at least 15 minutes."</div>
+<div class="vocab-card" style="border-color:#9c27b0"><strong>KEY RULE:</strong>&Theta; = O AND &Omega; together! If something is exactly n&sup2;, then it's also at-most n&sup2; AND at-least n&sup2;.</div>
+</div>
+
+<h2>Formal Definitions (You MUST Know These for the Exam)</h2>
+
+<h3>&Theta; (Theta) &mdash; The Sandwich</h3>
+<div class="formula">f(n) = &Theta;(g(n)) means: there exist positive constants c&sub1;, c&sub2;, N such that<br>for all n &ge; N: &nbsp; c&sub1; &middot; g(n) &le; f(n) &le; c&sub2; &middot; g(n)</div>
+<p>Think of it as: when n is big enough, f(n) is always SANDWICHED between two scaled copies of g(n).</p>
+
+<h3>O (Big-O) &mdash; The Ceiling</h3>
+<div class="formula">f(n) = O(g(n)) means: there exist positive constants c, N such that<br>for all n &ge; N: &nbsp; f(n) &le; c &middot; g(n)</div>
+
+<h3>&Omega; (Omega) &mdash; The Floor</h3>
+<div class="formula">f(n) = &Omega;(g(n)) means: there exist positive constants c, N such that<br>for all n &ge; N: &nbsp; c &middot; g(n) &le; f(n)</div>
+
+<div class="analogy">Imagine you're running a database query at work. Your boss asks "how long will this take?" If you say "&Theta;(n&sup2;)" you mean "it grows exactly like n-squared." If you say "O(n&sup2;)" you mean "at worst, it grows like n-squared, but maybe faster." If you say "&Omega;(n)" you mean "it takes at LEAST linear time, no matter what."</div>
+
+<h2>Critical Rules for the Exam</h2>
+
+<h3>Rule 1: Drop Constants</h3>
+<p><code>5n&sup2; = &Theta;(n&sup2;)</code> &mdash; the "5" disappears because for big n, constants don't change the growth rate.</p>
+
+<h3>Rule 2: Keep Only the Biggest Term</h3>
+<p><code>n&sup2; + n + 100 = &Theta;(n&sup2;)</code> &mdash; when n = 1,000,000: n&sup2; = 10&sup1;&sup2; but n = 10&sup6;. The n&sup2; term completely dominates!</p>
+
+<h3>Rule 3: &Theta; Implies Both O and &Omega;</h3>
+<p>If f = &Theta;(n&sup2;) then f = O(n&sup2;) AND f = &Omega;(n&sup2;).</p>
+
+<h3>Rule 4: O Can Be Looser Upward</h3>
+<p>If f = &Theta;(n&sup2;), then f = O(n&sup2;), f = O(n&sup3;), f = O(n&sup1;&sup0;&sup0;) &mdash; all TRUE! (Saying "at most n&sup3;" is true even if it's really n&sup2;.)</p>
+
+<h3>Rule 5: &Omega; Can Be Looser Downward</h3>
+<p>If f = &Theta;(n&sup2;), then f = &Omega;(n&sup2;), f = &Omega;(n), f = &Omega;(1) &mdash; all TRUE!</p>
+
+<div class="exam-tip">EXAM FAVORITE: For f(n) = 5n&sup2; - 100n + 100, which bounds are TRUE?<br>
+&bull; &Theta;(n&sup2;) YES &bull; O(n&sup2;) YES &bull; &Omega;(n&sup2;) YES &bull; O(n&sup3;) YES (looser upper) &bull; &Omega;(n) YES (looser lower)<br>
+&bull; &Theta;(n) NO &bull; O(n) NO &bull; &Theta;(n&sup3;) NO &bull; &Omega;(n&sup3;) NO</div>
+
+<h2>The Growth Rate Ladder (Memorize This!)</h2>
+<div class="speed-chart">
+<div class="speed-cell speed-1">&Theta;(1)<br>constant</div>
+<div class="speed-cell speed-1">&Theta;(log n)<br>logarithmic</div>
+<div class="speed-cell speed-2">&Theta;(n)<br>linear</div>
+<div class="speed-cell speed-2">&Theta;(n log n)<br>linearithmic</div>
+<div class="speed-cell speed-3">&Theta;(n&sup2;)<br>quadratic</div>
+<div class="speed-cell speed-4">&Theta;(n&sup3;)<br>cubic</div>
+</div>
+<p style="text-align:center;font-size:14px">&larr; FAST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SLOW &rarr;</p>
+
+<h2>Tricky True/False (Exam Favorites!)</h2>
+
+<h3>Trap 1: Can You Divide &Theta; by O?</h3>
+<p><strong>Q:</strong> If f&sub1; = &Theta;(g&sub1;) and f&sub2; = O(g&sub2;), is f&sub1;/f&sub2; = &Theta;(g&sub1;/g&sub2;)?</p>
+<p><strong>A: FALSE!</strong> O only gives an upper bound. f&sub2; could be MUCH smaller than g&sub2;, making the division MUCH bigger.</p>
+
+<h3>Trap 2: Does &Theta;(n&sup2;) Always Beat &Theta;(n&sup3;) at n=100?</h3>
+<p><strong>A: FALSE!</strong> &Theta; hides constants. Algorithm A could be 1,000,000&middot;n&sup2; and Algorithm B could be 0.001&middot;n&sup3;. At n=100, B is faster!</p>
+
+<h3>Trap 3: If f = &Omega;(n&sup5;) and f = O(n&sup7;), must f be &Theta;(n&sup5;), &Theta;(n&sup6;), or &Theta;(n&sup7;)?</h3>
+<p><strong>A: FALSE!</strong> f could be &Theta;(n&sup5;.&sup3;) or &Theta;(n&sup6;.&sup7;) or any power between 5 and 7. Or f might not even HAVE a &Theta; bound!</p>
+
+<div class="say-loud">"Theta means EXACTLY. Big-O means AT MOST. Omega means AT LEAST. Theta equals Big-O AND Omega together."</div>
+
+<div class="quiz-box">
+<h3>Quiz: Big-Theta, Big-O, Big-Omega (10 points each)</h3>
+<p><strong>Q1: If f(n) = 3n&sup3; + 2n + 1, what is f(n) in &Theta; notation?</strong></p>
+<label><input type="radio" name="s4q1" value="a"> &Theta;(1)</label>
+<label><input type="radio" name="s4q1" value="b"> &Theta;(n)</label>
+<label><input type="radio" name="s4q1" value="c"> &Theta;(n&sup3;)</label>
+<label><input type="radio" name="s4q1" value="d"> &Theta;(3n&sup3;)</label>
+<button class="btn" onclick="check('s4q1','c','s4q1fb',10)">Check Answer</button>
+<div id="s4q1fb" class="feedback"></div>
+
+<p style="margin-top:18px"><strong>Q2: If f = &Theta;(n&sup2;), which is TRUE?</strong></p>
+<label><input type="radio" name="s4q2" value="a"> f = O(n) &mdash; n is an upper bound for n&sup2;</label>
+<label><input type="radio" name="s4q2" value="b"> f = &Omega;(n&sup3;) &mdash; n&sup3; is a lower bound for n&sup2;</label>
+<label><input type="radio" name="s4q2" value="c"> f = O(n&sup3;) &mdash; n&sup3; is a valid (loose) upper bound</label>
+<label><input type="radio" name="s4q2" value="d"> f = &Theta;(n) &mdash; same exact rate as n</label>
+<button class="btn" onclick="check('s4q2','c','s4q2fb',10)">Check Answer</button>
+<div id="s4q2fb" class="feedback"></div>
+
+<p style="margin-top:18px"><strong>Q3: TRUE or FALSE: If f&sub1;=&Theta;(g&sub1;) and f&sub2;=O(g&sub2;), then f&sub1;/f&sub2;=&Theta;(g&sub1;/g&sub2;)</strong></p>
+<label><input type="radio" name="s4q3" value="a"> TRUE</label>
+<label><input type="radio" name="s4q3" value="b"> FALSE</label>
+<button class="btn" onclick="check('s4q3','b','s4q3fb',10)">Check Answer</button>
+<div id="s4q3fb" class="feedback"></div>
+</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(3)">&larr; Back</button>
+<button class="nav-btn next" onclick="goTo(5)">Proving Theta with Constants &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 5: PROVING THETA ===================== -->
+<div class="section" id="sec5">
+<h1>Proving &Theta; with Constants (Chain of Inequalities)</h1>
+
+<h2>What the Exam Asks You to Do</h2>
+<p>The exam gives you a function like f(n) = 3n&sup2; - 8n + 4 and asks you to <strong>prove</strong> it is &Theta;(n&sup2;) by finding actual numbers for c&sub1;, c&sub2;, and N.</p>
+
+<div class="formula">You need to find c&sub1;, c&sub2;, N so that:<br>c&sub1; &middot; n&sup2; &le; 3n&sup2; - 8n + 4 &le; c&sub2; &middot; n&sup2; &nbsp;&nbsp; for all n &ge; N</div>
+
+<h2>Step 1: Prove the Upper Bound (f(n) &le; c&sub2; &middot; g(n))</h2>
+<p>The trick: make f(n) BIGGER until it looks like c&middot;n&sup2;.</p>
+<p><strong>Two tools to make something bigger:</strong></p>
+<p>&bull; <span class="highlight">"Promote" lower terms:</span> replace smaller powers with bigger powers. Example: replace +4 with +4n&sup2; (since n&sup2; &ge; 1 when n &ge; 1, so 4n&sup2; &ge; 4)</p>
+<p>&bull; <span class="highlight">"Drop" negative terms:</span> removing a subtraction makes things bigger. Example: 3n&sup2; - 8n &le; 3n&sup2; (because we removed -8n)</p>
+
+<h3>Example: Upper bound for 3n&sup2; - 8n + 4</h3>
+<div class="example">3n² - 8n + 4
+  ≤ 3n² + 4        (drop -8n, making it bigger)
+  ≤ 3n² + 4n²      (replace 4 with 4n², since n²≥1 when n≥1)
+  = 7n²
+
+So: 3n² - 8n + 4 ≤ 7n² for all n ≥ 1
+Choose c₂ = 7, works when N ≥ 1 ✓</div>
+
+<h2>Step 2: Prove the Lower Bound (c&sub1; &middot; g(n) &le; f(n))</h2>
+<p>The trick: make f(n) SMALLER until it looks like c&middot;n&sup2;.</p>
+<p><strong>Two tools to make something smaller:</strong></p>
+<p>&bull; <span class="highlight">"Drop" positive terms:</span> removing an addition makes things smaller.</p>
+<p>&bull; <span class="highlight">"Absorb" negative terms:</span> split the leading term to "eat" the negative parts.</p>
+
+<h3>Example: Lower bound for 3n&sup2; - 8n + 4</h3>
+<div class="example">3n² - 8n + 4
+  ≥ 3n² - 8n         (drop +4, making it smaller)
+  = 2n² + (n² - 8n)  (split 3n² into 2n² + n²)
+  ≥ 2n²              (because n² - 8n ≥ 0 when n ≥ 8)
+
+So: 2n² ≤ 3n² - 8n + 4 for all n ≥ 8
+Choose c₁ = 2, N = 8 ✓</div>
+
+<h2>Putting It Together</h2>
+<div class="example"><strong>CONCLUSION:</strong>
+With c₁ = 2, c₂ = 7, N = 8:
+   2n² ≤ 3n² - 8n + 4 ≤ 7n²   for all n ≥ 8
+
+Therefore: 3n² - 8n + 4 = Θ(n²) ✓</div>
+
+<div class="exam-tip">The constants don't have to be "perfect." ANY valid c&sub1;, c&sub2;, N that work will get full credit! Different students can have different constants and ALL be correct.</div>
+
+<div class="job-box">In database optimization, you prove that a query plan runs in &Theta;(n log n) instead of &Theta;(n&sup2;). This is the SAME skill &mdash; bounding functions with inequalities. Companies like Meta and Uber need this for their billion-row databases.</div>
+
+<h2>Another Full Example: 4n&sup3; - 5n&sup2; + 50 = &Theta;(n&sup3;)</h2>
+<div class="example"><strong>Upper bound:</strong>
+4n³ - 5n² + 50
+  ≤ 4n³ + 50           (drop -5n²)
+  ≤ 4n³ + 50n³         (replace 50 with 50n³, since n³≥1)
+  = 54n³
+c₂ = 54, N = 1 ✓
+
+<strong>Lower bound:</strong>
+4n³ - 5n² + 50
+  ≥ 4n³ - 5n²          (drop +50)
+  = 3n³ + (n³ - 5n²)   (split 4n³)
+  ≥ 3n³                 (because n³ - 5n² = n²(n-5) ≥ 0 when n ≥ 5)
+c₁ = 3, N = 5 ✓
+
+<strong>Final: c₁=3, c₂=54, N=5</strong>
+3n³ ≤ 4n³ - 5n² + 50 ≤ 54n³ for all n ≥ 5
+Therefore: 4n³ - 5n² + 50 = Θ(n³) ✓</div>
+
+<div class="say-loud">"Upper bound: make it bigger by dropping negatives and promoting small terms. Lower bound: make it smaller by dropping positives and absorbing negatives into the leading term."</div>
+
+<div class="quiz-box">
+<h3>Quiz: Proving Theta (10 points each)</h3>
+<p><strong>Q1: To prove f(n) &le; c&sub2;&middot;n&sup2; (upper bound), what can you do?</strong></p>
+<label><input type="radio" name="s5q1" value="a"> Drop positive terms and add negative terms</label>
+<label><input type="radio" name="s5q1" value="b"> Drop negative terms and promote smaller positive terms to n&sup2;</label>
+<label><input type="radio" name="s5q1" value="c"> Set c&sub2; = 1 always</label>
+<label><input type="radio" name="s5q1" value="d"> Just use limits</label>
+<button class="btn" onclick="check('s5q1','b','s5q1fb',10)">Check Answer</button>
+<div id="s5q1fb" class="feedback"></div>
+
+<p style="margin-top:18px"><strong>Q2: For f(n)=2n&sup2;+3n, which is a valid upper bound proof?</strong></p>
+<label><input type="radio" name="s5q2" value="a"> 2n&sup2;+3n &le; 2n&sup2;+3n&sup2; = 5n&sup2;, so c&sub2;=5</label>
+<label><input type="radio" name="s5q2" value="b"> 2n&sup2;+3n &le; n&sup2;, so c&sub2;=1</label>
+<label><input type="radio" name="s5q2" value="c"> 2n&sup2;+3n &ge; 2n&sup2;, so c&sub2;=2</label>
+<button class="btn" onclick="check('s5q2','a','s5q2fb',10)">Check Answer</button>
+<div id="s5q2fb" class="feedback"></div>
+</div>
+
+<div class="break-box">Great job! This is the HARDEST part of the course for most people. Take a 5 minute break and come back strong!</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(4)">&larr; Back</button>
+<button class="nav-btn next" onclick="goTo(6)">Best/Worst Case &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 6: BEST/WORST CASE ===================== -->
+<div class="section" id="sec6">
+<h1>Lecture 6: Best Case, Worst Case & Expected Time</h1>
+
+<h2>Why Do Some Algorithms Have Different Speeds?</h2>
+<p>Some code has <strong>if statements</strong> or <strong>early exits</strong> that can make it stop early. Depending on the input, the SAME code can be fast or slow!</p>
+
+<h2>Insertion Sort &mdash; The Classic Example</h2>
+<div class="code-box"><span class="kw">def</span> <span class="fn">insertion_sort</span>(arr):
+    n = len(arr)
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">1</span>, n):        <span class="cm"># outer: always n-1 times</span>
+        x = arr[i]
+        j = i - <span class="num">1</span>
+        <span class="kw">while</span> j >= <span class="num">0</span> <span class="kw">and</span> x < arr[j]: <span class="cm"># THIS varies!</span>
+            arr[j+<span class="num">1</span>] = arr[j]
+            j -= <span class="num">1</span>
+        arr[j+<span class="num">1</span>] = x</div>
+
+<h3>Best Case: Array Already Sorted [1, 2, 3, 4, 5]</h3>
+<p>Each new element is already bigger than everything before it. The while loop condition <code>x &lt; arr[j]</code> is FALSE immediately every time. While loop runs 0 times!</p>
+<div class="formula">Best case: outer loop n-1 times &times; constant work = <span style="color:#2e7d32">&Theta;(n)</span></div>
+
+<h3>Worst Case: Array in Reverse [5, 4, 3, 2, 1]</h3>
+<p>Each new element is SMALLER than everything before it. The while loop runs the MAXIMUM number of times:</p>
+<p>i=1: 1 time, i=2: 2 times, ..., i=n-1: n-1 times</p>
+<div class="formula">Worst case: 1+2+...+(n-1) = n(n-1)/2 = <span style="color:#c62828">&Theta;(n&sup2;)</span></div>
+
+<div class="analogy">Imagine sorting a deck of cards. If the deck is already sorted, you just check each card once (fast!). If the deck is backwards, every card has to be moved to the front (slow!).</div>
+
+<h2>The foo() Function &mdash; Another Exam Favorite</h2>
+<div class="code-box"><span class="kw">def</span> <span class="fn">foo</span>(arr):
+    <span class="kw">for</span> x <span class="kw">in</span> arr:                <span class="cm"># outer: n times</span>
+        <span class="kw">for</span> y <span class="kw">in</span> arr:            <span class="cm"># inner: n times</span>
+            <span class="kw">if</span> sum([x,y]) == <span class="num">5</span>:  <span class="cm"># sum of 2 = Θ(1)!</span>
+                <span class="kw">return</span> sum(arr)   <span class="cm"># sum of n = Θ(n)!</span>
+    <span class="kw">return</span> False</div>
+
+<p><strong>CRITICAL:</strong> <code>sum([x,y])</code> adds only 2 numbers = &Theta;(1). But <code>sum(arr)</code> adds ALL n numbers = &Theta;(n)!</p>
+
+<p><strong>Best case:</strong> The if-condition is true on the FIRST check. We do 1 outer + 1 inner + return sum(arr) which is &Theta;(n). <strong>Answer: &Theta;(n)</strong></p>
+<p><strong>Worst case:</strong> The if-condition is NEVER true. We check all n&times;n pairs, each taking &Theta;(1), then return False. <strong>Answer: &Theta;(n&sup2;)</strong></p>
+
+<h2>Expected Time (Probability-Weighted Average)</h2>
+<p>When code uses RANDOMNESS (like coin flips or random numbers), we compute the <span class="highlight">expected time</span>:</p>
+
+<div class="formula">E[T(n)] = &sum; P(case i) &times; T(case i)</div>
+
+<h3>Example: Coin Toss Code</h3>
+<div class="code-box"><span class="kw">def</span> <span class="fn">double_coin_toss</span>(n):
+    coin_1 = np.random.rand() > <span class="num">0.5</span>
+    coin_2 = np.random.rand() > <span class="num">0.5</span>
+    <span class="kw">if</span> coin_1 <span class="kw">and</span> coin_2:     <span class="cm"># P = 1/4 (both heads)</span>
+        <span class="cm"># runs n times = Θ(n)</span>
+        i = n
+        <span class="kw">while</span> i > <span class="num">0</span>: print(<span class="st">"Two heads!"</span>); i -= <span class="num">1</span>
+    <span class="kw">else</span>:                      <span class="cm"># P = 3/4</span>
+        <span class="kw">for</span> i <span class="kw">in</span> range(n**<span class="num">2</span>): print(<span class="st">"Nope"</span>) <span class="cm"># Θ(n²)</span></div>
+
+<div class="example">Cases:
+• Both heads: P = 1/2 × 1/2 = 1/4, Time = Θ(n)
+• Not both heads: P = 3/4, Time = Θ(n²)
+
+E[T(n)] = (1/4)·n + (3/4)·n²
+        = Θ(n²)   (the n² term dominates)</div>
+
+<h3>Example: Random Integer Code</h3>
+<div class="code-box"><span class="kw">def</span> <span class="fn">foo</span>(n):
+    k = np.random.randint(n)  <span class="cm"># random 0 to n-1</span>
+    <span class="kw">if</span> k < np.sqrt(n):        <span class="cm"># P = √n/n = 1/√n</span>
+        <span class="kw">for</span> i <span class="kw">in</span> range(n**<span class="num">2</span>): print(i)  <span class="cm"># Θ(n²)</span>
+    <span class="kw">else</span>:                      <span class="cm"># P = 1 - 1/√n</span>
+        print(<span class="st">'Never mind...'</span>)          <span class="cm"># Θ(1)</span></div>
+
+<div class="example">E[T(n)] = (1/√n)·n² + (1 - 1/√n)·1
+        = n²/√n + constant
+        = n^(3/2) + constant
+        = Θ(n^(3/2)) = Θ(n√n)</div>
+
+<div class="exam-tip">For expected time problems: (1) List ALL possible cases. (2) Find the probability of each case. (3) Find the time for each case. (4) Multiply and add. (5) Simplify.</div>
+
+<div class="quiz-box">
+<h3>Quiz: Best/Worst Case (10 points each)</h3>
+<p><strong>Q1: Best case of insertion_sort?</strong></p>
+<label><input type="radio" name="s6q1" value="a"> &Theta;(1)</label>
+<label><input type="radio" name="s6q1" value="b"> &Theta;(n)</label>
+<label><input type="radio" name="s6q1" value="c"> &Theta;(n&sup2;)</label>
+<label><input type="radio" name="s6q1" value="d"> &Theta;(n log n)</label>
+<button class="btn" onclick="check('s6q1','b','s6q1fb',10)">Check Answer</button>
+<div id="s6q1fb" class="feedback"></div>
+
+<p style="margin-top:18px"><strong>Q2: What is the best case of foo(arr)?</strong></p>
+<label><input type="radio" name="s6q2" value="a"> &Theta;(1)</label>
+<label><input type="radio" name="s6q2" value="b"> &Theta;(n)</label>
+<label><input type="radio" name="s6q2" value="c"> &Theta;(n&sup2;)</label>
+<button class="btn" onclick="check('s6q2','b','s6q2fb',10)">Check Answer</button>
+<div id="s6q2fb" class="feedback"></div>
+</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(5)">&larr; Back</button>
+<button class="nav-btn next" onclick="goTo(7)">Brute Force & Sorting &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 7: BRUTE FORCE & SORTING ===================== -->
+<div class="section" id="sec7">
+<h1>Lecture 7: Brute Force & Selection Sort</h1>
+
+<h2>Brute Force = Try Everything</h2>
+<p>A <span class="highlight">brute force</span> algorithm tries ALL possible answers and picks the best one. It's always correct but often SLOW.</p>
+
+<div class="analogy">You forgot your 4-digit phone passcode. Brute force: try 0000, 0001, 0002, ..., 9999. You'll find it, but it could take 10,000 tries!</div>
+
+<h2>Linear Search</h2>
+<div class="code-box"><span class="kw">def</span> <span class="fn">linear_search</span>(arr, target):
+    <span class="kw">for</span> i <span class="kw">in</span> range(len(arr)):
+        <span class="kw">if</span> arr[i] == target:
+            <span class="kw">return</span> i       <span class="cm"># found it!</span>
+    <span class="kw">return</span> -<span class="num">1</span>              <span class="cm"># not found</span></div>
+<p><strong>Best case:</strong> target is first element &rarr; &Theta;(1)</p>
+<p><strong>Worst case:</strong> target is not in array &rarr; &Theta;(n)</p>
+
+<h2>Selection Sort</h2>
+<p>Idea: find the smallest element, put it first. Then find the second smallest, put it second. Repeat.</p>
+<div class="code-box"><span class="kw">def</span> <span class="fn">selection_sort</span>(arr):
+    n = len(arr)
+    <span class="kw">for</span> i <span class="kw">in</span> range(n):
+        min_idx = i
+        <span class="kw">for</span> j <span class="kw">in</span> range(i+<span class="num">1</span>, n):  <span class="cm"># find minimum in rest</span>
+            <span class="kw">if</span> arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]  <span class="cm"># swap</span></div>
+
+<p><strong>Time complexity:</strong> The inner loop runs (n-1) + (n-2) + ... + 1 + 0 = n(n-1)/2 times. <strong>ALWAYS &Theta;(n&sup2;)</strong>, no matter what the input is! (No early exit possible.)</p>
+
+<h2>Theoretical Lower Bounds</h2>
+<p>A <span class="highlight">lower bound</span> answers: "What is the MINIMUM work ANY algorithm must do for this problem?"</p>
+
+<div class="example"><strong>Example:</strong> Given n numbers, find if True or False is more common.
+Lower bound: Ω(n) because you MUST look at every element.
+You can't know the answer without seeing all n values!
+
+<strong>Example:</strong> Given n integers between 1-100, sort them.
+Lower bound: Ω(n) because you must at least READ all n numbers.
+(Note: comparison sorts need Ω(n log n), but counting sort can do Θ(n)!)</div>
+
+<div class="job-box">Selection sort is too slow for big data (n&sup2; is terrible for millions of rows). In real jobs, you use faster sorts like merge sort &Theta;(n log n) or Python's built-in sorted() which uses Timsort. But understanding selection sort helps you understand WHY faster algorithms matter!</div>
+
+<div class="quiz-box">
+<h3>Quiz: Sorting (10 points each)</h3>
+<p><strong>Q1: Selection sort time complexity?</strong></p>
+<label><input type="radio" name="s7q1" value="a"> Best: &Theta;(n), Worst: &Theta;(n&sup2;)</label>
+<label><input type="radio" name="s7q1" value="b"> Always &Theta;(n&sup2;)</label>
+<label><input type="radio" name="s7q1" value="c"> Always &Theta;(n log n)</label>
+<button class="btn" onclick="check('s7q1','b','s7q1fb',10)">Check Answer</button>
+<div id="s7q1fb" class="feedback"></div>
+</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(6)">&larr; Back</button>
+<button class="nav-btn next" onclick="goTo(8)">Log Properties &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 8: LOG PROPERTIES ===================== -->
+<div class="section" id="sec8">
+<h1>Log Properties Cheat Sheet</h1>
+
+<h2>What is a Logarithm? (Simple Explanation)</h2>
+<p><span class="highlight">log&sub2;(n)</span> asks: <strong>"2 to WHAT power gives me n?"</strong></p>
+<div class="example">log₂(8) = 3    because 2³ = 8
+log₂(16) = 4   because 2⁴ = 16
+log₂(1024) = 10 because 2¹⁰ = 1024
+log₁₀(1000) = 3 because 10³ = 1000</div>
+
+<p>In computer science, "log" usually means log&sub2; unless stated otherwise.</p>
+
+<h2>The 5 Properties You Need</h2>
+<table>
+<tr><th>#</th><th>Property</th><th>Example</th></tr>
+<tr><td>1</td><td><strong>log(a&middot;b) = log(a) + log(b)</strong></td><td>log&sub2;(8&middot;4) = log&sub2;(8)+log&sub2;(4) = 3+2 = 5</td></tr>
+<tr><td>2</td><td><strong>log(a<sup>k</sup>) = k&middot;log(a)</strong> VERY IMPORTANT!</td><td>log&sub2;(8&sup3;) = 3&middot;log&sub2;(8) = 3&middot;3 = 9</td></tr>
+<tr><td>3</td><td><strong>a<sup>log_a(n)</sup> = n</strong></td><td>2<sup>log&sub2;(8)</sup> = 2&sup3; = 8</td></tr>
+<tr><td>4</td><td><strong>log_b(c) = 1/log_c(b)</strong> (given as hint on exam!)</td><td>1/log&sub2;(n) = log_n(2)</td></tr>
+<tr><td>5</td><td><strong>All logs grow at the same rate:</strong> log&sub2;(n) = &Theta;(log&sub1;&sub0;(n)) = &Theta;(ln(n))</td><td>For &Theta;, the base doesn't matter!</td></tr>
+</table>
+
+<h2>Exam Trick: Simplify n<sup>1/log&sub2;(n)</sup> &times; n</h2>
+<div class="example">Step 1: Use Property 4: 1/log₂(n) = log_n(2)
+Step 2: n^(log_n(2)) = 2  (by Property 3, with a=n, x=2)
+Step 3: 2 × n = 2n = Θ(n) ✓</div>
+
+<h2>Exam Trick: Simplify 12&middot;log&sub2;(3<sup>n&sup2;-2n</sup>)</h2>
+<div class="example">Use Property 2: log(a^k) = k·log(a)
+= 12·(n²-2n)·log₂(3)
+= 12·log₂(3)·n² - 24·log₂(3)·n
+Dominant term: Θ(n²)</div>
+
+<div class="say-loud">"Log of a power: bring the exponent DOWN in front. This is Property 2 and it's the most important log property for this exam."</div>
+
+<div class="quiz-box">
+<h3>Quick Quiz (10 points)</h3>
+<p><strong>Q1: What is log&sub2;(2<sup>n</sup>) simplified?</strong></p>
+<label><input type="radio" name="s8q1" value="a"> 2n</label>
+<label><input type="radio" name="s8q1" value="b"> n</label>
+<label><input type="radio" name="s8q1" value="c"> n&sup2;</label>
+<label><input type="radio" name="s8q1" value="d"> 2<sup>n</sup></label>
+<button class="btn" onclick="check('s8q1','b','s8q1fb',10)">Check Answer</button>
+<div id="s8q1fb" class="feedback"></div>
+</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(7)">&larr; Back</button>
+<button class="nav-btn next" onclick="goTo(9)">Homework 2 Walkthrough &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 9: HW2 WALKTHROUGH ===================== -->
+<div class="section" id="sec9">
+<h1>Homework 2 Walkthrough</h1>
+<p><strong>Due: Wednesday April 15 (TODAY!)</strong> These are the types of problems and how to solve them.</p>
+
+<h2>Problem Type 1: Prove &Theta;-notation</h2>
+<p>Given f(n) = 3n&sup2; - 8n + 4, prove f(n) = &Theta;(n&sup2;).</p>
+<div class="example"><strong>Strategy:</strong>
+1. Identify dominant term → n²
+2. Upper bound: drop negatives, promote positives
+   3n² - 8n + 4 ≤ 3n² + 4 ≤ 3n² + 4n² = 7n²
+   c₂ = 7, N = 1
+
+3. Lower bound: drop positives, absorb negatives
+   3n² - 8n + 4 ≥ 3n² - 8n ≥ 2n² + (n² - 8n) ≥ 2n² when n ≥ 8
+   c₁ = 2, N = 8
+
+4. Conclusion: 2n² ≤ f(n) ≤ 7n² for n ≥ 8, so f(n) = Θ(n²)</div>
+
+<h3>Practice: f(n) = (n&sup2; + 2n - 5)/(n - 10)</h3>
+<div class="example"><strong>Hint:</strong> For large n, this is approximately n²/n = n.
+Actually: (n² + 2n - 5)/(n - 10)
+
+Long division or factor:
+For n ≥ 20: n-10 ≥ n/2, so 1/(n-10) ≤ 2/n
+Upper: (n²+2n-5)/(n-10) ≤ (n²+2n)/(n-10)
+For n≥20: ≤ (n²+2n)/(n/2) = 2n+4 ≤ 6n
+So O(n) with c₂=6, N=20
+
+Lower: (n²+2n-5)/(n-10) ≥ n²/(n-10) - 5/(n-10)
+For n≥20: ≥ n²/(2n) = n/2
+So Ω(n) with c₁=1/2, N=20
+
+Therefore: Θ(n)</div>
+
+<h2>Problem Type 2: Combining Runtime Bounds</h2>
+<p>Given T&sub1;(n) = &Theta;(n&sup2;.&sup5;), T&sub2;(n) = O(n log n), etc.</p>
+
+<div class="example"><strong>Key Rules:</strong>
+• Adding: f + g → keep the BIGGER one
+  Θ(n²) + Θ(n) = Θ(n²)
+
+• If BOTH are Θ: Θ(f) + Θ(g) = Θ(max(f,g))
+• If one is O: you can only get O for the sum
+• If one is Ω: you can only get Ω for the sum
+
+<strong>Example:</strong> T₁(n) = Θ(n^2.5) + T₂(n) = O(n log n)
+Sum: T₁ dominates → Θ(n^2.5)
+(Because Θ(n^2.5) is bigger than O(n log n), and Θ gives exact bound)
+
+<strong>Multiplication:</strong> Θ(f) × Θ(g) = Θ(f·g)
+But Θ(f) × O(g) = O(f·g)  (can only get upper bound)</div>
+
+<h2>Problem Type 3: Best/Worst Case of Code</h2>
+<div class="example"><strong>Strategy:</strong>
+1. Identify: are there early exits, if-statements, or while loops?
+2. If YES → best and worst case may differ
+3. If NO (just for loops) → only one case
+
+<strong>Best case:</strong> What input makes code finish FASTEST?
+<strong>Worst case:</strong> What input makes code take LONGEST?
+
+For kth_largest (nested for loops, no early exit):
+Both best and worst = Θ(n²)</div>
+
+<h2>Problem Type 4: Expected Time</h2>
+<div class="example"><strong>Template:</strong>
+1. List all cases and their probabilities
+2. Find time for each case
+3. E[T(n)] = Σ P(case) × T(case)
+4. Simplify: keep dominant term
+
+<strong>For baz(n):</strong>
+x = random integer 0 to n-1
+Inner loops: for i in range(x), for j in range(i) → Θ(x²)
+
+E[T(n)] = (1/n) × Σ_{x=0}^{n-1} x²
+        = (1/n) × n(n-1)(2n-1)/6  [sum of squares formula]
+        = Θ(n²)</div>
+
+<h2>Problem Type 5: Theoretical Lower Bounds</h2>
+<div class="example"><strong>Strategy:</strong> Ask "what is the MINIMUM work ANY algorithm must do?"
+
+Example: Given n Trues/Falses, which is more common?
+→ Ω(n) because you must check every element.
+   If you skip even one, it could change the answer!
+
+Example: Sort n integers between 1-100.
+→ Ω(n) because you must read all n numbers.
+   (Comparison sorts need Ω(n log n), but since values
+    are bounded 1-100, counting sort achieves Θ(n)!)
+
+Example: Find max in √n × n array with sorted rows.
+→ Ω(√n) because you must check the last element of
+   each of the √n rows (each row's max is its last element).</div>
+
+<div class="exam-tip">For lower bound arguments, think about what information you MUST gather. If you need to see every element, it's &Omega;(n). If you can skip some, think about the minimum you must see.</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(8)">&larr; Back</button>
+<button class="nav-btn next" onclick="goTo(10)">Practice Exam &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 10: PRACTICE EXAM ===================== -->
+<div class="section" id="sec10">
+<h1>Practice Exam (20 Questions)</h1>
+<p>Time yourself! Try to finish in 50 minutes. Check answers AFTER attempting each one.</p>
+
+<div class="quiz-box">
+<h3>PE-1: What is an algorithm? (5 pts)</h3>
+<label><input type="radio" name="pe1" value="a"> A programming language</label>
+<label><input type="radio" name="pe1" value="b"> A step-by-step procedure to solve a problem</label>
+<label><input type="radio" name="pe1" value="c"> A type of data structure</label>
+<button class="btn" onclick="check('pe1','b','pe1fb',5)">Check</button>
+<div id="pe1fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-2: What are the 3 steps to prove a loop invariant? (5 pts)</h3>
+<label><input type="radio" name="pe2" value="a"> Design, Code, Test</label>
+<label><input type="radio" name="pe2" value="b"> Initialize, Maintain, Terminate</label>
+<label><input type="radio" name="pe2" value="c"> Input, Process, Output</label>
+<button class="btn" onclick="check('pe2','b','pe2fb',5)">Check</button>
+<div id="pe2fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-3: sum([x, y]) where x and y are single numbers is: (5 pts)</h3>
+<label><input type="radio" name="pe3" value="a"> &Theta;(n)</label>
+<label><input type="radio" name="pe3" value="b"> &Theta;(1) &mdash; constant time</label>
+<label><input type="radio" name="pe3" value="c"> &Theta;(n&sup2;)</label>
+<button class="btn" onclick="check('pe3','b','pe3fb',5)">Check</button>
+<div id="pe3fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-4: sum(arr) where arr has n elements is: (5 pts)</h3>
+<label><input type="radio" name="pe4" value="a"> &Theta;(1)</label>
+<label><input type="radio" name="pe4" value="b"> &Theta;(n)</label>
+<label><input type="radio" name="pe4" value="c"> &Theta;(n&sup2;)</label>
+<button class="btn" onclick="check('pe4','b','pe4fb',5)">Check</button>
+<div id="pe4fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-5: 1 + 2 + 3 + ... + n = ? (5 pts)</h3>
+<label><input type="radio" name="pe5" value="a"> n&sup2;</label>
+<label><input type="radio" name="pe5" value="b"> n(n+1)/2</label>
+<label><input type="radio" name="pe5" value="c"> 2<sup>n</sup></label>
+<button class="btn" onclick="check('pe5','b','pe5fb',5)">Check</button>
+<div id="pe5fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-6: 7n&sup3; + 2n&sup2; - 5n + 100 = &Theta;(?) (5 pts)</h3>
+<label><input type="radio" name="pe6" value="a"> &Theta;(n&sup2;)</label>
+<label><input type="radio" name="pe6" value="b"> &Theta;(n&sup3;)</label>
+<label><input type="radio" name="pe6" value="c"> &Theta;(7n&sup3;)</label>
+<button class="btn" onclick="check('pe6','b','pe6fb',5)">Check</button>
+<div id="pe6fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-7: If f = &Theta;(n&sup2;), is f = O(n&sup3;) true? (5 pts)</h3>
+<label><input type="radio" name="pe7" value="a"> Yes &mdash; looser upper bound is valid</label>
+<label><input type="radio" name="pe7" value="b"> No &mdash; O must match exactly</label>
+<button class="btn" onclick="check('pe7','a','pe7fb',5)">Check</button>
+<div id="pe7fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-8: If f = &Theta;(n&sup2;), is f = &Omega;(n&sup3;) true? (5 pts)</h3>
+<label><input type="radio" name="pe8" value="a"> Yes</label>
+<label><input type="radio" name="pe8" value="b"> No &mdash; n&sup3; is too big to be a lower bound for n&sup2;</label>
+<button class="btn" onclick="check('pe8','b','pe8fb',5)">Check</button>
+<div id="pe8fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-9: Best case of insertion sort? (5 pts)</h3>
+<label><input type="radio" name="pe9" value="a"> &Theta;(1)</label>
+<label><input type="radio" name="pe9" value="b"> &Theta;(n)</label>
+<label><input type="radio" name="pe9" value="c"> &Theta;(n&sup2;)</label>
+<button class="btn" onclick="check('pe9','b','pe9fb',5)">Check</button>
+<div id="pe9fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-10: Worst case of insertion sort? (5 pts)</h3>
+<label><input type="radio" name="pe10" value="a"> &Theta;(n)</label>
+<label><input type="radio" name="pe10" value="b"> &Theta;(n log n)</label>
+<label><input type="radio" name="pe10" value="c"> &Theta;(n&sup2;)</label>
+<button class="btn" onclick="check('pe10','c','pe10fb',5)">Check</button>
+<div id="pe10fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-11: Selection sort is always: (5 pts)</h3>
+<label><input type="radio" name="pe11" value="a"> &Theta;(n)</label>
+<label><input type="radio" name="pe11" value="b"> &Theta;(n&sup2;)</label>
+<label><input type="radio" name="pe11" value="c"> &Theta;(n log n)</label>
+<button class="btn" onclick="check('pe11','b','pe11fb',5)">Check</button>
+<div id="pe11fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-12: log&sub2;(a<sup>k</sup>) = ? (5 pts)</h3>
+<label><input type="radio" name="pe12" value="a"> a &middot; log&sub2;(k)</label>
+<label><input type="radio" name="pe12" value="b"> k &middot; log&sub2;(a)</label>
+<label><input type="radio" name="pe12" value="c"> log&sub2;(a) + log&sub2;(k)</label>
+<button class="btn" onclick="check('pe12','b','pe12fb',5)">Check</button>
+<div id="pe12fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-13: &Theta;(n&sup2;) + &Theta;(n) = ? (5 pts)</h3>
+<label><input type="radio" name="pe13" value="a"> &Theta;(n&sup3;)</label>
+<label><input type="radio" name="pe13" value="b"> &Theta;(n&sup2;)</label>
+<label><input type="radio" name="pe13" value="c"> &Theta;(n&sup2; + n)</label>
+<button class="btn" onclick="check('pe13','b','pe13fb',5)">Check</button>
+<div id="pe13fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-14: &Theta;(n) &times; &Theta;(n) = ? (5 pts)</h3>
+<label><input type="radio" name="pe14" value="a"> &Theta;(n)</label>
+<label><input type="radio" name="pe14" value="b"> &Theta;(2n)</label>
+<label><input type="radio" name="pe14" value="c"> &Theta;(n&sup2;)</label>
+<button class="btn" onclick="check('pe14','c','pe14fb',5)">Check</button>
+<div id="pe14fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-15: TRUE or FALSE: &Theta;(n&sup2;) always beats &Theta;(n&sup3;) at n=100 (5 pts)</h3>
+<label><input type="radio" name="pe15" value="a"> TRUE</label>
+<label><input type="radio" name="pe15" value="b"> FALSE &mdash; constants matter at specific n</label>
+<button class="btn" onclick="check('pe15','b','pe15fb',5)">Check</button>
+<div id="pe15fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-16: Coin flip: heads &rarr; &Theta;(n), tails &rarr; &Theta;(n&sup2;). Expected time? (5 pts)</h3>
+<label><input type="radio" name="pe16" value="a"> &Theta;(n)</label>
+<label><input type="radio" name="pe16" value="b"> &Theta;(n&sup2;)</label>
+<label><input type="radio" name="pe16" value="c"> &Theta;(n&sup1;.&sup5;)</label>
+<button class="btn" onclick="check('pe16','b','pe16fb',5)">Check</button>
+<div id="pe16fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-17: Best case of linear_search? (5 pts)</h3>
+<label><input type="radio" name="pe17" value="a"> &Theta;(1)</label>
+<label><input type="radio" name="pe17" value="b"> &Theta;(n)</label>
+<label><input type="radio" name="pe17" value="c"> &Theta;(log n)</label>
+<button class="btn" onclick="check('pe17','a','pe17fb',5)">Check</button>
+<div id="pe17fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-18: Lower bound to find if True or False is more common in n items? (5 pts)</h3>
+<label><input type="radio" name="pe18" value="a"> &Omega;(1)</label>
+<label><input type="radio" name="pe18" value="b"> &Omega;(log n)</label>
+<label><input type="radio" name="pe18" value="c"> &Omega;(n)</label>
+<button class="btn" onclick="check('pe18','c','pe18fb',5)">Check</button>
+<div id="pe18fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-19: What does the "N" in the &Theta; definition represent? (5 pts)</h3>
+<label><input type="radio" name="pe19" value="a"> The input size</label>
+<label><input type="radio" name="pe19" value="b"> The threshold after which the inequality holds for all larger n</label>
+<label><input type="radio" name="pe19" value="c"> The number of operations</label>
+<button class="btn" onclick="check('pe19','b','pe19fb',5)">Check</button>
+<div id="pe19fb" class="feedback"></div>
+</div>
+
+<div class="quiz-box">
+<h3>PE-20: If f=&Omega;(n&sup5;) and f=O(n&sup7;), must f be &Theta;(n&sup5;), &Theta;(n&sup6;), or &Theta;(n&sup7;)? (5 pts)</h3>
+<label><input type="radio" name="pe20" value="a"> Yes, one of those must be true</label>
+<label><input type="radio" name="pe20" value="b"> No &mdash; f could be any growth rate between n&sup5; and n&sup7;</label>
+<button class="btn" onclick="check('pe20','b','pe20fb',5)">Check</button>
+<div id="pe20fb" class="feedback"></div>
+</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(9)">&larr; Back</button>
+<button class="nav-btn next" onclick="goTo(11)">Quick Reference Sheet &rarr;</button>
+</div>
+</div>
+
+<!-- ===================== SECTION 11: CHEAT SHEET ===================== -->
+<div class="section" id="sec11">
+<h1>Quick Reference &amp; Cheat Sheet</h1>
+<p>Print this page or screenshot it for last-minute review!</p>
+
+<h2>Growth Rate Ladder (Slow to Fast)</h2>
+<table>
+<tr><th>Notation</th><th>Name</th><th>Example Code Pattern</th><th>n=1M time</th></tr>
+<tr><td>&Theta;(1)</td><td>Constant</td><td>arr[0], x+y</td><td>instant</td></tr>
+<tr><td>&Theta;(log n)</td><td>Logarithmic</td><td>binary search</td><td>~20 steps</td></tr>
+<tr><td>&Theta;(n)</td><td>Linear</td><td>single for loop</td><td>1 second</td></tr>
+<tr><td>&Theta;(n log n)</td><td>Linearithmic</td><td>merge sort</td><td>~20 seconds</td></tr>
+<tr><td>&Theta;(n&sup2;)</td><td>Quadratic</td><td>nested for loops</td><td>~12 days</td></tr>
+<tr><td>&Theta;(n&sup3;)</td><td>Cubic</td><td>triple nested loops</td><td>~31,709 years</td></tr>
+</table>
+
+<h2>Key Formulas</h2>
+<div class="formula">1 + 2 + 3 + ... + n = n(n+1)/2</div>
+<div class="formula">1&sup2; + 2&sup2; + ... + n&sup2; = n(n+1)(2n+1)/6</div>
+<div class="formula">log(a<sup>k</sup>) = k &middot; log(a) &nbsp;&nbsp;|&nbsp;&nbsp; log(a&middot;b) = log(a) + log(b)</div>
+
+<h2>Definitions</h2>
+<div class="formula">&Theta;: c&sub1;&middot;g(n) &le; f(n) &le; c&sub2;&middot;g(n) for n &ge; N<br>O: f(n) &le; c&middot;g(n) &nbsp;&nbsp;|&nbsp;&nbsp; &Omega;: c&middot;g(n) &le; f(n)</div>
+
+<h2>Algorithm Complexities</h2>
+<table>
+<tr><th>Algorithm</th><th>Best Case</th><th>Worst Case</th></tr>
+<tr><td>Linear Search</td><td>&Theta;(1)</td><td>&Theta;(n)</td></tr>
+<tr><td>Insertion Sort</td><td>&Theta;(n)</td><td>&Theta;(n&sup2;)</td></tr>
+<tr><td>Selection Sort</td><td>&Theta;(n&sup2;)</td><td>&Theta;(n&sup2;)</td></tr>
+</table>
+
+<h2>Proving &Theta; Cheat Sheet</h2>
+<table>
+<tr><th>For Upper Bound (f &le; c&sub2;&middot;g)</th><th>For Lower Bound (c&sub1;&middot;g &le; f)</th></tr>
+<tr><td>Drop negative terms (makes bigger)</td><td>Drop positive lower-order terms (makes smaller)</td></tr>
+<tr><td>Promote small positives: replace 5 with 5n&sup2;</td><td>Split leading term: 4n&sup2; = 3n&sup2; + n&sup2;</td></tr>
+<tr><td>Add together: 3n&sup2; + 5n&sup2; = 8n&sup2;</td><td>Show leftover &ge; 0: n&sup2;-8n &ge; 0 when n &ge; 8</td></tr>
+</table>
+
+<h2>Expected Time Template</h2>
+<div class="example">E[T(n)] = P(case 1) × T(case 1) + P(case 2) × T(case 2) + ...
+Then simplify: keep only the dominant term.</div>
+
+<h2>Common Traps</h2>
+<p>&bull; <strong>Cannot divide &Theta; by O</strong> &mdash; only do arithmetic when BOTH are &Theta;</p>
+<p>&bull; <strong>&Theta;(n&sup2;) does NOT always beat &Theta;(n&sup3;) at specific n</strong> &mdash; constants matter!</p>
+<p>&bull; <strong>sum([x,y]) = &Theta;(1)</strong> but <strong>sum(arr) = &Theta;(n)</strong></p>
+<p>&bull; <strong>&Omega;(n&sup5;) and O(n&sup7;) does NOT force &Theta; to be n&sup5;, n&sup6;, or n&sup7;</strong></p>
+
+<div class="say-loud">"I know the definitions. I know the formulas. I can prove Theta. I can analyze best/worst case. I am READY for this exam!"</div>
+
+<div class="break-box">You made it through the entire guide! Now go back and redo any quizzes you got wrong. Good luck on the exam, Maxime!</div>
+
+<div class="nav-btn-row">
+<button class="nav-btn prev" onclick="goTo(10)">&larr; Back to Practice Exam</button>
+<button class="nav-btn next" onclick="goTo(0)">Back to Start &rarr;</button>
+</div>
+</div>
+
+</div><!-- end main -->
+</div><!-- end container -->
+
+<script>
+// ========== STATE ==========
+let totalScore = 0;
+let answeredQs = {};
+let sectionsVisited = new Set([0]);
+const TOTAL_SECTIONS = 12;
+const achievements = [];
+
+// ========== NAVIGATION ==========
+function goTo(idx) {
+    document.querySelectorAll('.section').forEach((s,i) => {
+        s.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.nav-item').forEach((n,i) => {
+        n.classList.toggle('active', i === idx);
+    });
+    sectionsVisited.add(idx);
+    updateProgress();
+    window.scrollTo(0,0);
+    document.querySelector('.main').scrollTo(0,0);
+}
+
+// ========== QUIZ CHECKING ==========
+function check(name, correct, fbId, pts) {
+    if (answeredQs[name]) return; // already answered
+    const sel = document.querySelector('input[name="'+name+'"]:checked');
+    if (!sel) return;
+    const fb = document.getElementById(fbId);
+    if (sel.value === correct) {
+        fb.className = 'feedback correct';
+        fb.textContent = 'Correct! +' + pts + ' points!';
+        fb.style.display = 'block';
+        totalScore += pts;
+        answeredQs[name] = true;
+        updateScore();
+        showConfetti();
+        checkAchievements();
+    } else {
+        fb.className = 'feedback wrong';
+        fb.textContent = 'Not quite. Try again! Hint: think about the definitions carefully.';
+        fb.style.display = 'block';
+    }
+}
+
+// ========== SCORE & PROGRESS ==========
+function updateScore() {
+    document.getElementById('score-text').textContent = totalScore + ' points';
+}
+
+function updateProgress() {
+    const pct = Math.round((sectionsVisited.size / TOTAL_SECTIONS) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ========== ACHIEVEMENTS ==========
+function checkAchievements() {
+    const box = document.getElementById('achievements-box');
+    const count = Object.keys(answeredQs).length;
+    let html = '';
+    if (count >= 1 && !achievements.includes('first')) {
+        achievements.push('first');
+    }
+    if (count >= 5 && !achievements.includes('five')) {
+        achievements.push('five');
+    }
+    if (count >= 10 && !achievements.includes('ten')) {
+        achievements.push('ten');
+    }
+    if (count >= 20 && !achievements.includes('master')) {
+        achievements.push('master');
+    }
+    if (totalScore >= 50 && !achievements.includes('fifty')) {
+        achievements.push('fifty');
+    }
+    if (totalScore >= 100 && !achievements.includes('hundred')) {
+        achievements.push('hundred');
+    }
+    if (achievements.includes('first')) html += '<span class="badge">First Answer!</span> ';
+    if (achievements.includes('five')) html += '<span class="badge">5 Correct!</span> ';
+    if (achievements.includes('ten')) html += '<span class="badge">10 Correct!</span> ';
+    if (achievements.includes('fifty')) html += '<span class="badge">50+ Points!</span> ';
+    if (achievements.includes('hundred')) html += '<span class="badge">100+ Points!</span> ';
+    if (achievements.includes('master')) html += '<span class="badge">Exam Ready!</span> ';
+    box.innerHTML = html;
+}
+
+// ========== CONFETTI ==========
+function showConfetti() {
+    const container = document.getElementById('confetti-container');
+    const colors = ['#ffd700','#ff6b6b','#4ecdc4','#45b7d1','#96ceb4','#ff9ff3','#6b4c9a'];
+    for (let i = 0; i < 30; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = Math.random() * 0.5 + 's';
+        piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        piece.style.width = (Math.random() * 8 + 6) + 'px';
+        piece.style.height = (Math.random() * 8 + 6) + 'px';
+        container.appendChild(piece);
+        setTimeout(() => piece.remove(), 3000);
+    }
+}
+
+// Initialize
+updateProgress();
+</script>
+</body>
+</html>
