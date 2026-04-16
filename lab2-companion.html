@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSC 152 Quiz 1 Study Companion</title>
+<style>
+:root {
+  --bg-main:#0b0e14; --bg-card:#141821; --bg-surface:#1c2030;
+  --accent-blue:#818cf8; --accent-purple:#c084fc; --accent-green:#4ade80;
+  --accent-red:#f87171; --accent-orange:#fb923c; --accent-yellow:#fbbf24; --accent-cyan:#22d3ee;
+  --text-primary:#e2e8f0; --text-secondary:#94a3b8; --border:#2d3548;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg-main);color:var(--text-primary);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.7}
+.progress-sticky{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:12px}
+.progress-track{flex:1;height:5px;background:var(--bg-surface);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#818cf8,#c084fc);width:0%;transition:width .3s;border-radius:3px}
+.xp-badge,.streak-badge{font-size:13px;font-weight:700;padding:4px 10px;background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;white-space:nowrap}
+.xp-badge{color:#818cf8} .streak-badge{color:#fb923c}
+.phase-tabs{display:flex;gap:6px;padding:12px 16px;background:var(--bg-card);border-bottom:1px solid var(--border);flex-wrap:wrap;overflow-x:auto}
+.phase-tab{padding:8px 14px;background:var(--bg-surface);border:1px solid var(--border);border-radius:20px;color:var(--text-secondary);cursor:pointer;font-weight:600;font-size:13px;transition:all .2s}
+.phase-tab:hover{border-color:#818cf8;color:var(--text-primary)} .phase-tab.active{background:#818cf8;color:#fff;border-color:#818cf8}
+.phase{display:none;padding:20px;max-width:920px;margin:0 auto} .phase.active{display:block}
+.level-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.level-head{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--bg-surface);border-bottom:1px solid var(--border)}
+.level-num{min-width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#818cf8;font-weight:700;font-size:15px;color:#fff}
+.level-num.completed{background:#22c55e} .level-num.completed::after{content:'\2713';font-size:12px;margin-left:2px}
+.level-title{flex:1;font-weight:600;font-size:15px;color:var(--text-primary)}
+.level-xp{font-size:12px;color:#4ade80;font-weight:700;background:rgba(34,197,94,.15);padding:3px 8px;border-radius:4px}
+.level-body{padding:16px} .level-body p{margin-bottom:10px} .level-body h4{color:#c084fc;margin:18px 0 8px;font-size:15px}
+.r-box{border-left:4px solid #22d3ee;background:#0c1a24;border-radius:8px;padding:16px;margin:14px 0;color:#cffafe}
+.r-box .box-label{color:#22d3ee;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.biz-box{border-left:4px solid #818cf8;background:#12152b;border-radius:8px;padding:16px;margin:14px 0;color:#c7d2fe}
+.biz-box .box-label{color:#818cf8;font-weight:700;font-size:13px;margin-bottom:6px}
+.concept-box{border-left:4px solid #c084fc;background:#1a0f2e;border-radius:8px;padding:16px;margin:14px 0;color:#e9d5ff}
+.concept-box .box-label{color:#c084fc;font-weight:700;font-size:13px;margin-bottom:6px}
+.analogy-box{border-left:4px solid #4ade80;background:#0a1f12;border-radius:8px;padding:16px;margin:14px 0;color:#bbf7d0}
+.analogy-box .box-label{color:#4ade80;font-weight:700;font-size:13px;margin-bottom:6px}
+.warn-box{border-left:4px solid #f87171;background:#1f0a0e;border-radius:8px;padding:16px;margin:14px 0;color:#fecaca}
+.warn-box .box-label{color:#f87171;font-weight:700;font-size:13px;margin-bottom:6px}
+.formula-box{border-left:4px solid #fbbf24;background:#1a1505;border-radius:8px;padding:16px;margin:14px 0;color:#fef3c7}
+.formula-box .box-label{color:#fbbf24;font-weight:700;font-size:13px;margin-bottom:6px}
+pre.code-block{background:#080b12;border:1px solid #1e293b;border-radius:8px;padding:14px;margin:10px 0;overflow-x:auto;font-family:'SF Mono',Consolas,'Courier New',monospace;font-size:13.5px;line-height:1.6;color:#e2e8f0}
+pre.code-block .kw{color:#c084fc} pre.code-block .fn{color:#818cf8} pre.code-block .str{color:#4ade80}
+pre.code-block .num{color:#fb923c} pre.code-block .cm{color:#64748b;font-style:italic} pre.code-block .op{color:#f87171}
+.code-line-explain{background:#0f1520;border:1px solid #1e293b;border-radius:6px;padding:10px 14px;margin:4px 0 10px;font-size:13px;color:#94a3b8}
+.code-line-explain code{color:#e2e8f0;background:#1a2030;padding:1px 5px;border-radius:3px;font-family:'SF Mono',Consolas,monospace;font-size:12.5px}
+.quiz-box{background:#101828;border:1px solid #293548;border-radius:8px;padding:16px;margin:16px 0}
+.quiz-q{font-weight:600;margin-bottom:10px;font-size:14.5px;color:#e2e8f0}
+.quiz-opt{background:#0c1322;border:2px solid #253044;border-radius:6px;padding:11px 14px;margin:6px 0;cursor:pointer;transition:all .2s;color:#cbd5e1;font-size:14px}
+.quiz-opt:hover{border-color:#818cf8;background:#111d30;color:#e2e8f0}
+.quiz-opt.correct{border-color:#22c55e;background:#0a1f12;color:#4ade80}
+.quiz-opt.incorrect{border-color:#ef4444;background:#1f0a0e;color:#f87171;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.quiz-result{margin-top:10px;font-weight:600;font-size:13.5px;min-height:20px}
+.quiz-result.show-correct{color:#4ade80} .quiz-result.show-incorrect{color:#f87171}
+.step-btn{background:#6366f1;color:#fff;border:none;padding:10px 16px;border-radius:6px;font-weight:700;font-size:13.5px;cursor:pointer;transition:all .2s;margin:10px 0;display:inline-block}
+.step-btn:hover{background:#5558d8;transform:translateY(-1px);box-shadow:0 4px 12px rgba(99,102,241,.3)}
+.step-content{display:none;animation:slideDown .3s forwards} .step-content.visible{display:block}
+@keyframes slideDown{from{opacity:0;max-height:0}to{opacity:1;max-height:2000px}}
+.confetti-piece{position:fixed;z-index:999;pointer-events:none;animation:confettiFall 1.5s ease-out forwards}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+.achievement-popup{position:fixed;bottom:24px;right:24px;z-index:200;background:#1a1d27;border:2px solid #fbbf24;border-radius:12px;padding:16px 20px;box-shadow:0 8px 30px rgba(0,0,0,.5);animation:popIn .4s ease;color:#fef3c7}
+@keyframes popIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.complete-btn{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;display:block;margin:16px auto;transition:all .2s}
+.complete-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(34,197,94,.3)}
+table{color:inherit}
+@media(max-width:640px){.phase-tabs{gap:4px;padding:8px}.phase-tab{padding:6px 10px;font-size:11px}.phase{padding:12px}pre.code-block{font-size:12px;padding:10px}}
+</style>
+</head>
+<body>
+<div class="progress-sticky">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="xp-badge" id="xpDisplay">0 XP</div>
+  <div class="streak-badge" id="streakDisplay">0</div>
+</div>
+<div class="phase-tabs">
+  <div class="phase-tab active" data-phase="lec12" onclick="showPhase('lec12')">Lec 1-2</div>
+  <div class="phase-tab" data-phase="lec345" onclick="showPhase('lec345')">Lec 3-5</div>
+  <div class="phase-tab" data-phase="labs" onclick="showPhase('labs')">Labs</div>
+  <div class="phase-tab" data-phase="pquiz" onclick="showPhase('pquiz')">Practice Quiz</div>
+  <div class="phase-tab" data-phase="cheat" onclick="showPhase('cheat')">Cheat Sheet</div>
+</div>
+
+<div class="phase active" id="lec12-phase"><div class="level-card" id="level-r-basics">
+<div class="level-head"><div class="level-num">1</div><div class="level-title">R Essentials You Need First</div><div class="level-xp">+30 XP</div></div>
+<div class="level-body">
+<p>Before stats, you need R. DSC 152 uses R for everything. Let's build your foundation.</p>
+
+<div class="r-box"><div class="box-label">R Code: Creating vectors with c()</div><pre class="code-block"><span class=<span class="str">"cm"</span>># <span class="fn">c</span>() combines values into a vector</span>
+sleep <span class="op">&lt;-</span> <span class="fn">c</span>(<span class="num">3</span>, <span class="num">7</span>, <span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>)
+wait_times <span class="op">&lt;-</span> <span class="fn">c</span>(<span class="num">18.2</span>, <span class="num">24.5</span>, <span class="num">15.9</span>, <span class="num">30.1</span>, <span class="num">22.7</span>)</pre></div>
+<div class="code-line-explain"><code>c()</code> stands for "combine." The <code>&lt;-</code> arrow is R assignment (like <code>=</code> in Python).</div>
+<button class="step-btn" onclick="revealNext(this)">Show me basic R functions</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: Summary functions you MUST know</div><pre class="code-block">x <span class="op">&lt;-</span> <span class="fn">c</span>(<span class="num">3</span>, <span class="num">7</span>, <span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>)
+<span class="fn">mean</span>(x)       <span class=<span class="str">"cm"</span>># average = <span class="num">3</span></span>
+<span class="fn">sd</span>(x)         <span class=<span class="str">"cm"</span>># standard deviation = <span class="num">2.345</span></span>
+<span class="fn">sum</span>(x)        <span class=<span class="str">"cm"</span>># total = <span class="num">15</span></span>
+<span class="fn">length</span>(x)     <span class=<span class="str">"cm"</span>># count = <span class="num">5</span></span>
+<span class="fn">summary</span>(x)    <span class=<span class="str">"cm"</span>># Min, Q1, Median, Mean, Q3, Max</span></pre></div></div>
+<button class="step-btn" onclick="revealNext(this)">Show me for-loops in R</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: The loop pattern used in every simulation</div><pre class="code-block">count <span class="op">&lt;-</span> <span class="num">0</span>
+<span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:<span class="num">1000</span>){{
+  count <span class="op">&lt;-</span> count + <span class="num">1</span>
+}}
+<span class=<span class="str">"cm"</span>># count is now <span class="num">1000</span></span>
+<span class=<span class="str">"cm"</span>># <span class="num">1</span>:N creates sequence <span class="num">1</span>, <span class="num">2</span>, ..., N</span></pre></div>
+<div class="code-line-explain">R uses curly braces for blocks. <code>1:N</code> creates a range. This pattern is the backbone of every DSC 152 simulation.</div></div>
+<button class="step-btn" onclick="revealNext(this)">Show me set.seed()</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: Reproducibility</div><pre class="code-block"><span class="fn">set.seed</span>(<span class="num">152</span>)
+<span class="fn">rnorm</span>(<span class="num">3</span>, mean=<span class="num">0</span>, sd=<span class="num">1</span>)
+<span class=<span class="str">"cm"</span>># Always gives the same <span class="num">3</span> numbers</span>
+<span class=<span class="str">"cm"</span>># Labs use <span class="fn">set.seed</span>() so autograder matches your output!</span></pre></div></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">In R, which operator is used for assignment?</div>
+<div class="quiz-opt" data-i="0">=</div>
+<div class="quiz-opt" data-i="1"><-</div>
+<div class="quiz-opt" data-i="2">:=</div>
+<div class="quiz-opt" data-i="3">==</div>
+<div class="quiz-result" data-explain="R uses <- for assignment."></div>
+</div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">What does c(1, 2, 3) create in R?</div>
+<div class="quiz-opt" data-i="0">A 1x3 matrix</div>
+<div class="quiz-opt" data-i="1">A vector with values 1, 2, 3</div>
+<div class="quiz-opt" data-i="2">The sum 1+2+3</div>
+<div class="quiz-opt" data-i="3">A counter</div>
+<div class="quiz-result" data-explain="c() combines values into a vector."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('r-basics',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-hyp-test">
+<div class="level-head"><div class="level-num">2</div><div class="level-title">What Is Hypothesis Testing?</div><div class="level-xp">+30 XP</div></div>
+<div class="level-body">
+<p>Airport claims average TSA wait = 20 min. Travelers say it's longer. How do you settle this?</p>
+
+<div class="concept-box"><div class="box-label">Two Competing Claims</div><p><b>Null Hypothesis H<sub>0</sub></b>: The status quo. "Mean wait time IS 20 minutes."</p>
+<p><b>Alternative Hypothesis H<sub>A</sub></b>: "Mean wait time is NOT 20 minutes."</p>
+<p>This is a <b>two-sided</b> test (could be higher OR lower).</p></div>
+<button class="step-btn" onclick="revealNext(this)">What does the p-value REALLY mean?</button>
+<div class="step-content"><div class="concept-box"><div class="box-label">The p-value</div><p>P(test statistic as extreme as observed | H<sub>0</sub> true)</p>
+<p><b>It is NOT:</b></p>
+<p>x P(H<sub>0</sub> is true)</p>
+<p>x P(H<sub>A</sub> is true)</p>
+<p>x The probability of making a Type I Error (that's α)</p></div></div>
+<button class="step-btn" onclick="revealNext(this)">The decision rule</button>
+<div class="step-content"><div class="formula-box"><div class="box-label">Decision Rule with α</div><p>Pick α (usually 0.05) BEFORE looking at data.</p>
+<p>If p-value &lt; α then <b>Reject H<sub>0</sub></b></p>
+<p>If p-value ≥ α then <b>Fail to reject H<sub>0</sub></b></p>
+<p>"Fail to reject" ≠ "H<sub>0</sub> is true." Just means not enough evidence.</p></div></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">Colleague says p-value = 0.70 means '70% chance the true mean is 20.' Correct?</div>
+<div class="quiz-opt" data-i="0">Yes, the p-value is P(H<sub>0</sub> true)</div>
+<div class="quiz-opt" data-i="1">No -- p-value is P(data this extreme | H<sub>0</sub> true)</div>
+<div class="quiz-opt" data-i="2">No -- p-value is P(H<sub>A</sub> true)</div>
+<div class="quiz-opt" data-i="3">No -- p-value gives P(Type I Error)</div>
+<div class="quiz-result" data-explain="Practice Quiz Q1c! The p-value is about the DATA, not the hypothesis."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('hyp-test',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-t-test-r">
+<div class="level-head"><div class="level-num">3</div><div class="level-title">Running a t-test in R -- Line by Line</div><div class="level-xp">+35 XP</div></div>
+<div class="level-body">
+<p>The one-sample t-test is the workhorse of DSC 152. You MUST write <code>t.test()</code> from memory.</p>
+
+<div class="r-box"><div class="box-label">R Code: Basic t-test</div><pre class="code-block"><span class=<span class="str">"cm"</span>># Test H0: mu = <span class="num">20</span> vs Ha: mu != <span class="num">20</span></span>
+tsa_waits <span class="op">&lt;-</span> <span class="fn">c</span>(<span class="num">18.2</span>, <span class="num">24.5</span>, <span class="num">15.9</span>, <span class="num">30.1</span>, <span class="num">22.7</span>, <span class="num">11.3</span>, <span class="num">28.4</span>, <span class="num">19.6</span>)
+<span class="fn">t.test</span>(tsa_waits, mu = <span class="num">20</span>)</pre></div>
+<div class="code-line-explain">Two arguments: (1) data vector, (2) <code>mu = </code> the value from H<sub>0</sub>. One line!</div>
+<button class="step-btn" onclick="revealNext(this)">Extracting pieces with $</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: Practice Quiz Q1b: get just the p-value</div><pre class="code-block"><span class=<span class="str">"cm"</span>># Full output:</span>
+<span class="fn">t.test</span>(tsa$wait_min, mu = <span class="num">20</span>)
+
+<span class=<span class="str">"cm"</span>># Just the p-value:</span>
+<span class="fn">t.test</span>(tsa$wait_min, mu = <span class="num">20</span>)$p.value
+
+<span class=<span class="str">"cm"</span>># Just the confidence interval:</span>
+<span class="fn">t.test</span>(tsa$wait_min, mu = <span class="num">20</span>)$conf.int
+
+<span class=<span class="str">"cm"</span>># Store result then extract:</span>
+result <span class="op">&lt;-</span> <span class="fn">t.test</span>(tsa$wait_min, mu = <span class="num">20</span>)
+result$p.value
+result$conf.int
+result$statistic  <span class=<span class="str">"cm"</span>># the t-statistic</span></pre></div>
+<div class="code-line-explain">The <code>$</code> operator extracts a piece. Practice Quiz Q1b answer: <code>t.test(tsa$wait_min, mu = 20)</code></div></div>
+<button class="step-btn" onclick="revealNext(this)">One-sided tests</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: alternative = argument</div><pre class="code-block"><span class=<span class="str">"cm"</span>># Is true mean GREATER than <span class="num">0</span>? (poker example)</span>
+<span class="fn">t.test</span>(won, alternative = <span class="str">"greater"</span>)
+
+<span class=<span class="str">"cm"</span>># Is true mean LESS than <span class="num">20</span>?</span>
+<span class="fn">t.test</span>(data, mu = <span class="num">20</span>, alternative = <span class="str">"less"</span>)
+
+<span class=<span class="str">"cm"</span>># Default: <span class="str">"two.sided"</span></span></pre></div></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">Which R code runs a t-test on wait_min in the tsa data frame, testing mu = 20?</div>
+<div class="quiz-opt" data-i="0">t.test(tsa, mu = 20)</div>
+<div class="quiz-opt" data-i="1">t.test(tsa$wait_min, mu = 20)</div>
+<div class="quiz-opt" data-i="2">t.test(mu = 20, data = tsa)</div>
+<div class="quiz-opt" data-i="3">ttest(tsa$wait_min, 20)</div>
+<div class="quiz-result" data-explain="Use $ to extract column, then t.test(vector, mu = value)."></div>
+</div>
+<div class="quiz-box" data-answer="2">
+<div class="quiz-q">What does t.test(data, mu = 5)$conf.int return?</div>
+<div class="quiz-opt" data-i="0">The p-value</div>
+<div class="quiz-opt" data-i="1">The t-statistic</div>
+<div class="quiz-opt" data-i="2">The 95% confidence interval</div>
+<div class="quiz-opt" data-i="3">The standard error</div>
+<div class="quiz-result" data-explain="$conf.int gives [lower, upper] bounds of the 95% CI."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('t-test-r',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-errors">
+<div class="level-head"><div class="level-num">4</div><div class="level-title">Type I and Type II Errors</div><div class="level-xp">+30 XP</div></div>
+<div class="level-body">
+<div class="concept-box"><div class="box-label">The Four Outcomes</div><table style="width:100%;border-collapse:collapse;margin:10px 0">
+<tr style="background:#101828"><th style="padding:10px;border:1px solid #293548;color:#94a3b8"></th><th style="padding:10px;border:1px solid #293548;color:#4ade80">H<sub>0</sub> actually TRUE</th><th style="padding:10px;border:1px solid #293548;color:#f87171">H<sub>0</sub> actually FALSE</th></tr>
+<tr><td style="padding:10px;border:1px solid #293548;color:#818cf8;font-weight:700">Reject H<sub>0</sub></td><td style="padding:10px;border:1px solid #293548;background:#1f0a0e;color:#fecaca"><b>Type I Error</b><br>P = α</td><td style="padding:10px;border:1px solid #293548;background:#0a1f12;color:#bbf7d0"><b>Correct! (Power)</b><br>P = 1 - β</td></tr>
+<tr><td style="padding:10px;border:1px solid #293548;color:#818cf8;font-weight:700">Fail to Reject</td><td style="padding:10px;border:1px solid #293548;background:#0a1f12;color:#bbf7d0"><b>Correct!</b><br>P = 1 - α</td><td style="padding:10px;border:1px solid #293548;background:#1f0a0e;color:#fecaca"><b>Type II Error</b><br>P = β</td></tr>
+</table></div>
+<div class="analogy-box"><div class="box-label">Restaurant Analogy</div><p><b>Type I Error</b> = Fire alarm goes off but no fire. Rate = α</p>
+<p><b>Type II Error</b> = Fire exists but alarm stays silent. Rate = β</p>
+<p><b>Power</b> = Fire exists and alarm goes off. Power = 1 - β</p></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">Setting α = 0.05 controls which probability?</div>
+<div class="quiz-opt" data-i="0">P(Type II Error)</div>
+<div class="quiz-opt" data-i="1">P(Type I Error)</div>
+<div class="quiz-opt" data-i="2">P(H<sub>0</sub> is true)</div>
+<div class="quiz-opt" data-i="3">Statistical power</div>
+<div class="quiz-result" data-explain="α = max Type I Error rate we tolerate."></div>
+</div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">Researcher fails to reject H<sub>0</sub> when H<sub>A</sub> is actually true. What error?</div>
+<div class="quiz-opt" data-i="0">Type I Error</div>
+<div class="quiz-opt" data-i="1">Type II Error</div>
+<div class="quiz-opt" data-i="2">No error</div>
+<div class="quiz-opt" data-i="3">Impossible</div>
+<div class="quiz-result" data-explain="Missing a real effect = Type II Error."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('errors',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-t-conditions">
+<div class="level-head"><div class="level-num">5</div><div class="level-title">Two Conditions for the t-test</div><div class="level-xp">+25 XP</div></div>
+<div class="level-body">
+<div class="concept-box"><div class="box-label">Condition 1: Normality</div><p>Data should come from a normal distribution. If data are heavily <b>skewed</b> and n is small, the Type I Error rate gets inflated above α.</p></div>
+<div class="concept-box"><div class="box-label">Condition 2: Independence</div><p>Each observation must be independent. Correlated observations inflate the effective sample size.</p></div>
+<div class="warn-box"><div class="box-label">Practice Quiz Q3a</div><p>n = 5 from a highly right-skewed distribution:</p>
+<p>The actual Type I Error rate may be <b>inflated above 0.05</b></p>
+<p>More false alarms than the α = 0.05 level promises!</p></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">With n=5 from a right-skewed distribution, what happens to Type I Error at alpha=0.05?</div>
+<div class="quiz-opt" data-i="0">Exactly 0.05</div>
+<div class="quiz-opt" data-i="1">May be inflated above 0.05</div>
+<div class="quiz-opt" data-i="2">Deflated below 0.05</div>
+<div class="quiz-opt" data-i="3">Always exactly 0</div>
+<div class="quiz-result" data-explain="Skewed + small n violates normality, inflating Type I Error."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('t-conditions',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-r-random">
+<div class="level-head"><div class="level-num">6</div><div class="level-title">Generating Random Data in R</div><div class="level-xp">+35 XP</div></div>
+<div class="level-body">
+<p>DSC 152 uses simulation constantly. Know these generators.</p>
+
+<div class="r-box"><div class="box-label">R Code: rnorm() -- Normal distribution</div><pre class="code-block"><span class=<span class="str">"cm"</span>># <span class="fn">rnorm</span>(n, mean, sd)</span>
+sleep <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = <span class="num">5</span>, mean = <span class="num">4</span>, sd = <span class="num">1</span>)
+big <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = <span class="num">50000</span>, mean = <span class="num">5.983</span>, sd = <span class="num">1</span>)</pre></div>
+<div class="code-line-explain">Third argument is <b>sd</b> (standard deviation), NOT variance.</div>
+<button class="step-btn" onclick="revealNext(this)">rgamma() and runif()</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: rgamma() -- right-skewed data</div><pre class="code-block"><span class=<span class="str">"cm"</span>># <span class="fn">rgamma</span>(n, shape, scale)</span>
+<span class=<span class="str">"cm"</span>># Mean = shape * scale</span>
+skewed <span class="op">&lt;-</span> <span class="fn">rgamma</span>(n = <span class="num">5</span>, shape = <span class="num">1.2</span>, scale = (<span class="num">20</span> / <span class="num">1.2</span>))
+<span class=<span class="str">"cm"</span>># Mean = <span class="num">1.2</span> * (<span class="num">20</span>/<span class="num">1.2</span>) = <span class="num">20</span></span></pre></div>
+<div class="r-box"><div class="box-label">R Code: runif() -- uniform distribution</div><pre class="code-block"><span class=<span class="str">"cm"</span>># <span class="fn">runif</span>(n, min, max)</span>
+uniform <span class="op">&lt;-</span> <span class="fn">runif</span>(n = <span class="num">5</span>, min = <span class="num">2</span>, max = <span class="num">10</span>)
+<span class=<span class="str">"cm"</span>># Mean = (<span class="num">2</span>+<span class="num">10</span>)/<span class="num">2</span> = <span class="num">6</span></span></pre></div></div>
+<div class="quiz-box" data-answer="0">
+<div class="quiz-q">What does rnorm(n=100, mean=6, sd=2) generate?</div>
+<div class="quiz-opt" data-i="0">100 values from N(6, 2) where sd=2</div>
+<div class="quiz-opt" data-i="1">100 values from N(6, 4) where var=4</div>
+<div class="quiz-opt" data-i="2">A single value</div>
+<div class="quiz-opt" data-i="3">100 values from Uniform(6,2)</div>
+<div class="quiz-result" data-explain="rnorm(n, mean, sd) -- third arg is sd, so these are N(6, sd=2)."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('r-random',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-sim-type1">
+<div class="level-head"><div class="level-num">7</div><div class="level-title">Simulating Type I Error -- The Master Pattern</div><div class="level-xp">+40 XP</div></div>
+<div class="level-body">
+<p>This is one of the most important R patterns for the quiz.</p>
+
+<div class="r-box"><div class="box-label">R Code: Type I Error simulation (Lectures 2-3)</div><pre class="code-block">count <span class="op">&lt;-</span> <span class="num">0</span>
+
+<span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:<span class="num">10000</span>){{
+  <span class=<span class="str">"cm"</span>># Generate data where H0 IS true (mean = <span class="num">20</span>)</span>
+  fake_data <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = <span class="num">5</span>, mean = <span class="num">20</span>, sd = <span class="num">3</span>)
+
+  <span class=<span class="str">"cm"</span>># Run the t-test</span>
+  p.val <span class="op">&lt;-</span> <span class="fn">t.test</span>(fake_data, mu = <span class="num">20</span>)$p.value
+
+  <span class=<span class="str">"cm"</span>># Check <span class="kw">if</span> we (wrongly) reject</span>
+  <span class="kw">if</span>(p.val &lt; <span class="num">0.05</span>){{
+    count <span class="op">&lt;-</span> count + <span class="num">1</span>
+  }}
+}}
+
+TypeI <span class="op">&lt;-</span> count / <span class="num">10000</span>
+<span class=<span class="str">"cm"</span>># Should be approx <span class="num">0.05</span> <span class="kw">if</span> conditions met</span></pre></div>
+<div class="code-line-explain">Key: generate data where H<sub>0</sub> IS TRUE (mean = 20). Each rejection is a false alarm. The fraction = Type I Error rate.</div>
+<button class="step-btn" onclick="revealNext(this)">Practice Quiz Q3b: Fill in the blanks</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: Gamma simulation blanks</div><pre class="code-block">count <span class="op">&lt;-</span> <span class="num">0</span>
+<span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:<span class="num">10000</span>){{
+    skewed_data <span class="op">&lt;-</span> <span class="fn">rgamma</span>(n = <span class="num">5</span>, shape = <span class="num">1.2</span>,
+                                  scale = (<span class="num">20</span> / <span class="num">1.2</span>))
+    p.val <span class="op">&lt;-</span> <span class="fn">t.test</span>(skewed_data,
+                    mu = <span class="num">20</span>)$p.value
+    <span class="kw">if</span>(p.val &lt; <span class="num">0.05</span>){{
+        count <span class="op">&lt;-</span> count + <span class="num">1</span>
+    }}
+}}
+TypeI <span class="op">&lt;-</span> count / <span class="num">10000</span></pre></div>
+<div class="concept-box"><div class="box-label">The blanks answered</div><p><b>(a) = 20</b> -- mu is the null hypothesis value</p>
+<p><b>(b) = p.value</b> -- extract just the p-value</p>
+<p><b>(c) = 0.05</b> -- reject when p &lt; α</p></div></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">In a Type I Error simulation, what mean do you generate data from?</div>
+<div class="quiz-opt" data-i="0">The alternative mean</div>
+<div class="quiz-opt" data-i="1">The null hypothesis mean (μ0)</div>
+<div class="quiz-opt" data-i="2">Any random mean</div>
+<div class="quiz-opt" data-i="3">The sample mean</div>
+<div class="quiz-result" data-explain="Type I Error = false alarm rate when H<sub>0</sub> is true. So generate under H<sub>0</sub>."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('sim-type1',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-bootstrap">
+<div class="level-head"><div class="level-num">8</div><div class="level-title">Bootstrap Confidence Intervals -- R Deep Dive</div><div class="level-xp">+40 XP</div></div>
+<div class="level-body">
+<p>Resample WITH replacement, compute statistic, repeat, use quantiles for CI.</p>
+
+<div class="r-box"><div class="box-label">R Code: Complete Bootstrap CI</div><pre class="code-block">sleep <span class="op">&lt;-</span> <span class="fn">c</span>(<span class="num">3</span>, <span class="num">7</span>, <span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>)
+
+boot_means <span class="op">&lt;-</span> <span class="kw">NA</span>
+<span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:<span class="num">1000</span>){{
+  boot_means[i] <span class="op">&lt;-</span> <span class="fn">mean</span>(<span class="fn">sample</span>(sleep, replace = <span class="kw">TRUE</span>))
+}}
+
+<span class="fn">quantile</span>(boot_means, probs = <span class="fn">c</span>(<span class="num">0.025</span>, <span class="num">0.975</span>))
+<span class=<span class="str">"cm"</span>>##  <span class="num">2.5</span>% <span class="num">97.5</span>%</span>
+<span class=<span class="str">"cm"</span>>## <span class="num">1.600</span> <span class="num">5.005</span></span></pre></div>
+<div class="code-line-explain"><code>sample(sleep, replace=TRUE)</code> draws length(sleep) values WITH replacement. Each resample might repeat some values and skip others.</div>
+<button class="step-btn" onclick="revealNext(this)">Line-by-line breakdown</button>
+<div class="step-content"><div class="code-line-explain"><code>boot_means &lt;- NA</code> -- empty container. Gets filled as loop runs.</div>
+<div class="code-line-explain"><code>sample(sleep, replace=TRUE)</code> -- one bootstrap resample.</div>
+<div class="code-line-explain"><code>mean(...)</code> -- mean of that one resample.</div>
+<div class="code-line-explain"><code>quantile(..., probs=c(0.025, 0.975))</code> -- 2.5th and 97.5th percentiles = 95% CI.</div></div>
+<button class="step-btn" onclick="revealNext(this)">Using CI for hypothesis testing</button>
+<div class="step-content"><div class="concept-box"><div class="box-label">Inverting the Confidence Interval</div><p>If μ<sub>0</sub> is <b>inside</b> the CI -> <b>Fail to reject</b> H<sub>0</sub></p>
+<p>If μ<sub>0</sub> is <b>outside</b> the CI -> <b>Reject</b> H<sub>0</sub></p>
+<p>A 95% CI corresponds to testing at α = 0.05</p></div></div>
+<div class="warn-box"><div class="box-label">Bootstrap is NOT always exact!</div><p>Practice Quiz Q8b: Bootstrap CIs can have inflated or deflated Type I Error, especially for small n.</p></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">What does sample(data, replace = TRUE) do?</div>
+<div class="quiz-opt" data-i="0">Random subset without replacement</div>
+<div class="quiz-opt" data-i="1">Draw values with replacement (same size)</div>
+<div class="quiz-opt" data-i="2">Shuffle in place</div>
+<div class="quiz-opt" data-i="3">Create permutation</div>
+<div class="quiz-result" data-explain="Bootstrap = sample WITH replacement, same size as original."></div>
+</div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">95% bootstrap CI is [15.65, 26.94]. For H<sub>0</sub>: μ = 20, decision at α = 0.05?</div>
+<div class="quiz-opt" data-i="0">Reject -- 20 inside</div>
+<div class="quiz-opt" data-i="1">Fail to reject -- 20 inside</div>
+<div class="quiz-opt" data-i="2">Reject -- 20 outside</div>
+<div class="quiz-opt" data-i="3">Fail to reject -- 20 outside</div>
+<div class="quiz-result" data-explain="20 is inside [15.65, 26.94], so fail to reject."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('bootstrap',this)">Mark Complete</button>
+</div></div></div>
+<div class="phase" id="lec345-phase"><div class="level-card" id="level-sign-test">
+<div class="level-head"><div class="level-num">9</div><div class="level-title">The Sign Test</div><div class="level-xp">+35 XP</div></div>
+<div class="level-body">
+<p>What if data is heavily skewed? The sign test tests the <b>median</b> -- no normality needed.</p>
+
+<div class="concept-box"><div class="box-label">Sign Test vs t-Test</div><p><b>t-test</b>: Tests the <b>mean</b> μ. Requires approx normal data.</p>
+<p><b>Sign test</b>: Tests the <b>median</b> μ̃. Works for ANY distribution.</p></div>
+<button class="step-btn" onclick="revealNext(this)">How it works step by step</button>
+<div class="step-content"><div class="concept-box"><div class="box-label">Algorithm</div><p>1. Subtract μ<sub>0</sub> from each data point</p>
+<p>2. Count + signs and - signs (ignore zeros)</p>
+<p>3. Under H<sub>0</sub>, each sign is a fair coin flip (p = 0.5)</p>
+<p>4. Use Binomial distribution for p-value</p></div>
+<div class="biz-box"><div class="box-label">Practice Quiz Q4b</div><p>Wait times: 13.2, 25.0, 8.7, 31.4, 17.9, 22.3, 9.5. Testing μ̃ = 20.</p>
+<p>Signs: -, +, -, +, -, +, -</p>
+<p>n<sub>+</sub> = 3, n<sub>-</sub> = 4, n = 7</p></div></div>
+<button class="step-btn" onclick="revealNext(this)">Sign test R code</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: sign_test function (Practice Quiz Q5)</div><pre class="code-block">sign_test <span class="op">&lt;-</span> <span class="kw">function</span>(x, mu0 = <span class="num">20</span>){{
+    signs <span class="op">&lt;-</span> x - mu0
+    n_pos <span class="op">&lt;-</span> <span class="fn">sum</span>(signs &gt; <span class="num">0</span>)
+    n_neg <span class="op">&lt;-</span> <span class="fn">sum</span>(signs &lt; <span class="num">0</span>)
+    n <span class="op">&lt;-</span> n_pos + n_neg
+    min_count <span class="op">&lt;-</span> min(n_pos, n_neg)
+    p_val <span class="op">&lt;-</span> <span class="fn">pbinom</span>(min_count, size = n, prob = <span class="num">0.5</span>) * <span class="num">2</span>
+    <span class="kw">return</span>(p_val)
+}}</pre></div>
+<div class="code-line-explain"><code>pbinom(k, size=n, prob=0.5)</code> = P(X ≤ k) for Binomial(n, 0.5). Multiply by 2 for two-sided.</div>
+<div class="r-box"><div class="box-label">R Code: Q4c: Computing the p-value</div><pre class="code-block"><span class=<span class="str">"cm"</span>># n+ = <span class="num">3</span>, n- = <span class="num">4</span>, min(<span class="num">3</span>,<span class="num">4</span>) = <span class="num">3</span>, n = <span class="num">7</span></span>
+<span class="num">2</span> * <span class="fn">pbinom</span>(<span class="num">3</span>, size = <span class="num">7</span>, prob = <span class="num">0.5</span>)
+<span class=<span class="str">"cm"</span>># = <span class="num">1.0</span> (fail to reject)</span></pre></div></div>
+<div class="warn-box"><div class="box-label">Sign test quirk: discrete p-values</div><p>With n=7, the closest achievable α to 0.05 is 0.015625. The Binomial is discrete -- can't hit every α level.</p></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">The sign test tests which parameter?</div>
+<div class="quiz-opt" data-i="0">Mean μ</div>
+<div class="quiz-opt" data-i="1">Median μ̃</div>
+<div class="quiz-opt" data-i="2">Standard deviation σ</div>
+<div class="quiz-opt" data-i="3">Variance</div>
+<div class="quiz-result" data-explain="Sign test = median. t-test = mean. Practice Quiz Q4a."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('sign-test',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-power">
+<div class="level-head"><div class="level-num">10</div><div class="level-title">Statistical Power</div><div class="level-xp">+40 XP</div></div>
+<div class="level-body">
+<div class="formula-box"><div class="box-label">Power = 1 - β</div><p>Power = P(correctly reject H<sub>0</sub> when it's false)</p>
+<p>Depends on: <b>n</b> (sample size), <b>α</b>, <b>σ</b> (SD), <b>δ</b> (effect size)</p>
+<p>Bigger n -> more power. Bigger δ -> more power. Smaller σ -> more power.</p></div>
+<button class="step-btn" onclick="revealNext(this)">power.t.test() in R</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: The built-in power calculator</div><pre class="code-block"><span class=<span class="str">"cm"</span>># Lecture <span class="num">4</span>: sleep example</span>
+power.<span class="fn">t.test</span>(n = <span class="num">5</span>, delta = <span class="num">2</span>, sd = <span class="num">1</span>,
+             sig.level = <span class="num">0.05</span>,
+             type = <span class="str">"one.sample"</span>,
+             alternative = <span class="str">"two.sided"</span>)
+<span class=<span class="str">"cm"</span>>## power = <span class="num">0.9088849</span></span></pre></div>
+<div class="code-line-explain">Leave ONE parameter as NULL and R solves for it.</div>
+<div class="r-box"><div class="box-label">R Code: Finding required sample size (Lab 3)</div><pre class="code-block">result <span class="op">&lt;-</span> power.<span class="fn">t.test</span>(delta = <span class="num">3</span>, sd = <span class="num">45</span>,
+                       sig.level = <span class="num">0.05</span>, power = <span class="num">0.80</span>,
+                       type = <span class="str">"one.sample"</span>)
+n_required <span class="op">&lt;-</span> <span class="fn">ceiling</span>(result$n)
+<span class=<span class="str">"cm"</span>># approx <span class="num">1765</span></span></pre></div></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">power.t.test(n=500, delta=0.25, type='one.sample') gives power ≈ 1.0. What does this mean?</div>
+<div class="quiz-opt" data-i="0">100% chance H<sub>0</sub> is false</div>
+<div class="quiz-opt" data-i="1">Almost certainly detect a 0.25-unit difference with n=500</div>
+<div class="quiz-opt" data-i="2">Test is invalid</div>
+<div class="quiz-opt" data-i="3">Need more data</div>
+<div class="quiz-result" data-explain="Power ≈ 1.0 means we'll almost always reject when δ=0.25 and n=500."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('power',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-sim-power">
+<div class="level-head"><div class="level-num">11</div><div class="level-title">Simulating Power in R</div><div class="level-xp">+40 XP</div></div>
+<div class="level-body">
+<div class="r-box"><div class="box-label">R Code: Power simulation pattern (Practice Quiz Q6)</div><pre class="code-block">sim_power <span class="op">&lt;-</span> <span class="kw">function</span>(n, delta, sd, alpha = <span class="num">0.05</span>, reps = <span class="num">10000</span>){{
+    count <span class="op">&lt;-</span> <span class="num">0</span>
+    <span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:reps){{
+        samp <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = n,
+                      mean = <span class="num">20</span> + delta,  <span class=<span class="str">"cm"</span>># Ha is true!</span>
+                      sd   = sd)
+        pval <span class="op">&lt;-</span> <span class="fn">t.test</span>(samp, mu = <span class="num">20</span>)$p.value
+        <span class="kw">if</span>(pval &lt; alpha){{
+            count <span class="op">&lt;-</span> count + <span class="num">1</span>
+        }}
+    }}
+    <span class="kw">return</span>(count / reps)
+}}</pre></div>
+<div class="code-line-explain">Practice Quiz Q6a blanks: (a)=n, (b)=20+delta, (c)=sd, (d)=pval < alpha, (e)=count/reps</div>
+<div class="warn-box"><div class="box-label">Type I Error sim vs Power sim</div><p><b>Type I Error</b>: mean = μ<sub>0</sub> (H<sub>0</sub> true). Count false rejections.</p>
+<p><b>Power</b>: mean = μ<sub>0</sub> + δ (H<sub>A</sub> true). Count correct rejections.</p>
+<p>The ONLY difference is what mean you generate from!</p></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">In a power simulation, you generate data with mean = μ0 + δ. Why?</div>
+<div class="quiz-opt" data-i="0">Assuming H<sub>0</sub> is true</div>
+<div class="quiz-opt" data-i="1">Seeing how often we correctly reject when H<sub>A</sub> is true</div>
+<div class="quiz-opt" data-i="2">δ is the p-value threshold</div>
+<div class="quiz-opt" data-i="3">Estimating Type I Error</div>
+<div class="quiz-result" data-explain="Power = P(reject | H<sub>A</sub> true). Generate under H<sub>A</sub>."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('sim-power',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-big-data">
+<div class="level-head"><div class="level-num">12</div><div class="level-title">The Big Data Trap</div><div class="level-xp">+35 XP</div></div>
+<div class="level-body">
+<div class="warn-box"><div class="box-label">The Big Data Trap (Lecture 5)</div><p>With large n, tiny meaningless effects become "statistically significant."</p>
+<p><b>Example</b>: n=50,000. x̄=20.3 min. H<sub>0</sub>: μ=20. p=0.0001.</p>
+<p>p says "reject!" but the effect is only 0.3 minutes -- 18 seconds. Who cares?</p></div>
+<div class="concept-box"><div class="box-label">Practice Quiz Q7</div><p>n=50,000. x̄=20.3. s=15. p-value=0.0001.</p>
+<p><b>Q7a</b>: Reject H<sub>0</sub> (0.0001 &lt; 0.05)</p>
+<p><b>Q7b</b>: 0.3-minute difference is operationally meaningless. Big Data Trap.</p></div>
+<button class="step-btn" onclick="revealNext(this)">Why CIs are better here</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: CI shows effect SIZE</div><pre class="code-block"><span class=<span class="str">"cm"</span>># With n = <span class="num">50000</span>, CI would be very narrow:</span>
+<span class=<span class="str">"cm"</span>># Something like [<span class="num">20.17</span>, <span class="num">20.43</span>]</span>
+<span class=<span class="str">"cm"</span>># Shows the effect is tiny!</span>
+<span class="fn">t.test</span>(sleep50k, mu = <span class="num">6</span>)$conf.int
+<span class=<span class="str">"cm"</span>>## [<span class="num">1</span>] <span class="num">5.972078</span> <span class="num">5.989708</span></span></pre></div>
+<div class="concept-box"><div class="box-label">The lesson</div><p>p-value should NOT be the sole metric. Always check:</p>
+<p>1. Confidence interval -- shows range of plausible values</p>
+<p>2. Effect size -- how big in practical terms?</p></div></div>
+<div class="quiz-box" data-answer="2">
+<div class="quiz-q">n=50000, mean=20.3, p=0.0001. Manager says 0.3 min is meaningless. What concept?</div>
+<div class="quiz-opt" data-i="0">Type I Error</div>
+<div class="quiz-opt" data-i="1">Type II Error</div>
+<div class="quiz-opt" data-i="2">The Big Data Trap</div>
+<div class="quiz-opt" data-i="3">CLT</div>
+<div class="quiz-result" data-explain="Large n + tiny effect + small p = Big Data Trap."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('big-data',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-cohens-d">
+<div class="level-head"><div class="level-num">13</div><div class="level-title">Cohen's d -- Standardized Effect Size</div><div class="level-xp">+30 XP</div></div>
+<div class="level-body">
+<div class="formula-box"><div class="box-label">Cohen's d (one-sample)</div><p>d = |x̄ - μ<sub>0</sub>| / s</p>
+<p>d &lt; 0.2 = small, 0.2 ≤ d &lt; 0.8 = medium, d ≥ 0.8 = large</p></div>
+<div class="r-box"><div class="box-label">R Code: Computing in R (Lab 3 Q1.6)</div><pre class="code-block">cohens_d_func <span class="op">&lt;-</span> <span class="kw">function</span>(my_data, mu_0){{
+    s <span class="op">&lt;-</span> <span class="fn">sd</span>(my_data)
+    <span class="kw">if</span>(s == <span class="num">0</span>) <span class="kw">return</span>(<span class="kw">NA</span>)
+    d <span class="op">&lt;-</span> <span class="fn">abs</span>(<span class="fn">mean</span>(my_data) - mu_0) / s
+    <span class="kw">if</span>(d &lt; <span class="num">0.2</span>) cls <span class="op">&lt;-</span> <span class="str">"small"</span>
+    <span class="kw">else</span> <span class="kw">if</span>(d &lt; <span class="num">0.8</span>) cls <span class="op">&lt;-</span> <span class="str">"medium"</span>
+    <span class="kw">else</span> cls <span class="op">&lt;-</span> <span class="str">"large"</span>
+    <span class="kw">return</span>(<span class="fn">c</span>(d, cls))
+}}</pre></div>
+<div class="biz-box"><div class="box-label">Poker example</div><p>Mean win = $0.10/hand, SD = $7.18. d = 0.10/7.18 ≈ 0.014 -- "small."</p>
+<p>But at 300 hands/hr x 6 tables = $30/hr! Context matters.</p></div>
+<div class="quiz-box" data-answer="2">
+<div class="quiz-q">Cohen's d = 0.05. Classification?</div>
+<div class="quiz-opt" data-i="0">Large</div>
+<div class="quiz-opt" data-i="1">Medium</div>
+<div class="quiz-opt" data-i="2">Small</div>
+<div class="quiz-opt" data-i="3">No effect</div>
+<div class="quiz-result" data-explain="d < 0.2 = small."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('cohens-d',this)">Mark Complete</button>
+</div></div></div>
+<div class="phase" id="labs-phase"><div class="level-card" id="level-lab1">
+<div class="level-head"><div class="level-num">14</div><div class="level-title">Lab 1: R + t-test Foundations</div><div class="level-xp">+25 XP</div></div>
+<div class="level-body">
+<div class="r-box"><div class="box-label">R Code: Running your first t-test</div><pre class="code-block"><span class="fn">set.seed</span>(<span class="num">42</span>)
+data <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = <span class="num">30</span>, mean = <span class="num">5</span>, sd = <span class="num">2</span>)
+<span class="fn">t.test</span>(data, mu = <span class="num">5</span>)$p.value</pre></div>
+<div class="r-box"><div class="box-label">R Code: Dataframe columns</div><pre class="code-block"><span class=<span class="str">"cm"</span>># Use $ to extract a column</span>
+<span class="fn">t.test</span>(tsa$wait_min, mu = <span class="num">20</span>)</pre></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">If tsa is a data frame with column wait_min, which runs the t-test?</div>
+<div class="quiz-opt" data-i="0">t.test(tsa, mu=20)</div>
+<div class="quiz-opt" data-i="1">t.test(tsa$wait_min, mu=20)</div>
+<div class="quiz-opt" data-i="2">t.test(wait_min, mu=20)</div>
+<div class="quiz-opt" data-i="3">t.test(tsa[wait_min])</div>
+<div class="quiz-result" data-explain="$ extracts the column as a vector."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('lab1',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-lab2">
+<div class="level-head"><div class="level-num">15</div><div class="level-title">Lab 2: Type I Error and Power Curves</div><div class="level-xp">+35 XP</div></div>
+<div class="level-body">
+<div class="r-box"><div class="box-label">R Code: Bootstrap Type I Error double loop (Lecture 3)</div><pre class="code-block">count <span class="op">&lt;-</span> <span class="num">0</span>
+<span class="kw">for</span>(j <span class="kw">in</span> <span class="num">1</span>:<span class="num">1000</span>){{
+    gam_data <span class="op">&lt;-</span> <span class="fn">rgamma</span>(n = <span class="num">5</span>, shape = <span class="num">1.2</span>, scale = <span class="num">5</span>)
+    boot_means <span class="op">&lt;-</span> <span class="kw">NA</span>
+    <span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:<span class="num">1000</span>){{
+        boot_means[i] <span class="op">&lt;-</span> <span class="fn">mean</span>(<span class="fn">sample</span>(gam_data, replace = <span class="kw">TRUE</span>))
+    }}
+    ci <span class="op">&lt;-</span> <span class="fn">quantile</span>(boot_means, probs = <span class="fn">c</span>(<span class="num">0.025</span>, <span class="num">0.975</span>))
+    <span class="kw">if</span>(ci[<span class="num">1</span>] &gt; <span class="num">6</span> | ci[<span class="num">2</span>] &lt; <span class="num">6</span>){{
+        count <span class="op">&lt;-</span> count + <span class="num">1</span>
+    }}
+}}
+TypeI <span class="op">&lt;-</span> count / <span class="num">1000</span></pre></div>
+<div class="code-line-explain">Outer loop = new dataset each time. Inner loop = bootstrap. Check if μ<sub>0</sub> falls outside CI.</div>
+<button class="step-btn" onclick="revealNext(this)">Power curve function</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: sim_power_t from Lecture 4</div><pre class="code-block">sim_power_t <span class="op">&lt;-</span> <span class="kw">function</span>(n, delta, sd, reps = <span class="num">10000</span>){{
+    count <span class="op">&lt;-</span> <span class="num">0</span>
+    <span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:reps){{
+        sleep <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = n, mean = <span class="num">6</span> - delta, sd = sd)
+        pval <span class="op">&lt;-</span> <span class="fn">t.test</span>(sleep, mu = <span class="num">6</span>)$p.value
+        <span class="kw">if</span>(pval &lt; <span class="num">0.05</span>) count <span class="op">&lt;-</span> count + <span class="num">1</span>
+    }}
+    <span class="kw">return</span>(count / reps)
+}}
+
+sim_power_t(n = <span class="num">5</span>, delta = <span class="num">2</span>, sd = <span class="num">1</span>)
+<span class=<span class="str">"cm"</span>>## ~<span class="num">0.9033</span></span></pre></div></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">Why a double for-loop in the bootstrap Type I Error sim?</div>
+<div class="quiz-opt" data-i="0">One per hypothesis</div>
+<div class="quiz-opt" data-i="1">Outer = new dataset, inner = bootstrap resampling</div>
+<div class="quiz-opt" data-i="2">One for mean, one for SD</div>
+<div class="quiz-opt" data-i="3">Mistake</div>
+<div class="quiz-result" data-explain="Outer generates a new dataset. Inner does bootstrap on that dataset."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('lab2',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-lab3">
+<div class="level-head"><div class="level-num">16</div><div class="level-title">Lab 3 Part 1: Significance vs Effect Size</div><div class="level-xp">+40 XP</div></div>
+<div class="level-body">
+<div class="r-box"><div class="box-label">R Code: Q1.2: Large sample t-test</div><pre class="code-block"><span class="fn">set.seed</span>(<span class="num">123</span>)
+app_large_sample <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = <span class="num">2000</span>, mean = <span class="num">3</span>, sd = <span class="num">45</span>)
+p_val_large_n <span class="op">&lt;-</span> <span class="fn">t.test</span>(app_large_sample, mu = <span class="num">0</span>)$p.value
+ci_large_n <span class="op">&lt;-</span> <span class="fn">t.test</span>(app_large_sample, mu = <span class="num">0</span>)$conf.int</pre></div>
+<button class="step-btn" onclick="revealNext(this)">Small n vs large n</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: Q1.4: Same effect, smaller sample</div><pre class="code-block"><span class="fn">set.seed</span>(<span class="num">123</span>)
+app_small_sample <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = <span class="num">30</span>, mean = <span class="num">3</span>, sd = <span class="num">45</span>)
+p_val_small_n <span class="op">&lt;-</span> <span class="fn">t.test</span>(app_small_sample, mu = <span class="num">0</span>)$p.value
+<span class=<span class="str">"cm"</span>># Large n rejects, small n fails to reject</span>
+<span class=<span class="str">"cm"</span>># Same true effect! Larger n = more power</span></pre></div>
+<div class="concept-box"><div class="box-label">Q1.4.2 answer = 3</div><p>n=2000: SE = 45/√2000 ≈ 1.0 -- precise estimate</p>
+<p>n=30: SE = 45/√30 ≈ 8.2 -- very noisy</p>
+<p>Same effect, but larger n provides stronger evidence against H<sub>0</sub>.</p></div></div>
+<button class="step-btn" onclick="revealNext(this)">power.t.test for planning</button>
+<div class="step-content"><div class="r-box"><div class="box-label">R Code: Q1.5.1: Required n for 80% power</div><pre class="code-block">result <span class="op">&lt;-</span> power.<span class="fn">t.test</span>(delta = <span class="num">3</span>, sd = <span class="num">45</span>,
+                       sig.level = <span class="num">0.05</span>, power = <span class="num">0.80</span>,
+                       type = <span class="str">"one.sample"</span>)
+n_required <span class="op">&lt;-</span> <span class="fn">ceiling</span>(result$n)  <span class=<span class="str">"cm"</span>># approx <span class="num">1765</span></span></pre></div>
+<div class="r-box"><div class="box-label">R Code: Q1.5.2: Power for tiny effect</div><pre class="code-block">result2 <span class="op">&lt;-</span> power.<span class="fn">t.test</span>(n = <span class="num">5000</span>, delta = <span class="num">0.5</span>, sd = <span class="num">45</span>,
+                        sig.level = <span class="num">0.05</span>, type = <span class="str">"one.sample"</span>)
+power_tiny_effect <span class="op">&lt;-</span> result2$power
+<span class=<span class="str">"cm"</span>># Very low! Need ~<span class="num">65</span>,<span class="num">000</span> <span class="kw">for</span> <span class="num">80</span>% power</span>
+<span class=<span class="str">"cm"</span>># Answer = <span class="num">3</span> (reconsider <span class="kw">if</span> 30s matters)</span></pre></div></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">t.test gives p=0.002 with n=2000 but p=0.45 with n=30. Same true effect. Why?</div>
+<div class="quiz-opt" data-i="0">True effect changed</div>
+<div class="quiz-opt" data-i="1">Larger n reduces SE, giving stronger evidence</div>
+<div class="quiz-opt" data-i="2">Different alpha</div>
+<div class="quiz-opt" data-i="3">Different distribution</div>
+<div class="quiz-result" data-explain="Same true delta, but n=2000 has much smaller SE."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('lab3',this)">Mark Complete</button>
+</div></div></div>
+<div class="phase" id="pquiz-phase"><div class="level-card" id="level-pq1">
+<div class="level-head"><div class="level-num">17</div><div class="level-title">Practice Quiz Q1: t-test on TSA Data</div><div class="level-xp">+35 XP</div></div>
+<div class="level-body">
+<div class="concept-box"><div class="box-label">Q1a: Write the hypotheses</div><p><b>H<sub>0</sub>: μ = 20</b> (average wait time is 20 minutes)</p>
+<p><b>H<sub>A</sub>: μ ≠ 20</b> (average wait time differs from 20)</p></div>
+<div class="r-box"><div class="box-label">R Code: Q1b: One line of R for the t-test</div><pre class="code-block"><span class="fn">t.test</span>(tsa$wait_min, mu = <span class="num">20</span>)</pre></div>
+<div class="concept-box"><div class="box-label">Q1c: p-value interpretation</div><p>Colleague says p = 0.70 means "70% chance true mean is 20." <b>WRONG.</b></p>
+<p>Correct: p-value = P(test stat as extreme as observed | H<sub>0</sub> true)</p></div>
+<div class="concept-box"><div class="box-label">Q1d: Two conditions for t-test</div><p>1. <b>Normality</b>: data from normal distribution (matters for small n)</p>
+<p>2. <b>Independence</b>: observations independent of each other</p></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">p-value from t.test is 0.70. Conclusion at α = 0.05?</div>
+<div class="quiz-opt" data-i="0">Reject H<sub>0</sub></div>
+<div class="quiz-opt" data-i="1">Fail to reject H<sub>0</sub></div>
+<div class="quiz-opt" data-i="2">Accept H<sub>0</sub></div>
+<div class="quiz-opt" data-i="3">Invalid test</div>
+<div class="quiz-result" data-explain="0.70 > 0.05 = fail to reject."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('pq1',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-pq2">
+<div class="level-head"><div class="level-num">18</div><div class="level-title">Practice Quiz Q2: Power Concepts</div><div class="level-xp">+30 XP</div></div>
+<div class="level-body">
+<div class="concept-box"><div class="box-label">Q2a: What measures P(correctly reject)?</div><p><b>Statistical Power</b> = P(reject H<sub>0</sub> | H<sub>0</sub> is false)</p></div>
+<div class="concept-box"><div class="box-label">Q2b: When does power = 1.0?</div><p>Every time the test is run, H<sub>0</sub> gets rejected. Requires huge effect or huge n.</p></div>
+<div class="r-box"><div class="box-label">R Code: Q2c: power.t.test output</div><pre class="code-block">power.<span class="fn">t.test</span>(n = <span class="num">10</span>, delta = <span class="num">30</span>, sd = <span class="num">10</span>,
+             sig.level = <span class="num">0.05</span>,
+             type = <span class="str">"one.sample"</span>,
+             alternative = <span class="str">"two.sided"</span>)
+<span class=<span class="str">"cm"</span>>## power = <span class="num">0.9999</span></span></pre></div>
+<div class="code-line-explain">Power ≈ 1.0: with n=10 and δ=30 (3 SDs away!), we will almost certainly detect the difference.</div>
+<div class="quiz-box" data-answer="2">
+<div class="quiz-q">What measures P(correctly reject) when H0 is false?</div>
+<div class="quiz-opt" data-i="0">Significance level α</div>
+<div class="quiz-opt" data-i="1">Type I Error rate</div>
+<div class="quiz-opt" data-i="2">Statistical Power</div>
+<div class="quiz-opt" data-i="3">p-value</div>
+<div class="quiz-result" data-explain="Power = 1 - beta = P(reject | H0 false)."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('pq2',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-pq34">
+<div class="level-head"><div class="level-num">19</div><div class="level-title">Practice Quiz Q3-4: Skewed Data & Sign Test</div><div class="level-xp">+40 XP</div></div>
+<div class="level-body">
+<div class="concept-box"><div class="box-label">Q3a: Skewed data + small n</div><p>Type I Error rate <b>may be inflated above 0.05</b>.</p></div>
+<div class="r-box"><div class="box-label">R Code: Q3b: Blanks answered</div><pre class="code-block">count <span class="op">&lt;-</span> <span class="num">0</span>
+<span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:<span class="num">10000</span>){{
+    skewed_data <span class="op">&lt;-</span> <span class="fn">rgamma</span>(n = <span class="num">5</span>, shape = <span class="num">1.2</span>,
+                                  scale = (<span class="num">20</span> / <span class="num">1.2</span>))
+    p.val <span class="op">&lt;-</span> <span class="fn">t.test</span>(skewed_data,
+                    mu = <span class="num">20</span>)$p.value    <span class=<span class="str">"cm"</span>># (a)=<span class="num">20</span>, (b)=p.value</span>
+    <span class="kw">if</span>(p.val &lt; <span class="num">0.05</span>){{                  <span class=<span class="str">"cm"</span>># (c)=<span class="num">0.05</span></span>
+        count <span class="op">&lt;-</span> count + <span class="num">1</span>
+    }}
+}}
+TypeI <span class="op">&lt;-</span> count / <span class="num">10000</span></pre></div>
+<div class="concept-box"><div class="box-label">Q4a: Sign test vs t-test difference</div><p>Sign test tests <b>median</b>, not mean. Different parameter!</p></div>
+<div class="r-box"><div class="box-label">R Code: Q4c: p-value with pbinom</div><pre class="code-block"><span class=<span class="str">"cm"</span>># Signs: - + - + - + -</span>
+<span class=<span class="str">"cm"</span>># n+ = <span class="num">3</span>, n- = <span class="num">4</span>, min = <span class="num">3</span>, n = <span class="num">7</span></span>
+<span class="num">2</span> * <span class="fn">pbinom</span>(<span class="num">3</span>, size = <span class="num">7</span>, prob = <span class="num">0.5</span>)</pre></div>
+<div class="quiz-box" data-answer="2">
+<div class="quiz-q">Practice Quiz Q3b: mu = ___ in t.test() inside the simulation?</div>
+<div class="quiz-opt" data-i="0">0</div>
+<div class="quiz-opt" data-i="1">5</div>
+<div class="quiz-opt" data-i="2">20</div>
+<div class="quiz-opt" data-i="3">1.2</div>
+<div class="quiz-result" data-explain="H0: mu = 20. The mu argument is always the null value."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('pq34',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-pq56">
+<div class="level-head"><div class="level-num">20</div><div class="level-title">Practice Quiz Q5-6: Sign Test Type I & Power Sim</div><div class="level-xp">+40 XP</div></div>
+<div class="level-body">
+<div class="r-box"><div class="box-label">R Code: Q5: Sign test Type I Error sim</div><pre class="code-block">sign_test <span class="op">&lt;-</span> <span class="kw">function</span>(x, mu0 = <span class="num">20</span>){{
+    signs <span class="op">&lt;-</span> x - mu0
+    n_pos <span class="op">&lt;-</span> <span class="fn">sum</span>(signs &gt; <span class="num">0</span>)
+    n_neg <span class="op">&lt;-</span> <span class="fn">sum</span>(signs &lt; <span class="num">0</span>)
+    n <span class="op">&lt;-</span> n_pos + n_neg
+    min_count <span class="op">&lt;-</span> min(n_pos, n_neg)
+    p_val <span class="op">&lt;-</span> <span class="fn">pbinom</span>(min_count, size = n, prob = <span class="num">0.5</span>) * <span class="num">2</span>
+    <span class="kw">return</span>(p_val)
+}}
+
+count <span class="op">&lt;-</span> <span class="num">0</span>
+<span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:<span class="num">10000</span>){{
+    norm_data <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = <span class="num">7</span>, mean = <span class="num">20</span>, sd = <span class="num">3</span>)
+    p.val <span class="op">&lt;-</span> sign_test(norm_data)
+    <span class="kw">if</span>(p.val &lt; <span class="num">0.015626</span>) count <span class="op">&lt;-</span> count + <span class="num">1</span>
+}}
+TypeI <span class="op">&lt;-</span> count / <span class="num">10000</span></pre></div>
+<div class="concept-box"><div class="box-label">Q5a: TypeI will be approx 0.015625</div><p>The sign test gives a proper α-level test for any distribution when testing the median.</p></div>
+<div class="concept-box"><div class="box-label">Q5b: Why 0.015625 not 0.05?</div><p>Binomial is discrete. With n=7, p-values come in jumps. Can't achieve exactly α=0.05.</p></div>
+<div class="r-box"><div class="box-label">R Code: Q6a: Power simulation blanks</div><pre class="code-block">sim_power <span class="op">&lt;-</span> <span class="kw">function</span>(n, delta, sd, alpha = <span class="num">0.05</span>, reps = <span class="num">10000</span>){{
+    count <span class="op">&lt;-</span> <span class="num">0</span>
+    <span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:reps){{
+        samp <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = n,              <span class=<span class="str">"cm"</span>># (a) = n</span>
+                      mean = <span class="num">20</span> + delta,   <span class=<span class="str">"cm"</span>># (b) = <span class="num">20</span> + delta</span>
+                      sd   = sd)           <span class=<span class="str">"cm"</span>># (c) = sd</span>
+        pval <span class="op">&lt;-</span> <span class="fn">t.test</span>(samp, mu = <span class="num">20</span>)$p.value
+        <span class="kw">if</span>(pval &lt; alpha){{                 <span class=<span class="str">"cm"</span>># (d) = pval &lt; alpha</span>
+            count <span class="op">&lt;-</span> count + <span class="num">1</span>
+        }}
+    }}
+    <span class="kw">return</span>(count / reps)                   <span class=<span class="str">"cm"</span>># (e) = count / reps</span>
+}}</pre></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">sim_power(n=5, delta=2, sd=1) gives 0.91. In TSA context, this means:</div>
+<div class="quiz-opt" data-i="0">91% chance H<sub>0</sub> is false</div>
+<div class="quiz-opt" data-i="1">91% chance we detect a 2-unit difference with n=5</div>
+<div class="quiz-opt" data-i="2">Type I Error is 91%</div>
+<div class="quiz-opt" data-i="3">Need 91 more observations</div>
+<div class="quiz-result" data-explain="Power = 0.91 means 91% chance of correctly rejecting."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('pq56',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-pq78">
+<div class="level-head"><div class="level-num">21</div><div class="level-title">Practice Quiz Q7-8: Big Data Trap & Bootstrap</div><div class="level-xp">+35 XP</div></div>
+<div class="level-body">
+<div class="concept-box"><div class="box-label">Q7: Big Data Trap</div><p>n=50,000. x̄=20.3. s=15. p=0.0001.</p>
+<p><b>Q7a</b>: Reject H<sub>0</sub> (0.0001 &lt; 0.05)</p>
+<p><b>Q7b</b>: 0.3-minute difference is meaningless. <b>Big Data Trap.</b></p></div>
+<div class="concept-box"><div class="box-label">Q8: Bootstrap CI</div><p>CI = [15.65, 26.94]. H<sub>0</sub>: μ = 20.</p>
+<p><b>Q8a</b>: 20 is INSIDE -> <b>Fail to reject H<sub>0</sub></b></p>
+<p><b>Q8b</b>: "Bootstrap always has exact 0.05 Type I Error" is <b>FALSE</b>. Can be inflated/deflated for small n.</p>
+<p><b>Q8c</b>: To estimate Type I Error: simulate data where H<sub>0</sub> is true (mean=20), compute bootstrap CI, count how often 20 falls outside. That fraction = Type I Error rate.</p></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">Bootstrap CI = [15.65, 26.94]. H<sub>0</sub>: μ = 20. Decision at α = 0.05?</div>
+<div class="quiz-opt" data-i="0">Reject -- 20 inside</div>
+<div class="quiz-opt" data-i="1">Fail to reject -- 20 inside</div>
+<div class="quiz-opt" data-i="2">Reject -- 20 outside</div>
+<div class="quiz-opt" data-i="3">Fail to reject -- 20 outside</div>
+<div class="quiz-result" data-explain="20 inside CI = fail to reject."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('pq78',this)">Mark Complete</button>
+</div></div></div>
+<div class="phase" id="cheat-phase"><div class="level-card" id="level-cheat-r">
+<div class="level-head"><div class="level-num">22</div><div class="level-title">R Functions for Your Cheat Sheet</div><div class="level-xp">+40 XP</div></div>
+<div class="level-body">
+<p>One 8.5x11 double-sided handwritten sheet. Here's what R code to include.</p>
+
+<div class="r-box"><div class="box-label">R Code: MUST: t-test</div><pre class="code-block"><span class="fn">t.test</span>(data, mu = value)
+<span class="fn">t.test</span>(data, mu = value)$p.value
+<span class="fn">t.test</span>(data, mu = value)$conf.int
+<span class="fn">t.test</span>(data, alternative = <span class="str">"greater"</span>)
+<span class="fn">t.test</span>(data, alternative = <span class="str">"less"</span>)</pre></div>
+<div class="r-box"><div class="box-label">R Code: MUST: power.t.test()</div><pre class="code-block">power.<span class="fn">t.test</span>(n=N, delta=D, sd=S, sig.level=<span class="num">0.05</span>,
+             type=<span class="str">"one.sample"</span>, alternative=<span class="str">"two.sided"</span>)
+<span class=<span class="str">"cm"</span>># Find n: set power=<span class="num">0.80</span>, leave n out</span>
+<span class=<span class="str">"cm"</span>># <span class="fn">ceiling</span>(result$n) to round up</span></pre></div>
+<div class="r-box"><div class="box-label">R Code: MUST: Bootstrap CI</div><pre class="code-block">boot_means <span class="op">&lt;-</span> <span class="kw">NA</span>
+<span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:<span class="num">10000</span>){{
+    boot_means[i] <span class="op">&lt;-</span> <span class="fn">mean</span>(<span class="fn">sample</span>(data, replace = <span class="kw">TRUE</span>))
+}}
+ci <span class="op">&lt;-</span> <span class="fn">quantile</span>(boot_means, probs = <span class="fn">c</span>(<span class="num">0.025</span>, <span class="num">0.975</span>))</pre></div>
+<div class="r-box"><div class="box-label">R Code: MUST: Type I Error sim</div><pre class="code-block">count <span class="op">&lt;-</span> <span class="num">0</span>
+<span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:<span class="num">10000</span>){{
+    fake <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = N, mean = mu0, sd = S)
+    pval <span class="op">&lt;-</span> <span class="fn">t.test</span>(fake, mu = mu0)$p.value
+    <span class="kw">if</span>(pval &lt; <span class="num">0.05</span>) count <span class="op">&lt;-</span> count + <span class="num">1</span>
+}}
+TypeI <span class="op">&lt;-</span> count / <span class="num">10000</span></pre></div>
+<div class="r-box"><div class="box-label">R Code: MUST: Power sim</div><pre class="code-block">count <span class="op">&lt;-</span> <span class="num">0</span>
+<span class="kw">for</span>(i <span class="kw">in</span> <span class="num">1</span>:<span class="num">10000</span>){{
+    samp <span class="op">&lt;-</span> <span class="fn">rnorm</span>(n = N, mean = mu0 + delta, sd = S)
+    pval <span class="op">&lt;-</span> <span class="fn">t.test</span>(samp, mu = mu0)$p.value
+    <span class="kw">if</span>(pval &lt; alpha) count <span class="op">&lt;-</span> count + <span class="num">1</span>
+}}
+power <span class="op">&lt;-</span> count / <span class="num">10000</span></pre></div>
+<div class="r-box"><div class="box-label">R Code: MUST: Sign test</div><pre class="code-block">sign_test <span class="op">&lt;-</span> <span class="kw">function</span>(x, mu0){{
+    signs <span class="op">&lt;-</span> x - mu0
+    n_pos <span class="op">&lt;-</span> <span class="fn">sum</span>(signs &gt; <span class="num">0</span>)
+    n_neg <span class="op">&lt;-</span> <span class="fn">sum</span>(signs &lt; <span class="num">0</span>)
+    n <span class="op">&lt;-</span> n_pos + n_neg
+    min_count <span class="op">&lt;-</span> min(n_pos, n_neg)
+    p_val <span class="op">&lt;-</span> <span class="fn">pbinom</span>(min_count, size = n, prob = <span class="num">0.5</span>) * <span class="num">2</span>
+    <span class="kw">return</span>(p_val)
+}}</pre></div>
+<div class="r-box"><div class="box-label">R Code: GOOD TO HAVE: Random generators</div><pre class="code-block"><span class="fn">rnorm</span>(n, mean, sd)
+<span class="fn">rgamma</span>(n, shape, scale)  <span class=<span class="str">"cm"</span>># mean = shape * scale</span>
+<span class="fn">runif</span>(n, min, max)       <span class=<span class="str">"cm"</span>># mean = (min+max)/<span class="num">2</span></span></pre></div>
+<button class="complete-btn" onclick="completeLevel('cheat-r',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-cheat-concepts">
+<div class="level-head"><div class="level-num">23</div><div class="level-title">Concept Definitions for Your Cheat Sheet</div><div class="level-xp">+35 XP</div></div>
+<div class="level-body">
+<div class="concept-box"><div class="box-label">Key definitions</div><p><b>p-value</b> = P(data this extreme | H<sub>0</sub> true). NOT P(H<sub>0</sub> true).</p>
+<p><b>Type I Error</b> = Reject H<sub>0</sub> when true. Rate = α.</p>
+<p><b>Type II Error</b> = Fail to reject H<sub>0</sub> when false. Rate = β.</p>
+<p><b>Power</b> = 1 - β = P(reject | H<sub>0</sub> false). Depends on n, α, σ, δ.</p>
+<p><b>Big Data Trap</b> = Large n makes tiny effects significant. Check CI and effect size.</p>
+<p><b>Cohen's d</b> = |x̄ - μ<sub>0</sub>| / s. Small &lt; 0.2, Medium 0.2-0.8, Large &gt; 0.8.</p>
+<p><b>Bootstrap CI</b>: resample with replacement, compute mean, repeat, quantiles.</p>
+<p><b>Sign test</b>: Tests <b>median</b>. Uses Binomial(n, 0.5). Any distribution.</p>
+<p><b>CI for testing</b>: μ<sub>0</sub> inside CI = fail to reject. Outside = reject.</p>
+<p><b>t-test conditions</b>: (1) Normality (esp. small n), (2) Independence.</p></div>
+<div class="warn-box"><div class="box-label">Common quiz traps</div><p>1. "p-value = P(H<sub>0</sub> true)" -- WRONG</p>
+<p>2. "Fail to reject = H<sub>0</sub> is true" -- WRONG</p>
+<p>3. Confusing Type I / Type II errors</p>
+<p>4. Forgetting replace = TRUE in bootstrap</p>
+<p>5. Using wrong mean in sim (mu0 for Type I, mu0+delta for power)</p></div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">You forget replace=TRUE in bootstrap. What happens?</div>
+<div class="quiz-opt" data-i="0">Works fine</div>
+<div class="quiz-opt" data-i="1">Gets permutation not bootstrap -- wrong procedure</div>
+<div class="quiz-opt" data-i="2">R throws error</div>
+<div class="quiz-opt" data-i="3">CI too wide</div>
+<div class="quiz-result" data-explain="Without replace=TRUE, every resample is just the original data shuffled."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('cheat-concepts',this)">Mark Complete</button>
+</div></div><div class="level-card" id="level-final-review">
+<div class="level-head"><div class="level-num">24</div><div class="level-title">Final Review Quiz -- Test Yourself!</div><div class="level-xp">+50 XP</div></div>
+<div class="level-body">
+<p>Practice quiz difficulty. No peeking!</p>
+
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">H<sub>0</sub>: μ=100, H<sub>A</sub>: μ≠100. p=0.03. At α=0.05?</div>
+<div class="quiz-opt" data-i="0">Fail to reject H<sub>0</sub></div>
+<div class="quiz-opt" data-i="1">Reject H<sub>0</sub></div>
+<div class="quiz-opt" data-i="2">Accept H<sub>A</sub></div>
+<div class="quiz-opt" data-i="3">Need more info</div>
+<div class="quiz-result" data-explain="0.03 < 0.05 = reject."></div>
+</div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">You reject H<sub>0</sub> but H<sub>0</sub> is actually true. What error?</div>
+<div class="quiz-opt" data-i="0">Type II Error</div>
+<div class="quiz-opt" data-i="1">Type I Error</div>
+<div class="quiz-opt" data-i="2">No error</div>
+<div class="quiz-opt" data-i="3">Power error</div>
+<div class="quiz-result" data-explain="Rejecting a true H0 = Type I Error."></div>
+</div>
+<div class="quiz-box" data-answer="2">
+<div class="quiz-q">t.test(data, mu=50)$p.value gives you?</div>
+<div class="quiz-opt" data-i="0">CI</div>
+<div class="quiz-opt" data-i="1">t-statistic</div>
+<div class="quiz-opt" data-i="2">p-value for testing H<sub>0</sub>: μ=50</div>
+<div class="quiz-opt" data-i="3">Standard error</div>
+<div class="quiz-result" data-explain="$p.value extracts the p-value."></div>
+</div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">Power increases when which increases?</div>
+<div class="quiz-opt" data-i="0">SD σ</div>
+<div class="quiz-opt" data-i="1">Sample size n</div>
+<div class="quiz-opt" data-i="2">p-value</div>
+<div class="quiz-opt" data-i="3">Type II Error β</div>
+<div class="quiz-result" data-explain="Bigger n = more power."></div>
+</div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">95% CI is [22.1, 28.3]. For H<sub>0</sub>: μ=25?</div>
+<div class="quiz-opt" data-i="0">Reject -- 25 inside</div>
+<div class="quiz-opt" data-i="1">Fail to reject -- 25 inside</div>
+<div class="quiz-opt" data-i="2">Reject -- 25 outside</div>
+<div class="quiz-opt" data-i="3">Cannot determine</div>
+<div class="quiz-result" data-explain="25 inside [22.1, 28.3] = fail to reject."></div>
+</div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">n=1,000,000. x̄=20.001. p=0.0001. What concept?</div>
+<div class="quiz-opt" data-i="0">Type I Error</div>
+<div class="quiz-opt" data-i="1">Big Data Trap</div>
+<div class="quiz-opt" data-i="2">High power</div>
+<div class="quiz-opt" data-i="3">Bootstrap failure</div>
+<div class="quiz-result" data-explain="Huge n + tiny effect + small p = Big Data Trap."></div>
+</div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">Power sim: generate with mean = μ0 + δ. Because:</div>
+<div class="quiz-opt" data-i="0">Assuming H<sub>0</sub> true</div>
+<div class="quiz-opt" data-i="1">Assuming H<sub>A</sub> true to see correct rejection rate</div>
+<div class="quiz-opt" data-i="2">δ = SD</div>
+<div class="quiz-opt" data-i="3">Type I Error</div>
+<div class="quiz-result" data-explain="Power = P(reject | H<sub>A</sub> true). Generate under H<sub>A</sub>."></div>
+</div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">Sign test is preferred when:</div>
+<div class="quiz-opt" data-i="0">Large sample</div>
+<div class="quiz-opt" data-i="1">Heavily skewed + small n</div>
+<div class="quiz-opt" data-i="2">Testing the mean</div>
+<div class="quiz-opt" data-i="3">Normal data</div>
+<div class="quiz-result" data-explain="Sign test works for any shape. But tests median, not mean."></div>
+</div>
+<div class="quiz-box" data-answer="2">
+<div class="quiz-q">sample(x, replace=TRUE) does what?</div>
+<div class="quiz-opt" data-i="0">Sorts randomly</div>
+<div class="quiz-opt" data-i="1">Subset without replacement</div>
+<div class="quiz-opt" data-i="2">Draws length(x) with replacement</div>
+<div class="quiz-opt" data-i="3">New random values</div>
+<div class="quiz-result" data-explain="Bootstrap resample: same size, with replacement."></div>
+</div>
+<div class="quiz-box" data-answer="1">
+<div class="quiz-q">power.t.test gives power=0.91 for n=5, delta=2, sd=1. Means:</div>
+<div class="quiz-opt" data-i="0">91% chance H<sub>0</sub> false</div>
+<div class="quiz-opt" data-i="1">91% chance of detecting delta=2 with n=5</div>
+<div class="quiz-opt" data-i="2">Type I Error = 0.91</div>
+<div class="quiz-opt" data-i="3">Need 91 more obs</div>
+<div class="quiz-result" data-explain="Power 0.91 = 91% chance of correctly rejecting."></div>
+</div>
+<button class="complete-btn" onclick="completeLevel('final-review',this)">Mark Complete</button>
+</div></div></div>
+
+<script>
+(function(){
+  let xp=0,streak=0,quizzesCorrect=0;
+  const levelsCompleted=new Set(),achievements=new Set();
+  let revealCount=0;
+  document.addEventListener('DOMContentLoaded',()=>{document.addEventListener('click',e=>{if(e.target.classList.contains('quiz-opt'))handleQuizClick(e.target)});showPhase('lec12');updateProgress()});
+  function handleQuizClick(opt){
+    const box=opt.closest('.quiz-box');if(!box)return;
+    const correct=parseInt(box.dataset.answer,10),selected=parseInt(opt.dataset.i,10);
+    const allOpts=box.querySelectorAll('.quiz-opt'),result=box.querySelector('.quiz-result');
+    if(Array.from(allOpts).some(o=>o.classList.contains('correct')||o.classList.contains('incorrect')))return;
+    allOpts.forEach(o=>{o.style.pointerEvents='none';o.style.opacity='0.6'});opt.style.opacity='1';
+    if(selected===correct){
+      opt.classList.add('correct');
+      if(result){result.textContent='\u2713 Correct! '+(result.dataset.explain||'');result.classList.add('show-correct')}
+      addXP(15);streak++;quizzesCorrect++;checkAchievements()
+    }else{
+      opt.classList.add('incorrect');allOpts[correct].classList.add('correct');allOpts[correct].style.opacity='1';
+      if(result){result.textContent='\u2717 Not quite. '+(result.dataset.explain||'');result.classList.add('show-incorrect')}
+      streak=0
+    }
+    updateProgress()
+  }
+  window.showPhase=function(name){
+    document.querySelectorAll('.phase').forEach(p=>p.classList.remove('active'));
+    const el=document.getElementById(name+'-phase');if(el)el.classList.add('active');
+    document.querySelectorAll('.phase-tab').forEach(t=>t.classList.toggle('active',t.getAttribute('data-phase')===name))
+  };
+  window.revealNext=function(btn){
+    const next=btn.nextElementSibling;
+    if(next&&next.classList.contains('step-content')){next.classList.add('visible');btn.style.display='none';revealCount++;addXP(5);
+    if(revealCount===5)unlockAchievement('Explorer','Revealed 5 hidden sections!');
+    if(revealCount===20)unlockAchievement('Deep Diver','Revealed 20 hidden sections!')}
+  };
+  window.completeLevel=function(id,btn){
+    if(levelsCompleted.has(id))return;levelsCompleted.add(id);addXP(25);
+    const card=btn.closest('.level-card');if(card){const num=card.querySelector('.level-num');if(num)num.classList.add('completed')}
+    btn.textContent='\u2713 Completed!';btn.style.background='#16a34a';btn.style.cursor='default';
+    triggerConfetti();checkAchievements();updateProgress()
+  };
+  function addXP(n){xp+=n;updateProgress()}
+  function updateProgress(){
+    const fill=document.getElementById('progressFill'),xpEl=document.getElementById('xpDisplay'),stEl=document.getElementById('streakDisplay');
+    const total=document.querySelectorAll('.level-card').length||1;
+    const pct=Math.min(100,(levelsCompleted.size/total)*100);
+    if(fill)fill.style.width=pct+'%';if(xpEl)xpEl.textContent=xp+' XP';if(stEl)stEl.textContent=streak+'\ud83d\udd25'
+  }
+  function triggerConfetti(){
+    const colors=['#818cf8','#c084fc','#4ade80','#fbbf24','#f87171','#22d3ee'];
+    for(let i=0;i<30;i++){const el=document.createElement('div');el.classList.add('confetti-piece');
+    el.style.left=Math.random()*100+'vw';el.style.top='-10px';el.style.width='8px';el.style.height='8px';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];el.style.borderRadius=Math.random()>.5?'50%':'0';
+    el.style.animationDuration=(1+Math.random())+'s';el.style.animationDelay=(Math.random()*.5)+'s';
+    document.body.appendChild(el);setTimeout(()=>el.remove(),2500)}
+  }
+  function checkAchievements(){
+    if(quizzesCorrect>=5&&!achievements.has('Quiz Whiz'))unlockAchievement('Quiz Whiz','Got 5 quizzes right!');
+    if(quizzesCorrect>=15&&!achievements.has('Quiz Master'))unlockAchievement('Quiz Master','Got 15 quizzes right!');
+    if(streak>=3&&!achievements.has('On Fire'))unlockAchievement('On Fire','3 correct in a row!');
+    if(levelsCompleted.size>=5&&!achievements.has('Halfway'))unlockAchievement('Halfway','Completed 5 levels!');
+    if(levelsCompleted.size>=15&&!achievements.has('Almost There'))unlockAchievement('Almost There','Completed 15 levels!')
+  }
+  function unlockAchievement(name,desc){
+    if(achievements.has(name))return;achievements.add(name);
+    const popup=document.createElement('div');popup.classList.add('achievement-popup');
+    popup.innerHTML='<div style="font-size:20px;margin-bottom:4px">\ud83c\udfc6</div><div style="font-weight:700">'+name+'</div><div style="font-size:12px;color:#94a3b8">'+desc+'</div>';
+    document.body.appendChild(popup);setTimeout(()=>popup.remove(),3000)
+  }
+})();
+</script>
+
+</body>
+</html>
