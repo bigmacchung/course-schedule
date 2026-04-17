@@ -132,7 +132,6 @@
   .c-40b { --clr: #4285f4; }
   .c-106 { --clr: #34a853; }
   .c-152 { --clr: #ea4335; }
-  .c-190 { --clr: #9c27b0; }
   .c-mgt { --clr: #ff6f00; }
   .c-usp { --clr: #e91e63; }
 
@@ -363,7 +362,7 @@
 <div class="topbar">
   <div class="title-block">
     <h1>Maxime's Spring 2026 Schedule</h1>
-    <p class="subtitle">UCSD &mdash; DSC 40B, DSC 106, DSC 152, DSC 190, MGT 159T, USP 4 &mdash; All classes + office hours</p>
+    <p class="subtitle">UCSD &mdash; DSC 40B, DSC 106, DSC 152, MGT 159T, USP 4 &mdash; All classes + office hours</p>
   </div>
 
   <div class="study-guides-panel">
@@ -376,7 +375,6 @@
       <!-- Add future study guides below -->
       <!-- <a href="DSC106_Study_Guide.html" target="_blank" class="study-guide-btn">DSC 106 Study Guide</a> -->
       <!-- <a href="DSC152_Study_Guide.html" target="_blank" class="study-guide-btn">DSC 152 Study Guide</a> -->
-      <!-- <a href="DSC190_Study_Guide.html" target="_blank" class="study-guide-btn">DSC 190 Study Guide</a> -->
     </div>
   </div>
 </div>
@@ -386,7 +384,6 @@
     <button class="toggle-btn active c-40b" data-filter="dsc40b" style="color: #4285f4;"><span class="dot" style="background:#4285f4"></span>DSC 40B</button>
     <button class="toggle-btn active c-106" data-filter="dsc106" style="color: #34a853;"><span class="dot" style="background:#34a853"></span>DSC 106</button>
     <button class="toggle-btn active c-152" data-filter="dsc152" style="color: #ea4335;"><span class="dot" style="background:#ea4335"></span>DSC 152</button>
-    <button class="toggle-btn active c-190" data-filter="dsc190" style="color: #9c27b0;"><span class="dot" style="background:#9c27b0"></span>DSC 190</button>
     <button class="toggle-btn active c-mgt" data-filter="mgt159t" style="color: #ff6f00;"><span class="dot" style="background:#ff6f00"></span>MGT 159T</button>
     <button class="toggle-btn active c-usp" data-filter="usp4" style="color: #e91e63;"><span class="dot" style="background:#e91e63"></span>USP 4</button>
   </div>
@@ -406,7 +403,6 @@
   <h2>Final Exams</h2>
   <div class="final-item"><span class="final-dot" style="background:#ea4335"></span><span class="final-date">Sat Jun 6, 3:00–5:59 PM</span><span class="final-course">DSC 152</span><span class="final-loc">TBA</span></div>
   <div class="final-item"><span class="final-dot" style="background:#4285f4"></span><span class="final-date">Mon Jun 8, 7:00–9:59 PM</span><span class="final-course">DSC 40B</span><span class="final-loc">HSS 1330</span></div>
-  <div class="final-item"><span class="final-dot" style="background:#9c27b0"></span><span class="final-date">Tue Jun 9, 7:00–9:59 PM</span><span class="final-course">DSC 190</span><span class="final-loc">PCYNH 121</span></div>
   <div class="final-item"><span class="final-dot" style="background:#34a853"></span><span class="final-date">Thu Jun 11, 11:30 AM–2:29 PM</span><span class="final-course">DSC 106</span><span class="final-loc">CTL 0125</span></div>
   <div class="final-item"><span class="final-dot" style="background:#ff6f00"></span><span class="final-date">Fri Jun 12, 7:00–9:59 PM</span><span class="final-course">MGT 159T</span><span class="final-loc">TBA</span></div>
 </div>
@@ -436,7 +432,6 @@ const events = [
   // ===== TUESDAY =====
   [1, 9.5, 10.833, 'DSC 152', 'Lecture', 'HSS 1330', 'lec', 'dsc152', 'DSC 152 Lecture\n9:30–10:50 AM\nHSS 1330 • Chi, Peter Benjamin'],
   [1, 17, 19.833, 'USP 4', 'Lecture', 'ERCA 117', 'lec', 'usp4', 'USP 4 Lecture\nIntro to Geographic Information Systems\n5:00–7:50 PM\nERCA 117', 'split-left'],
-  [1, 18.5, 19.833, 'DSC 190', 'Lecture', 'HDSI MPR 123', 'lec', 'dsc190', 'DSC 190 Lecture\n6:30–7:50 PM\nUsually HDSI MPR 123\nPCYNH 121 on: Apr 23, May 14, May 28\n• Ustun, Tevfik Berk', 'split-right'],
 
   // Tuesday OH
   [1, 13, 14, 'DSC 106 OH', 'Susana Haing', 'HDSI 355', 'oh', 'dsc106-oh', 'DSC 106 Office Hours\nSusana Haing\n1:00–2:00 PM\nHDSI 355'],
@@ -454,7 +449,6 @@ const events = [
 
   // ===== THURSDAY =====
   [3, 9.5, 10.833, 'DSC 152', 'Lecture', 'HSS 1330', 'lec', 'dsc152', 'DSC 152 Lecture\n9:30–10:50 AM\nHSS 1330 • Chi, Peter Benjamin'],
-  [3, 18.5, 19.833, 'DSC 190', 'Lecture', 'HDSI MPR 123', 'lec', 'dsc190', 'DSC 190 Lecture\n6:30–7:50 PM\nUsually HDSI MPR 123\nPCYNH 121 on: Apr 23, May 14, May 28\n• Ustun, Tevfik Berk'],
 
   // Thursday OH
   [3, 12.5, 13.5, 'DSC 152 OH', 'Peter', 'HDSI 355', 'oh', 'dsc152-oh', 'DSC 152 Office Hours\nPeter (Instructor)\n12:30–1:30 PM\nHDSI 355'],
@@ -484,7 +478,6 @@ const COLORS = {
   'dsc106-oh': '#34a853',
   dsc152: '#ea4335',
   'dsc152-oh': '#ea4335',
-  dsc190: '#9c27b0',
   mgt159t: '#ff6f00',
   usp4: '#e91e63'
 };
@@ -613,7 +606,6 @@ const activeFilters = new Set([
   'dsc40b',
   'dsc106',
   'dsc152',
-  'dsc190',
   'mgt159t',
   'usp4',
   'dsc40b-oh',
