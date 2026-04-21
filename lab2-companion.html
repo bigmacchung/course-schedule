@@ -782,18 +782,28 @@ boot_sample &lt;- <span class="fn">sample</span>(data, <span class="fn">length</
 
 <h3>What Kinds of Tests Are There?</h3>
 <div class="box box-concept">
-  <div class="box-label">Concept — Types of Statistical Tests</div>
-  <p>Statistical tests are NOT one-size-fits-all. Before picking a test, ask two questions:</p>
-  <p><strong>Question 1: How many groups am I comparing?</strong></p>
+  <div class="box-label">Concept — Three Questions Before Picking a Test</div>
+  <p>Statistical tests are NOT one-size-fits-all. Before picking a test, ask three questions:</p>
+
+  <p><strong>Question 1: How many groups of numbers do I have?</strong></p>
   <ul>
-    <li><strong>One-sample test</strong>: You have ONE group of data and you are comparing it to a KNOWN value. Example: "The airport claims average wait = 20 min. My sample of 50 passengers averaged 23.5 min. Is 23.5 different enough from 20?"</li>
-    <li><strong>Two-sample test</strong>: You have TWO groups and you want to know if they differ. Example: "Group A saw the old checkout page, Group B saw the new one. Did Group B convert more?" This is the classic <strong>A/B test</strong>.</li>
+    <li><strong>One-sample test</strong>: ONE group of data compared to a KNOWN number (from a claim, a standard, a policy). Example: "The airport claims average wait = 20 min. My sample of 50 passengers averaged 23.5 min. Is 23.5 far enough from 20 to be real?"</li>
+    <li><strong>Two-sample test</strong>: TWO groups of data compared to each other. Example: "Group A saw the old checkout page, Group B saw the new one. Did Group B convert more?" This is the classic <strong>A/B test</strong>.</li>
   </ul>
-  <p><strong>Question 2: Is my data roughly normal (bell-shaped), or is it skewed/weird?</strong></p>
+
+  <p><strong>Question 2: If I have two groups, are they paired or unpaired?</strong> (Only matters for two-sample tests — more below.)</p>
+  <ul>
+    <li><strong>Paired</strong>: the two groups come from the <em>same</em> people/items measured twice. Example: blood pressure for each patient BEFORE and AFTER a drug.</li>
+    <li><strong>Unpaired</strong>: the two groups are <em>different</em> people/items. Example: Group A = 100 users on the old page, Group B = 100 <em>different</em> users on the new page.</li>
+  </ul>
+
+  <p><strong>Question 3: Is my data roughly normal (bell-shaped), or is it skewed/weird?</strong></p>
   <ul>
     <li><strong>Parametric test</strong> (e.g., t-test): Assumes data is roughly normal. Tests the <strong>MEAN</strong>.</li>
     <li><strong>Non-parametric test</strong> (e.g., sign test): Makes NO assumption about shape. Tests the <strong>MEDIAN</strong>.</li>
   </ul>
+
+  <p class="text-yellow"><strong>Quiz 1 shortcut:</strong> almost everything on Quiz 1 is a <strong>one-sample</strong> test. The paired vs unpaired question only matters if you ever see two samples — so if you're unsure, default to one-sample logic for Quiz 1.</p>
 </div>
 
 <h3>Visual: One-Sample vs Two-Sample</h3>
@@ -802,6 +812,79 @@ boot_sample &lt;- <span class="fn">sample</span>(data, <span class="fn">length</
   <div class="box-label">Reading This Chart</div>
   <p><strong>Left</strong>: ONE-sample test. We have one batch of TSA wait times (blue bars). We compare them to a single claimed value (red dashed line at 20 min). The question: "Is the gap between our sample mean (green) and the claimed value (red) big enough to be real?"</p>
   <p><strong>Right</strong>: TWO-sample test. We have two groups (purple and blue). The question: "Is the gap between these two groups big enough to NOT be random noise?" This is exactly what an A/B test does.</p>
+</div>
+
+<h3>Paired vs Unpaired (and How They Relate to One- vs Two-Sample)</h3>
+<div class="box box-concept">
+  <div class="box-label">Concept — Paired vs Unpaired</div>
+  <p>This is a different question from "one-sample vs two-sample." It's easy to confuse them — here is the clean way to think about it:</p>
+  <ul>
+    <li><strong>One-sample vs two-sample</strong> asks: <em>how many groups of numbers am I working with?</em></li>
+    <li><strong>Paired vs unpaired</strong> asks: <em>if I have two groups, are the observations linked one-to-one?</em></li>
+  </ul>
+  <p><strong>Paired</strong> = each value in group 1 has a natural partner in group 2. The classic case is "same subject, measured twice."</p>
+  <ul>
+    <li>Blood pressure BEFORE the drug vs AFTER the drug — same 30 patients.</li>
+    <li>Website load time on OLD server vs NEW server — measured for the same 100 URLs.</li>
+    <li>Student test score in January vs June — same students.</li>
+  </ul>
+  <p><strong>Unpaired</strong> = the two groups are separate people/items with no one-to-one matching.</p>
+  <ul>
+    <li>100 users on the old homepage vs 100 <em>different</em> users on the new homepage.</li>
+    <li>Salaries at Company A vs Company B (different employees).</li>
+  </ul>
+</div>
+
+<div class="box box-analogy">
+  <div class="box-label">Analogy — The Twin Trick</div>
+  <p>A paired test is like using <strong>twins</strong> as the control. Each twin in group A has a matched twin in group B, so you can subtract out everything the twins share. Less noise, more power.</p>
+  <p>An unpaired test is like comparing <strong>strangers</strong>. You don't know what's different between them, so you need more data to see the signal.</p>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">Why Paired vs Unpaired is DIFFERENT from One-Sample vs Two-Sample</div>
+  <p>Here's the confusing part: a paired test is usually <em>run as a one-sample test</em>. You take the differences (after − before) for each subject, and then test whether the mean of those differences equals 0.</p>
+  <ul>
+    <li><strong>Paired data</strong> → compute differences → run a <strong>one-sample t-test</strong> on the differences, with mu0 = 0.</li>
+    <li><strong>Unpaired two-sample data</strong> → run a <strong>two-sample t-test</strong> directly.</li>
+  </ul>
+  <p>So the quick rule: "paired" data gets squeezed into the one-sample framework by looking at differences. "Unpaired" stays as a genuine two-sample problem.</p>
+  <p class="text-yellow"><strong>Quiz 1 focus:</strong> you'll mostly see pure one-sample problems (like the TSA 20-minute claim). Paired tests aren't the star of Quiz 1, but knowing the distinction keeps you from getting tripped up by the wording.</p>
+</div>
+
+<h3>One-Sample Tests: The Main Focus for Quiz 1</h3>
+<div class="box box-concept">
+  <div class="box-label">Concept — What a One-Sample Test Actually Does</div>
+  <p>You always have the same ingredients:</p>
+  <ul>
+    <li>ONE batch of numbers (your sample).</li>
+    <li>ONE claimed value (mu0) that comes from outside the data — a company claim, a standard, a target, a historical average.</li>
+  </ul>
+  <p>You ask: <strong>"Given my sample, is the true mean really equal to mu0, or is it different?"</strong></p>
+  <p>The null hypothesis is always H0: mu = mu0. The alternative depends on the question:</p>
+  <ul>
+    <li>Two-sided: HA: mu &ne; mu0 (any difference counts)</li>
+    <li>One-sided greater: HA: mu &gt; mu0 (only bigger counts)</li>
+    <li>One-sided less: HA: mu &lt; mu0 (only smaller counts)</li>
+  </ul>
+</div>
+
+<div class="box box-story">
+  <div class="box-label">Lots of One-Sample Examples (Practice Spotting Them)</div>
+  <p>Every example below is a one-sample test. Notice the shared shape: <em>one</em> batch of data, <em>one</em> claimed number, and a yes/no question about whether they match.</p>
+  <ol>
+    <li><strong>TSA wait times (Quiz 1 main story):</strong> Airport claims avg wait = 20 min. You sample 50 passengers. H0: mu = 20.</li>
+    <li><strong>Netflix session length:</strong> Marketing claims avg viewing session = 45 min. A sample of 200 users shows x&#772; = 42. H0: mu = 45.</li>
+    <li><strong>Amazon package delivery:</strong> Amazon promises 2-day delivery, meaning mean delivery = 2.0 days. You measure 80 shipments. H0: mu = 2.0.</li>
+    <li><strong>DoorDash tip size:</strong> A report says the median tip is $3. You pull 60 orders. (Skewed data &rarr; sign test, but still one-sample.) H0: median = 3.</li>
+    <li><strong>Battery life:</strong> Manufacturer advertises 10 hours per charge. You test 25 laptops. H0: mu = 10.</li>
+    <li><strong>Factory bolt weight:</strong> Spec says each bolt must weigh 50 g. QA samples 40 bolts. H0: mu = 50.</li>
+    <li><strong>Exam scores:</strong> Historical average on a final = 72. This year's class of 120 students averaged 75. H0: mu = 72.</li>
+    <li><strong>Uber ride time:</strong> Historical average = 12 min. After a routing change, 500 rides avg 11.4 min. H0: mu = 12.</li>
+    <li><strong>Water quality:</strong> Regulation: dissolved oxygen must equal 6.0 mg/L. Lab measures 15 samples. H0: mu = 6.0.</li>
+    <li><strong>Paired blood pressure (one-sample in disguise):</strong> 30 patients measured before and after a drug. Compute differences d = after &minus; before. H0: mu_d = 0.</li>
+  </ol>
+  <p class="text-yellow"><strong>Quiz 1 habit:</strong> when you read a word problem, first circle the claimed number. If there's exactly ONE claimed number and ONE batch of data, it's a one-sample test.</p>
 </div>
 
 <h3>Visual: The Test Decision Tree</h3>
@@ -861,6 +944,36 @@ boot_sample &lt;- <span class="fn">sample</span>(data, <span class="fn">length</
   <div class="quiz-opt" data-i="2">Sign test</div>
   <div class="quiz-opt" data-i="3">Bootstrap only</div>
   <div class="quiz-result" data-explain="Two groups + normal data = two-sample t-test. This is the standard A/B testing tool."></div>
+</div>
+
+<div class="quiz-box" data-answer="0">
+  <div class="quiz-label">Quiz — Paired vs Unpaired</div>
+  <div class="quiz-q">You measure blood pressure on 40 patients BEFORE a drug and AFTER. You want to know if the drug lowered BP on average. This is:</div>
+  <div class="quiz-opt" data-i="0">A paired design — compute differences and run a one-sample t-test on the differences</div>
+  <div class="quiz-opt" data-i="1">An unpaired two-sample t-test</div>
+  <div class="quiz-opt" data-i="2">A sign test only, no other option</div>
+  <div class="quiz-opt" data-i="3">Not a valid test setup</div>
+  <div class="quiz-result" data-explain="Same patients measured twice = paired. The standard move is to take after − before for each patient, then run a one-sample t-test on the differences with mu0 = 0."></div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — Spot the One-Sample</div>
+  <div class="quiz-q">Which of these is a one-sample test?</div>
+  <div class="quiz-opt" data-i="0">Comparing conversion rates between users on page A and page B</div>
+  <div class="quiz-opt" data-i="1">Comparing salaries between Company A and Company B</div>
+  <div class="quiz-opt" data-i="2">Testing whether the average battery life of 25 laptops equals the advertised 10 hours</div>
+  <div class="quiz-opt" data-i="3">Comparing test scores in January vs June on the same students</div>
+  <div class="quiz-result" data-explain="One batch of data (25 laptops) + one claimed value (10 hours) = one-sample test. Options 0 and 1 are two-sample/unpaired; option 3 is paired (which uses differences + one-sample mechanics, but is phrased as a two-group comparison)."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Quiz — One-Sample Setup</div>
+  <div class="quiz-q">The airport claims avg wait = 20 min and you want to test whether the true mean DIFFERS. Which hypotheses?</div>
+  <div class="quiz-opt" data-i="0">H0: mu &ne; 20 vs HA: mu = 20</div>
+  <div class="quiz-opt" data-i="1">H0: mu = 20 vs HA: mu &ne; 20</div>
+  <div class="quiz-opt" data-i="2">H0: mu &gt; 20 vs HA: mu &lt; 20</div>
+  <div class="quiz-opt" data-i="3">H0: mu = 20 vs HA: mu &gt; 20</div>
+  <div class="quiz-result" data-explain="H0 always contains equality with the claimed value. 'Differs' is two-sided, so HA: mu != 20."></div>
 </div>
 
 <button class="complete-btn" onclick="completeLevel(5)">Mark Level 5 Complete</button>
@@ -1188,6 +1301,390 @@ t.test(tsa_waits, mu = 20, alternative = "less")</pre>
 <button class="complete-btn" onclick="completeLevel(7)">Mark Level 7 Complete</button>
 </div></div>
 
+<!-- ==================== LEVEL 7b (Lecture 2 Replay) ==================== -->
+<div class="level-card" id="level-7b">
+<div class="level-header" onclick="toggleLevel('7b')">
+  <span class="level-title"><span class="num">Level 7b</span> — Lecture 2 Replay: Manual t-Test, qt/pt, and the t.test() Function</span>
+  <span class="level-xp">+55 XP</span>
+</div>
+<div class="level-body" id="level-body-7b">
+
+<div class="box box-story">
+  <div class="box-label">Business Story — The UCSD Sleep Study</div>
+  <p>You want to know: do UCSD students sleep a different amount than 6 hours per night, on average? You sample 5 random students and ask how many hours they slept last night. The data: <code>3, 7, 1, 2, 2</code>.</p>
+  <p><strong>H0:</strong> μ = 6 &nbsp; vs. &nbsp; <strong>Ha:</strong> μ ≠ 6 &nbsp; (two-sided)</p>
+  <p>This is the exact example the professor walked through in Lecture 2 — we'll rebuild it from scratch, then show the one-line <code>t.test()</code> version.</p>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">The t-test, in Plain English</div>
+  <p>The t-test answers: "is my sample mean far enough from the null value μ₀ that I should be suspicious?"</p>
+  <p>"Far enough" is measured in <strong>standard errors</strong>, not raw units. Being 3 hours off when SE = 1 is huge; being 3 hours off when SE = 10 is nothing.</p>
+  <p>The test statistic is:
+  <pre class="r-code">t = (x̄ − μ₀) / (s / sqrt(n))</pre>
+  Under H0, t follows a <strong>t-distribution with df = n − 1</strong>. You reject if t lands in the extreme tails.</p>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Step 1 — Test Statistic by Hand</div>
+<pre class="r-code"><span class="cm"># The data</span>
+sleep &lt;- <span class="fn">c</span>(<span class="nb">3</span>, <span class="nb">7</span>, <span class="nb">1</span>, <span class="nb">2</span>, <span class="nb">2</span>)
+
+<span class="cm"># Test statistic, formula style</span>
+t_stat &lt;- (<span class="fn">mean</span>(sleep) - <span class="nb">6</span>) / (<span class="fn">sd</span>(sleep) / <span class="fn">sqrt</span>(<span class="nb">5</span>))
+t_stat
+<span class="cm"># Gives -2.86 (approximately)</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><code>mean(sleep) - 6</code> — numerator: how far the sample mean is from μ₀ = 6.</div>
+    <div class="line-exp"><code>sd(sleep) / sqrt(5)</code> — denominator: the standard error (SE).</div>
+    <div class="line-exp"><strong>Rule of thumb:</strong> |t| &gt; 2ish usually means "reject." Here t = −2.86, which is pretty extreme.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Step 2 — Critical Values with qt()</div>
+<pre class="r-code"><span class="cm"># The critical values for a two-sided α = 0.05 test, df = n - 1 = 4</span>
+<span class="fn">qt</span>(<span class="nb">0.025</span>, df = <span class="nb">4</span>)                    <span class="cm"># = -2.776 (lower cutoff)</span>
+<span class="fn">qt</span>(<span class="nb">0.975</span>, df = <span class="nb">4</span>)                    <span class="cm"># = +2.776 (upper cutoff)</span>
+<span class="fn">qt</span>(<span class="nb">0.025</span>, df = <span class="nb">4</span>, lower.tail = <span class="nb">FALSE</span>)  <span class="cm"># = +2.776 too</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><code>qt(p, df)</code> — the "q" stands for <strong>quantile</strong>. It converts a probability → a t-value.</div>
+    <div class="line-exp"><strong>Default:</strong> <code>lower.tail = TRUE</code>, so <code>qt(0.025, df = 4)</code> returns the value with 2.5% BELOW it.</div>
+    <div class="line-exp">Flipping <code>lower.tail = FALSE</code> gives the value with 2.5% ABOVE it — useful for upper-tail critical values.</div>
+    <div class="line-exp"><strong>Decision:</strong> t = −2.86 is beyond −2.776 → reject H0.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Step 3 — Two-Sided p-value with pt()</div>
+<pre class="r-code"><span class="cm"># Lower-tail probability: area to the LEFT of t = -2.86</span>
+p_lower &lt;- <span class="fn">pt</span>(-<span class="nb">2.86</span>, df = <span class="nb">4</span>)
+
+<span class="cm"># Two-sided p-value = 2 * that lower-tail area</span>
+p_value &lt;- <span class="nb">2</span> * p_lower
+p_value
+<span class="cm"># ≈ 0.0459</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><code>pt(q, df)</code> — the "p" stands for <strong>probability</strong>. It converts a t-value → the lower-tail probability.</div>
+    <div class="line-exp"><strong>qt() and pt() are inverses.</strong> <code>pt(qt(0.025, 4), 4)</code> gives back 0.025.</div>
+    <div class="line-exp"><strong>Why multiply by 2?</strong> Two-sided means we count "at least as extreme" on BOTH tails. Since the t-distribution is symmetric, we just double one tail.</div>
+    <div class="line-exp"><strong>Careful:</strong> If t is positive, use <code>pt(t, df, lower.tail = FALSE)</code> (upper tail) then multiply by 2. Or just use <code>2 * pt(-abs(t), df)</code>.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Step 4 — Let R Do It All: t.test()</div>
+<pre class="r-code"><span class="cm"># One line does all four steps above</span>
+<span class="fn">t.test</span>(sleep, mu = <span class="nb">6</span>)
+
+<span class="cm"># Store it so we can extract values</span>
+model1 &lt;- <span class="fn">t.test</span>(sleep, mu = <span class="nb">6</span>)
+model1$p.value       <span class="cm"># the p-value: 0.0459</span>
+model1$statistic     <span class="cm"># the t-stat: -2.86</span>
+model1$parameter     <span class="cm"># the df: 4</span>
+model1$conf.int      <span class="cm"># the 95% CI for the mean</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><strong>Key arguments to memorize:</strong></div>
+    <div class="line-exp"><code>x</code> — your vector of data (required).</div>
+    <div class="line-exp"><code>mu = 0</code> — null hypothesis value. <strong>DEFAULT is 0.</strong> If H0: μ = 6, you MUST write <code>mu = 6</code>, or R silently tests against 0!</div>
+    <div class="line-exp"><code>alternative = "two.sided"</code> — default. Other options: <code>"less"</code>, <code>"greater"</code>.</div>
+    <div class="line-exp"><code>conf.level = 0.95</code> — default.</div>
+    <div class="line-exp"><strong>Pro tip:</strong> Run <code>?t.test</code> in R to see the help file. Arguments with <code>= something</code> have defaults you can skip.</div>
+  </div>
+</div>
+
+<div class="box box-warning">
+  <div class="box-label">Conditions for the t-test — Trick Question Alert</div>
+  <p>A common Quiz 1 trap: "what condition must hold for the t-test to be valid?"</p>
+  <p><strong>Correct answer:</strong> The data must be a random sample from the population (which makes observations independent).</p>
+  <p><strong>NOT correct:</strong></p>
+  <ul>
+    <li>"The data follows a t-distribution" — nope. The data itself is whatever it is (sleep hours, wait times, etc.).</li>
+    <li>"The sampling distribution of x̄ follows a t-distribution" — also nope. It's the <em>whole test statistic</em> (x̄ − μ₀)/(s/√n) that follows a t-distribution under H0.</li>
+    <li>"The data is normally distributed" — helpful for small n, but not literally required if n is large (CLT).</li>
+  </ul>
+  <p>Memorize this: <em>the <strong>t-statistic</strong> follows a t-distribution under H0 — not the data, not x̄.</em></p>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — Default mu</div>
+  <div class="quiz-q">You run <code>t.test(wait_times)</code> and get p = 0.003. Your H0 was that the true mean is 20 minutes. Is this p-value trustworthy?</div>
+  <div class="quiz-opt" data-i="0">Yes, t.test auto-detects the null value</div>
+  <div class="quiz-opt" data-i="1">Yes, as long as n ≥ 30</div>
+  <div class="quiz-opt" data-i="2">No — you forgot <code>mu = 20</code>, so R tested against 0</div>
+  <div class="quiz-opt" data-i="3">No — you need to also specify conf.level</div>
+  <div class="quiz-result" data-explain="The default is mu = 0. If your H0 is μ = 20 and you don't write mu = 20, R silently tests H0: μ = 0, which is garbage for wait times. This is one of the most common Quiz 1 traps."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Quiz — qt vs pt</div>
+  <div class="quiz-q">Which statement correctly describes the difference between <code>qt()</code> and <code>pt()</code>?</div>
+  <div class="quiz-opt" data-i="0">They are the same function with different names</div>
+  <div class="quiz-opt" data-i="1"><code>qt()</code>: probability → t-value. <code>pt()</code>: t-value → probability</div>
+  <div class="quiz-opt" data-i="2"><code>qt()</code>: t-value → probability. <code>pt()</code>: probability → t-value</div>
+  <div class="quiz-opt" data-i="3"><code>qt()</code> is for one-sided, <code>pt()</code> is for two-sided</div>
+  <div class="quiz-result" data-explain="q = quantile (goes p → t). p = probability (goes t → p). They are inverses. So qt(0.025, 4) gives the t-value with 2.5% below, and pt(-2.776, 4) gives 0.025 back."></div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Fill in the Blank — Manual t-test from Scratch</div>
+  <p>Given <code>x &lt;- c(48, 52, 47, 51, 50, 49, 53)</code> and H0: μ = 50 vs. Ha: μ ≠ 50. Fill in the blanks:</p>
+<pre class="r-code">t_stat &lt;- (<span class="fn">mean</span>(x) - ____) / (<span class="fn">sd</span>(x) / <span class="fn">sqrt</span>(____))
+
+df &lt;- ____
+
+<span class="cm"># two-sided p-value</span>
+p_val &lt;- <span class="nb">2</span> * <span class="fn">pt</span>(-<span class="fn">abs</span>(t_stat), df = ____)
+</pre>
+  <details><summary>Click for answer</summary>
+<pre class="r-code">t_stat &lt;- (<span class="fn">mean</span>(x) - <span class="nb">50</span>) / (<span class="fn">sd</span>(x) / <span class="fn">sqrt</span>(<span class="nb">7</span>))
+df &lt;- <span class="nb">6</span>  <span class="cm"># n - 1 = 7 - 1</span>
+p_val &lt;- <span class="nb">2</span> * <span class="fn">pt</span>(-<span class="fn">abs</span>(t_stat), df = <span class="nb">6</span>)
+</pre>
+  <p><strong>Why -abs(t_stat)?</strong> It forces the argument into the lower tail so <code>pt()</code> (default lower.tail=TRUE) gives the correct small tail area. Works whether t_stat is positive or negative.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Fill in the Blank — One-Sided t.test()</div>
+  <p>You suspect UCSD students sleep <em>less</em> than 7 hours. Test H0: μ = 7 vs. Ha: μ &lt; 7 using <code>t.test()</code>:</p>
+<pre class="r-code">sleep &lt;- <span class="fn">c</span>(<span class="nb">3</span>, <span class="nb">7</span>, <span class="nb">1</span>, <span class="nb">2</span>, <span class="nb">2</span>)
+
+result &lt;- <span class="fn">t.test</span>(sleep, mu = ____, alternative = "____")
+result$p.value
+</pre>
+  <details><summary>Click for answer</summary>
+<pre class="r-code">result &lt;- <span class="fn">t.test</span>(sleep, mu = <span class="nb">7</span>, alternative = <span class="st">"less"</span>)
+</pre>
+  <p><strong>Key:</strong> <code>alternative = "less"</code> tests Ha: μ &lt; mu. The string options are <code>"less"</code>, <code>"greater"</code>, or <code>"two.sided"</code> (default).</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Write Your Own — Sleep Study, One-Sided</div>
+  <p>Your friend claims UCSD students average <em>more</em> than 5 hours of sleep. Your data: <code>c(4, 6, 5, 7, 3, 8, 5)</code>. Test H0: μ = 5 vs. Ha: μ &gt; 5 at α = 0.05. Write code that prints the p-value and a sentence like "reject H0" or "fail to reject H0."</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">x &lt;- <span class="fn">c</span>(<span class="nb">4</span>, <span class="nb">6</span>, <span class="nb">5</span>, <span class="nb">7</span>, <span class="nb">3</span>, <span class="nb">8</span>, <span class="nb">5</span>)
+result &lt;- <span class="fn">t.test</span>(x, mu = <span class="nb">5</span>, alternative = <span class="st">"greater"</span>)
+p &lt;- result$p.value
+<span class="fn">cat</span>(<span class="st">"p-value ="</span>, p, <span class="st">"\n"</span>)
+<span class="kr">if</span> (p &lt; <span class="nb">0.05</span>) {
+  <span class="fn">print</span>(<span class="st">"Reject H0"</span>)
+} <span class="kr">else</span> {
+  <span class="fn">print</span>(<span class="st">"Fail to reject H0"</span>)
+}
+</pre>
+  </details>
+</div>
+
+<button class="complete-btn" onclick="completeLevel('7b')">Mark Level 7b Complete</button>
+</div></div>
+
+<!-- ==================== LEVEL 7c (Discrete Rejection Regions) ==================== -->
+<div class="level-card" id="level-7c">
+<div class="level-header" onclick="toggleLevel('7c')">
+  <span class="level-title"><span class="num">Level 7c</span> — Discrete Rejection Regions (Why α = 0.05 Isn't Always Achievable)</span>
+  <span class="level-xp">+55 XP</span>
+</div>
+<div class="level-body" id="level-body-7c">
+
+<div class="box box-story">
+  <div class="box-label">Business Story — Rosa Smith's 3-Point Shot</div>
+  <p>You're the data scientist for the UCSD women's basketball team. Coach VanDerveer asks: "Has Rosa Smith improved her 3-point shooting beyond her historical 30%?"</p>
+  <p><strong>H0:</strong> p = 0.30 &nbsp; vs. &nbsp; <strong>Ha:</strong> p &gt; 0.30</p>
+  <p>After 4 games, Smith has taken n = 9 three-point attempts. You want α = 0.05. But here's the problem: the number of makes X is <strong>discrete</strong> — it can only be 0, 1, 2, ..., 9. You can't get exactly 5% probability in the tail. You pick the cutoff whose actual tail probability is closest to 0.05.</p>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">The Discrete Rejection Region Problem</div>
+  <p>In a continuous test (like the t-test), you slide the critical value until you capture exactly 5% in the tail. Easy.</p>
+  <p>In a discrete test (binomial, sign test), the tail probability <strong>jumps</strong> as you change the cutoff. For example with n = 9, p₀ = 0.30:</p>
+  <ul>
+    <li>Reject if X ≥ 5: actual α = P(X ≥ 5) ≈ 0.0994</li>
+    <li>Reject if X ≥ 6: actual α = P(X ≥ 6) ≈ 0.0253 ← closest to 0.05!</li>
+    <li>Reject if X ≥ 7: actual α ≈ 0.0043</li>
+  </ul>
+  <p>So the rejection region closest to α = 0.05 is <strong>{6, 7, 8, 9}</strong> with actual α ≈ 0.0253.</p>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">The pbinom() Cheat Code</div>
+<pre class="r-code"><span class="cm"># P(X &gt;= k) when X ~ Binomial(n, p)</span>
+<span class="fn">pbinom</span>(k - <span class="nb">1</span>, size = n, prob = p, lower.tail = <span class="nb">FALSE</span>)
+
+<span class="cm"># P(X &lt;= k)</span>
+<span class="fn">pbinom</span>(k, size = n, prob = p)
+
+<span class="cm"># P(X = k)</span>
+<span class="fn">dbinom</span>(k, size = n, prob = p)
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><strong>Why k - 1?</strong> By default, <code>pbinom(q, n, p, lower.tail = FALSE)</code> returns P(X &gt; q), NOT P(X ≥ q). To get P(X ≥ k), you ask for P(X &gt; k − 1).</div>
+    <div class="line-exp"><strong>Rule:</strong> Anytime you see <code>lower.tail = FALSE</code>, mentally insert "strictly greater than."</div>
+    <div class="line-exp">This is the single most common R mistake on discrete tests. Memorize the k − 1 trick.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Finding the Best Cutoff Automatically</div>
+<pre class="r-code">n &lt;- <span class="nb">9</span>
+p0 &lt;- <span class="nb">0.30</span>
+
+<span class="cm"># Try every possible cutoff k = 0, 1, ..., 9</span>
+cutoffs &lt;- <span class="nb">0</span>:n
+alphas &lt;- <span class="fn">sapply</span>(cutoffs, <span class="kr">function</span>(k) {
+  <span class="fn">pbinom</span>(k - <span class="nb">1</span>, size = n, prob = p0, lower.tail = <span class="nb">FALSE</span>)
+})
+
+<span class="cm"># Pick the cutoff whose alpha is closest to 0.05</span>
+best_idx &lt;- <span class="fn">which.min</span>(<span class="fn">abs</span>(alphas - <span class="nb">0.05</span>))
+best_cutoff &lt;- cutoffs[best_idx]
+actual_alpha &lt;- alphas[best_idx]
+
+best_cutoff     <span class="cm"># 6</span>
+actual_alpha    <span class="cm"># 0.0253</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><code>sapply()</code> applies a function to each element and returns a vector. Here it builds a vector of α values, one per cutoff.</div>
+    <div class="line-exp"><code>which.min(abs(alphas - 0.05))</code> — finds the INDEX of the alpha closest to 0.05. Then <code>cutoffs[best_idx]</code> retrieves that cutoff.</div>
+    <div class="line-exp"><strong>Rejection region:</strong> {best_cutoff, best_cutoff+1, ..., n}. Here: {6, 7, 8, 9}.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Power for a Binomial Test</div>
+<pre class="r-code"><span class="cm"># If Smith's TRUE 3-point rate is p = 0.375, what's the power?</span>
+<span class="cm"># (i.e., probability we correctly reject H0: p = 0.30)</span>
+p_true &lt;- <span class="nb">0.375</span>
+power &lt;- <span class="fn">pbinom</span>(best_cutoff - <span class="nb">1</span>, size = n, prob = p_true,
+                 lower.tail = <span class="nb">FALSE</span>)
+power
+<span class="cm"># ≈ 0.099 — low. We would miss a real 7.5-point improvement ~90% of the time.</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><strong>Same formula, different p.</strong> Type I error uses p = p₀ (null). Power uses p = p_true (real world).</div>
+    <div class="line-exp">Here n = 9 is tiny, so we have very little power to detect even a meaningful improvement. Key insight for Coach: need more games.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">p-value for a One-Sided Binomial Test</div>
+<pre class="r-code"><span class="cm"># Smith made 5 of 9 three-pointers. What's the p-value?</span>
+x_obs &lt;- <span class="nb">5</span>
+n &lt;- <span class="nb">9</span>
+p0 &lt;- <span class="nb">0.30</span>
+
+p_value &lt;- <span class="fn">pbinom</span>(x_obs - <span class="nb">1</span>, size = n, prob = p0, lower.tail = <span class="nb">FALSE</span>)
+p_value
+<span class="cm"># ≈ 0.0988</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><strong>p-value = P(X ≥ x_obs | H0 true).</strong> For one-sided "greater" test, it's the upper tail.</div>
+    <div class="line-exp">0.099 &gt; 0.05 → fail to reject H0. But notice: x_obs = 5 puts Smith ABOVE the rejection cutoff of 6? No — 5 is NOT in {6, 7, 8, 9}. The p-value and rejection region agree: do not reject.</div>
+    <div class="line-exp"><strong>Interpretation tie-in to power:</strong> Because power is so low (0.099), failing to reject doesn't mean Smith hasn't improved — we just can't tell from 9 shots.</div>
+  </div>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">Two-Sided p-value for a Sign Test (Tricky)</div>
+  <p>For a two-sided sign test H0: median = M₀ vs. Ha: median ≠ M₀, the p-value is:</p>
+<pre class="r-code">p_low  &lt;- <span class="fn">pbinom</span>(x_above, size = n, prob = <span class="nb">0.5</span>)
+p_high &lt;- <span class="fn">pbinom</span>(x_above - <span class="nb">1</span>, size = n, prob = <span class="nb">0.5</span>, lower.tail = <span class="nb">FALSE</span>)
+p_value &lt;- <span class="fn">min</span>(<span class="nb">1</span>, <span class="nb">2</span> * <span class="fn">min</span>(p_low, p_high))
+</pre>
+  <p>Where <code>x_above</code> is the count of observations above M₀ (ties are dropped). The <code>min(1, ...)</code> caps the p-value at 1 in case doubling pushes it above.</p>
+  <p><strong>Intuition:</strong> Under H0, X ~ Binomial(n, 0.5). The p-value is the probability of a count at least as extreme, on either side. For a skewed discrete distribution it's not just "2 × one tail."</p>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Quiz — pbinom Trap</div>
+  <div class="quiz-q">You want P(X ≥ 6) for X ~ Binomial(9, 0.30). Which R code is correct?</div>
+  <div class="quiz-opt" data-i="0"><code>pbinom(6, 9, 0.30, lower.tail = FALSE)</code></div>
+  <div class="quiz-opt" data-i="1"><code>pbinom(5, 9, 0.30, lower.tail = FALSE)</code></div>
+  <div class="quiz-opt" data-i="2"><code>pbinom(6, 9, 0.30)</code></div>
+  <div class="quiz-opt" data-i="3"><code>1 - pbinom(6, 9, 0.30)</code></div>
+  <div class="quiz-result" data-explain="pbinom(q, ..., lower.tail = FALSE) gives P(X > q), NOT P(X ≥ q). To get P(X ≥ 6), use q = 5 so you get P(X > 5) = P(X ≥ 6). Option 3 equals P(X > 6) = P(X ≥ 7), wrong. Option 0 also gives P(X ≥ 7)."></div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — Why Not Exact 0.05?</div>
+  <div class="quiz-q">Why can't a binomial test with n = 9 achieve exactly α = 0.05?</div>
+  <div class="quiz-opt" data-i="0">Because 9 is not divisible by 20</div>
+  <div class="quiz-opt" data-i="1">Because the p-value formula has rounding error</div>
+  <div class="quiz-opt" data-i="2">Because the test statistic is discrete — tail probabilities come in jumps, not a continuum</div>
+  <div class="quiz-opt" data-i="3">Because α = 0.05 is only a convention, not a real number</div>
+  <div class="quiz-result" data-explain="With 10 possible outcomes (0 through 9), the tail probability can only take 10 discrete values as you vary the cutoff. 0.05 typically falls between two of them. So you pick the cutoff closest to 0.05. This is a Lecture 2 / Smith homework favorite question."></div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Fill in the Blank — Build the Alpha Table</div>
+  <p>Write code that builds the vector of "actual α" values for n = 12, p₀ = 0.25, and one-sided "greater" test, for cutoffs k = 0, 1, ..., 12. Then find the cutoff whose α is closest to 0.05.</p>
+<pre class="r-code">n &lt;- <span class="nb">12</span>
+p0 &lt;- <span class="nb">0.25</span>
+cutoffs &lt;- <span class="nb">0</span>:____
+
+alphas &lt;- <span class="fn">sapply</span>(cutoffs, <span class="kr">function</span>(k) {
+  <span class="fn">pbinom</span>(____ - <span class="nb">1</span>, size = ____, prob = ____, lower.tail = <span class="nb">FALSE</span>)
+})
+
+best_idx &lt;- <span class="fn">which.min</span>(<span class="fn">abs</span>(alphas - ____))
+best_cutoff &lt;- cutoffs[____]
+</pre>
+  <details><summary>Click for answer</summary>
+<pre class="r-code">cutoffs &lt;- <span class="nb">0</span>:n
+alphas &lt;- <span class="fn">sapply</span>(cutoffs, <span class="kr">function</span>(k) {
+  <span class="fn">pbinom</span>(k - <span class="nb">1</span>, size = n, prob = p0, lower.tail = <span class="nb">FALSE</span>)
+})
+best_idx &lt;- <span class="fn">which.min</span>(<span class="fn">abs</span>(alphas - <span class="nb">0.05</span>))
+best_cutoff &lt;- cutoffs[best_idx]
+</pre>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Write Your Own — Power for Smith at p_true = 0.45</div>
+  <p>Coach asks: "If Smith's TRUE 3-point rate is 45%, what's the power of our test with n = 9 and rejection region {6, 7, 8, 9}?" Write the code.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">n &lt;- <span class="nb">9</span>
+best_cutoff &lt;- <span class="nb">6</span>
+p_true &lt;- <span class="nb">0.45</span>
+power &lt;- <span class="fn">pbinom</span>(best_cutoff - <span class="nb">1</span>, size = n, prob = p_true, lower.tail = <span class="nb">FALSE</span>)
+power
+<span class="cm"># ≈ 0.254 — still underpowered</span>
+</pre>
+  <p>Same pattern: power = P(X ≥ cutoff | p = p_true), computed via pbinom with k - 1 and lower.tail = FALSE.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Write Your Own — Parsing "Made-Attempts" Strings</div>
+  <p>The full season dataset has a column like <code>"1-2"</code> meaning "made 1 of 2 attempts." Extract the two numbers into separate numeric vectors <code>made</code> and <code>att</code>, then perform H0: p = 0.30 vs. Ha: p &gt; 0.30 using the TOTALS.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code"><span class="cm"># Assume smith &lt;- read.delim("smith.txt") was already run</span>
+parts &lt;- <span class="fn">strsplit</span>(smith[[<span class="st">"3FG/A"</span>]], <span class="st">"-"</span>)
+made &lt;- <span class="fn">as.numeric</span>(<span class="fn">sapply</span>(parts, `[`, <span class="nb">1</span>))
+att  &lt;- <span class="fn">as.numeric</span>(<span class="fn">sapply</span>(parts, `[`, <span class="nb">2</span>))
+
+total_made &lt;- <span class="fn">sum</span>(made)
+total_att  &lt;- <span class="fn">sum</span>(att)
+
+p_hat   &lt;- total_made / total_att
+p_value &lt;- <span class="fn">pbinom</span>(total_made - <span class="nb">1</span>, size = total_att,
+                   prob = <span class="nb">0.30</span>, lower.tail = <span class="nb">FALSE</span>)
+p_hat
+p_value
+</pre>
+  <p><strong>Key tricks:</strong> <code>strsplit()</code> splits each string on <code>"-"</code> and returns a list. <code>sapply(parts, `[`, i)</code> grabs the i-th piece from each element. Then <code>as.numeric()</code> converts.</p>
+  </details>
+</div>
+
+<button class="complete-btn" onclick="completeLevel('7c')">Mark Level 7c Complete</button>
+</div></div>
+
 <!-- ==================== LEVEL 8 ==================== -->
 <div class="level-card" id="level-8">
 <div class="level-header" onclick="toggleLevel(8)">
@@ -1357,9 +1854,25 @@ type1_rate &lt;- rejections / n_sims
 </div>
 
 <div class="box box-concept">
-  <div class="box-label">Concept - What is Bootstrapping?</div>
-  <p><strong>Resampling with replacement</strong> = pick items from your data, but after each pick, put it back so it can be picked again. Your "bootstrap sample" has the same size as the original, but some values appear multiple times and some are missing.</p>
-  <p>Do this thousands of times, calculate the mean each time, and the middle 95% gives you a 95% CI.</p>
+  <div class="box-label">Concept — Bootstrap in Plain English</div>
+  <p>The bootstrap is a way to pretend we have lots of samples when we really only have one. Here is the intuition in three sentences:</p>
+  <ol>
+    <li>In a perfect world we would collect many new samples from the population and watch how much the sample mean bounces around. That tells us the uncertainty.</li>
+    <li>In real life we only have one sample, so we fake it: we treat our sample AS IF it were the population, and draw new "samples" from it <strong>with replacement</strong>.</li>
+    <li>Each fake sample gives a new mean. After 10,000 fake samples we have 10,000 means, and their middle 95% is our 95% confidence interval.</li>
+  </ol>
+  <p><strong>Resampling with replacement</strong> means: pick a value, write it down, put it back, pick again. So the same value can show up multiple times in a single bootstrap sample, and some original values may not show up at all. That's what makes each bootstrap sample slightly different.</p>
+  <p>Three rules of thumb for the bootstrap:</p>
+  <ul>
+    <li>Each bootstrap sample is the SAME SIZE as the original sample (if your data has n=8 values, each resample has 8 values too).</li>
+    <li>You use <code>replace = TRUE</code> in <code>sample()</code>. Without that, you'd just get the original data shuffled, which is useless.</li>
+    <li>The bigger the number of bootstrap replicates B, the smoother your CI. B = 10,000 is a common default.</li>
+  </ul>
+</div>
+
+<div class="box box-analogy">
+  <div class="box-label">Analogy — Xeroxing the Data</div>
+  <p>Imagine your sample is a small stack of index cards. The bootstrap says: grab a card, write down its number, <em>put it back</em>, shuffle, grab again. Repeat n times to build one "photocopy" of your dataset. Now compute the mean of that photocopy. Do this 10,000 times and look at the spread of means.</p>
 </div>
 
 <div class="box box-rcode">
@@ -1476,6 +1989,175 @@ ci &lt;- <span class="fn">quantile</span>(boot_means, <span class="fn">c</span>(
 
 </div></div>
 
+<!-- ==================== LEVEL 11b (Lecture 3 Replay) ==================== -->
+<div class="level-card" id="level-11b">
+<div class="level-header" onclick="toggleLevel('11b')">
+  <span class="level-title"><span class="num">Level 11b</span> — Lecture 3 Replay: The Sign Test Up Close (and Why Non-Parametric Beats the Gamma)</span>
+  <span class="level-xp">+60 XP</span>
+</div>
+<div class="level-body" id="level-body-11b">
+
+<div class="box box-story">
+  <div class="box-label">Recap — Where Lecture 3 Picks Up</div>
+  <p>In Lecture 2, we ran a t-test. In the simulation at the end, we saw that the t-test on gamma-distributed data with n = 5 gave a Type I error rate of about <strong>0.11</strong> — way higher than the nominal 0.05. That's because the t-test's validity hinges on the data being close to normal, and the gamma is heavily skewed.</p>
+  <p>Lecture 3 asks: is there a test that <em>doesn't</em> care about the data's distribution? Yes — a <strong>non-parametric</strong> test. "Non-parametric" means: no closed-form null distribution, no normality assumption. The sign test is the one we're going to focus on.</p>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">The Key Setup Question (from Poll Everywhere)</div>
+  <p>The professor asked: if H0: μ = 6 is true, what does the data look like? Students' intuition was "every value equals 6" — but that's way stronger than needed. H0 just needs the mean to be 6; individual values can be spread around it.</p>
+  <p>What the sign test latches onto is a different, more robust framing of H0: <strong>half the values are above 6 and half are below 6.</strong> That's a statement about the <em>median</em>, not the mean — which is why the sign test is technically a test of the median (denoted μ̃).</p>
+  <p>A sign test H0: μ̃ = 6 vs. Ha: μ̃ ≠ 6 says: "each observation is independently 50/50 above or below 6." Under H0, the count above ~ Binomial(n, 0.5).</p>
+</div>
+
+<div class="box box-warning">
+  <div class="box-label">Gotcha — Mean ≠ Median (Usually)</div>
+  <p>If the data are <strong>symmetric</strong>, then mean = median, so a sign test for the median is effectively a test for the mean. If the data are <strong>skewed</strong>, mean ≠ median, and the sign test is strictly a test for the median.</p>
+  <p>Always read the question carefully: "test whether the average is..." → t-test or bootstrap. "Test whether the median is..." → sign test. The Quiz 1 language matters.</p>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">The Professor's Sign Test Function (Recreated)</div>
+<pre class="r-code"><span class="cm"># Returns a two-sided sign-test p-value, null hypothesis median = 6</span>
+sign_test &lt;- <span class="kr">function</span>(x) {
+  x &lt;- x[x != <span class="nb">6</span>]                     <span class="cm"># drop ties with null</span>
+  n &lt;- <span class="fn">length</span>(x)
+  x_above &lt;- <span class="fn">sum</span>(x &gt; <span class="nb">6</span>)
+
+  <span class="cm"># two-sided min-tail doubling</span>
+  p_low  &lt;- <span class="fn">pbinom</span>(x_above, size = n, prob = <span class="nb">0.5</span>)
+  p_high &lt;- <span class="fn">pbinom</span>(x_above - <span class="nb">1</span>, size = n, prob = <span class="nb">0.5</span>,
+                    lower.tail = <span class="nb">FALSE</span>)
+  <span class="fn">min</span>(<span class="nb">1</span>, <span class="nb">2</span> * <span class="fn">min</span>(p_low, p_high))
+}
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><strong>Why drop ties?</strong> If a value equals the null median exactly, it's neither above nor below. The lecture advice: drop them. (In the simulation, continuous distributions mean ties have probability 0.)</div>
+    <div class="line-exp"><strong>Why min-tail doubling?</strong> Binomial(n, 0.5) is symmetric, so two-sided p ≈ 2× the smaller tail — but the outer <code>min(1, ...)</code> clips it so the p-value never exceeds 1.</div>
+  </div>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">Why α = 0.0625 for n = 5 (Not 0.05)</div>
+  <p>With n = 5 and H0: p = 0.5, the most extreme rejection region is {X = 0} ∪ {X = 5} (all above or all below).</p>
+  <p>P(X = 0) = 0.5⁵ = 0.03125. By symmetry, P(X = 5) = 0.03125 too.</p>
+  <p>So the smallest non-empty two-sided rejection region has α = 0.03125 + 0.03125 = <strong>0.0625</strong>.</p>
+  <p>You <em>cannot</em> achieve exactly 0.05 with n = 5. You either use {0, 5} with α = 0.0625, or you use {} (the empty set) with α = 0 (but you'd never reject anything). The lecture convention: use the rejection region closest to 0.05 — here, {0, 5} with α = 0.0625.</p>
+  <p><strong>Coding detail:</strong> The professor added a small ε bump (0.0626) so that when the simulated p-value equals 0.0625 exactly, the comparison <code>p_value &lt; alpha</code> still rejects.</p>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Type I Error Simulation — Sign Test vs. t-test Under Gamma</div>
+<pre class="r-code"><span class="fn">set.seed</span>(<span class="nb">123</span>)
+B &lt;- <span class="nb">10000</span>
+n &lt;- <span class="nb">5</span>
+alpha &lt;- <span class="nb">0.0626</span>      <span class="cm"># 0.0625 + epsilon</span>
+reject &lt;- <span class="fn">logical</span>(B)
+
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  <span class="cm"># Scale 6.757 gives gamma MEDIAN of 6 (not mean!)</span>
+  gam_data &lt;- <span class="fn">rgamma</span>(n, shape = <span class="nb">1.2</span>, scale = <span class="nb">6.757</span>)
+  pval &lt;- sign_test(gam_data)
+  reject[b] &lt;- pval &lt; alpha
+}
+<span class="fn">mean</span>(reject)
+<span class="cm"># ≈ 0.0625 — the sign test controls Type I error perfectly under gamma!</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><strong>Critical subtlety:</strong> When simulating under H0 for a sign test, the null median must equal μ̃₀. For a gamma(shape=1.2, scale=5) the MEAN is 6, but the MEDIAN is different. Scale = 6.757 gives MEDIAN = 6. This is the magic number from the lecture.</div>
+    <div class="line-exp">Contrast: t-test on the same gamma data gave Type I error ≈ 0.11. Sign test gives ≈ 0.0625, which is exactly the nominal level. <strong>This is the headline result of Lecture 3.</strong></div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Sign Test Under Uniform and Normal (Sanity Checks)</div>
+<pre class="r-code"><span class="cm"># Uniform(2, 10) — median = 6, same as mean</span>
+unif_data &lt;- <span class="fn">runif</span>(n, min = <span class="nb">2</span>, max = <span class="nb">10</span>)
+
+<span class="cm"># Normal(6, 1) — median = mean = 6</span>
+norm_data &lt;- <span class="fn">rnorm</span>(n, mean = <span class="nb">6</span>, sd = <span class="nb">1</span>)
+</pre>
+  <p>Swap these into the simulation loop; both give Type I error ≈ 0.0625. The sign test is <em>distribution-agnostic</em> — this is the defining property of a non-parametric test.</p>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">Bootstrap CI as a Non-Parametric Test for the MEAN</div>
+  <p>The sign test lets you test a median without any distribution assumption. But what if you specifically care about the mean and your data is skewed? Enter the bootstrap.</p>
+  <p>A 95% bootstrap CI for the mean <em>is</em> a (roughly) α = 0.05 two-sided test of H0: μ = μ₀: if μ₀ is outside the CI, reject; otherwise, fail to reject.</p>
+<pre class="r-code">boot_means &lt;- <span class="fn">numeric</span>(<span class="nb">10000</span>)
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:<span class="nb">10000</span>) {
+  resample &lt;- <span class="fn">sample</span>(sleep, size = <span class="fn">length</span>(sleep), replace = <span class="nb">TRUE</span>)
+  boot_means[b] &lt;- <span class="fn">mean</span>(resample)
+}
+ci &lt;- <span class="fn">quantile</span>(boot_means, <span class="fn">c</span>(<span class="nb">0.025</span>, <span class="nb">0.975</span>))
+</pre>
+  <p><strong>Three rules (memorize):</strong> (1) resample WITH replacement, (2) same size as original, (3) take the 2.5th and 97.5th percentiles of the bootstrap <em>means</em>, not the data.</p>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — Why Non-Parametric Works</div>
+  <div class="quiz-q">The t-test's Type I error rate inflates on gamma data. Why does the sign test's Type I error stay near 0.0625 on the same data?</div>
+  <div class="quiz-opt" data-i="0">The sign test has a stronger null hypothesis</div>
+  <div class="quiz-opt" data-i="1">The gamma distribution is secretly normal in disguise</div>
+  <div class="quiz-opt" data-i="2">The sign test's null distribution depends only on Binomial(n, 0.5) — the data distribution is irrelevant</div>
+  <div class="quiz-opt" data-i="3">Because n = 5 is large enough for the CLT</div>
+  <div class="quiz-result" data-explain="Under H0: median = μ̃₀, each observation is 50/50 above or below by definition. Binomial(n, 0.5) doesn't know or care whether the data came from normal, gamma, or Martian distributions. That's the magic of non-parametric tests."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Quiz — Smallest Alpha for n = 5</div>
+  <div class="quiz-q">Why is the smallest achievable alpha for a two-sided sign test with n = 5 equal to 0.0625 and not, say, 0.03?</div>
+  <div class="quiz-opt" data-i="0">Because Binomial(5, 0.5) has mean 2.5</div>
+  <div class="quiz-opt" data-i="1">Because the smallest non-empty two-sided rejection region is {0, 5}, with P = 2 × 0.5⁵ = 0.0625</div>
+  <div class="quiz-opt" data-i="2">Because n = 5 is odd</div>
+  <div class="quiz-opt" data-i="3">Because the professor said so</div>
+  <div class="quiz-result" data-explain="The discrete null puts P(X=0) = P(X=5) = 0.03125. A smaller non-empty region doesn't exist. You either use {0, 5} (α=0.0625) or nothing (α=0). 0.05 is unreachable."></div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — Gamma Scale for Median</div>
+  <div class="quiz-q">The lecture used <code>rgamma(n, shape = 1.2, scale = 6.757)</code> instead of the Lec 2 version <code>rgamma(n, shape = 2, scale = 3)</code>. Why?</div>
+  <div class="quiz-opt" data-i="0">To make the simulation faster</div>
+  <div class="quiz-opt" data-i="1">Random choice — any parameters work</div>
+  <div class="quiz-opt" data-i="2">Because the sign test needs the MEDIAN to equal 6 under H0; for gamma, mean ≠ median, so you can't just pick a gamma with mean 6</div>
+  <div class="quiz-opt" data-i="3">To match the shape parameter to the data</div>
+  <div class="quiz-result" data-explain="Gamma is right-skewed, so its mean > its median. If you want to simulate under H0: median = 6, you need the gamma's median to be 6 — which requires different parameters than making its mean 6. Always match the data-generating parameter to whatever H0 is about."></div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Write Your Own — Sign Test Type I Error Simulation (Generalized)</div>
+  <p>Write a function <code>sign_test_type1(n, B, dist_fn)</code> that estimates the Type I error rate of a two-sided sign test for H0: median = 0, given a data-generating function <code>dist_fn(n)</code> that returns n values whose median is 0. Test it with <code>dist_fn = function(n) rnorm(n)</code> and n = 15.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">sign_test_general &lt;- <span class="kr">function</span>(x, mu0 = <span class="nb">0</span>) {
+  x &lt;- x[x != mu0]
+  n &lt;- <span class="fn">length</span>(x)
+  x_above &lt;- <span class="fn">sum</span>(x &gt; mu0)
+  p_low  &lt;- <span class="fn">pbinom</span>(x_above, size = n, prob = <span class="nb">0.5</span>)
+  p_high &lt;- <span class="fn">pbinom</span>(x_above - <span class="nb">1</span>, size = n, prob = <span class="nb">0.5</span>,
+                    lower.tail = <span class="nb">FALSE</span>)
+  <span class="fn">min</span>(<span class="nb">1</span>, <span class="nb">2</span> * <span class="fn">min</span>(p_low, p_high))
+}
+
+sign_test_type1 &lt;- <span class="kr">function</span>(n, B, dist_fn) {
+  reject &lt;- <span class="fn">logical</span>(B)
+  <span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+    samp &lt;- dist_fn(n)
+    reject[b] &lt;- sign_test_general(samp, mu0 = <span class="nb">0</span>) &lt; <span class="nb">0.05</span>
+  }
+  <span class="fn">mean</span>(reject)
+}
+
+<span class="fn">set.seed</span>(<span class="nb">42</span>)
+sign_test_type1(<span class="nb">15</span>, <span class="nb">10000</span>, <span class="kr">function</span>(n) <span class="fn">rnorm</span>(n))
+<span class="cm"># ≈ 0.035 (below nominal 0.05 because the closest achievable alpha for n=15 is about 0.035)</span>
+</pre>
+  <p><strong>Key teaching point:</strong> For n = 15, the achievable alphas jump around 0.05. You may get 0.035 or 0.07 depending on the cutoff. The sign test does not hit 0.05 exactly, but it stays <em>valid</em> (≤ nominal) for any data distribution.</p>
+  </details>
+</div>
+
+<button class="complete-btn" onclick="completeLevel('11b')">Mark Level 11b Complete</button>
+</div></div>
+
 <!-- ==================== LEVEL 12 ==================== -->
 <div class="level-card" id="level-12">
 <div class="level-header" onclick="toggleLevel(12)">
@@ -1485,7 +2167,7 @@ ci &lt;- <span class="fn">quantile</span>(boot_means, <span class="fn">c</span>(
 <div class="level-body" id="level-body-12">
 
 <div class="box box-story">
-  <div class="box-label">Business Story - The Metal Detector</div>
+  <div class="box-label">Business Story — The Metal Detector</div>
   <p>Imagine a metal detector at the beach. Your ability to find treasure depends on:</p>
   <ul>
     <li><strong>How big the object is</strong> (big ring vs tiny earring) = effect size (delta)</li>
@@ -1493,37 +2175,108 @@ ci &lt;- <span class="fn">quantile</span>(boot_means, <span class="fn">c</span>(
     <li><strong>How sensitive your detector is</strong> = alpha</li>
     <li><strong>How long you search</strong> = sample size (n)</li>
   </ul>
-  <p><strong>Power = probability that your detector finds the treasure.</strong></p>
+  <p><strong>Power = the probability that your detector finds the treasure, assuming there really IS treasure.</strong></p>
 </div>
 
 <div class="box box-concept">
-  <div class="box-label">Four Things That Affect Power</div>
+  <div class="box-label">Concept — What Power Actually Is</div>
+  <p><strong>Power = P(reject H0 | H0 is false).</strong> In words: if the claim is actually wrong, how often will our test correctly notice?</p>
+  <p>Compare this with Type I Error: <strong>Type I Error = P(reject H0 | H0 is true)</strong>. Same test, different assumption about reality.</p>
+  <ul>
+    <li>Type I Error: we fake data where H0 is TRUE and count false alarms. Want this low.</li>
+    <li>Power: we fake data where H0 is FALSE and count correct detections. Want this high.</li>
+  </ul>
+  <p>Power ranges from 0 to 1. Higher is better. 0.80 is the conventional target.</p>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">Concept — Mean, Effect Size, and Power (The Key Quiz 1 Relationship)</div>
+  <p>This is the thing most students get confused about. Keep this picture in your head:</p>
+  <ul>
+    <li><strong>mu0</strong> = the claimed mean (the null value you are testing against).</li>
+    <li><strong>true mean</strong> = the real population mean (what actually generates the data).</li>
+    <li><strong>delta (effect size in raw units)</strong> = the GAP: true mean &minus; mu0.</li>
+  </ul>
+  <p>So if the airport claims mu0 = 20 minutes but the true average is 50, then delta = 50 &minus; 20 = 30. When you simulate power, you generate data with mean = mu0 + delta, which here means mean = 50. You then test that data against mu0 = 20 and see how often you (correctly) reject.</p>
+  <p><strong>The bigger delta is relative to the noise sigma, the easier it is to detect, so power goes up.</strong> This is why power is often summarized through the <em>standardized effect size</em> d = delta / sigma (Cohen's d).</p>
+  <p>Plain English for Quiz 1:</p>
+  <ul>
+    <li>Tiny gap between mu0 and the truth &rarr; hard to detect &rarr; low power.</li>
+    <li>Big gap between mu0 and the truth &rarr; easy to detect &rarr; high power.</li>
+    <li>Noisy data (big sigma) hides the gap &rarr; low power. Tight data (small sigma) exposes the gap &rarr; high power.</li>
+    <li>More data (big n) shrinks the standard error sigma/sqrt(n) &rarr; high power.</li>
+  </ul>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">Four Dials That Turn Power Up or Down</div>
   <ol>
-    <li><strong>n (sample size)</strong> - Bigger n = more power.</li>
-    <li><strong>alpha</strong> - Bigger alpha = more power (but more false alarms).</li>
-    <li><strong>sigma (sd)</strong> - Smaller sigma = more power. Less noise.</li>
-    <li><strong>delta (effect size)</strong> - Bigger delta = more power. Bigger effect.</li>
+    <li><strong>n (sample size)</strong> &uarr; &rarr; power &uarr;. More data makes the sampling distribution narrower.</li>
+    <li><strong>delta (true gap from mu0)</strong> &uarr; &rarr; power &uarr;. Bigger effect is easier to catch.</li>
+    <li><strong>sigma (standard deviation of the data)</strong> &darr; &rarr; power &uarr;. Less noise, clearer signal.</li>
+    <li><strong>alpha (significance level)</strong> &uarr; &rarr; power &uarr;, but you also get more false alarms. Usually fixed at 0.05.</li>
   </ol>
+  <p class="text-yellow"><strong>Quiz 1 intuition check:</strong> Practice Quiz 1 Q2 asks about power when delta = 30 and sigma = 10 — a HUGE gap relative to the noise. No surprise that power is 0.9999.</p>
 </div>
 
 <div class="box box-rcode">
-  <div class="box-label">R Code - power.t.test</div>
-<pre class="r-code"><span class="cm"># How much power to detect a difference of 2?</span>
+  <div class="box-label">R Code — power.t.test (Read It Line by Line)</div>
+<pre class="r-code"><span class="cm"># 1) Compute power given n, delta, sd, alpha</span>
 <span class="fn">power.t.test</span>(n = <span class="nb">30</span>, delta = <span class="nb">2</span>, sd = <span class="nb">5</span>,
-             sig.level = <span class="nb">0.05</span>, type = <span class="st">"one.sample"</span>)
+             sig.level = <span class="nb">0.05</span>,
+             type = <span class="st">"one.sample"</span>,
+             alternative = <span class="st">"two.sided"</span>)
 
-<span class="cm"># How many subjects needed for 80% power?</span>
+<span class="cm"># 2) Solve for the required sample size to hit 80% power</span>
 <span class="fn">power.t.test</span>(power = <span class="nb">0.80</span>, delta = <span class="nb">2</span>, sd = <span class="nb">5</span>,
-             sig.level = <span class="nb">0.05</span>, type = <span class="st">"one.sample"</span>)
+             sig.level = <span class="nb">0.05</span>,
+             type = <span class="st">"one.sample"</span>)
+
+<span class="cm"># 3) Practice Quiz 1 Q2: SAN airport, mu0=20, true mean=50, sigma=10, n=10</span>
+<span class="fn">power.t.test</span>(n = <span class="nb">10</span>, delta = <span class="nb">30</span>, sd = <span class="nb">10</span>,
+             sig.level = <span class="nb">0.05</span>,
+             type = <span class="st">"one.sample"</span>,
+             alternative = <span class="st">"two.sided"</span>)
+<span class="cm"># =&gt; power ≈ 0.9999  (gap is 3 standard deviations wide; test almost always rejects)</span>
 </pre>
   <div class="code-explain">
-    <div class="line-exp">Leave out ONE of (n, power, delta, sd, sig.level) and R calculates it!</div>
-    <div class="line-exp">Leave out <code>n</code> and include <code>power = 0.80</code> to find the required sample size.</div>
+    <div class="line-exp"><code>n</code> = sample size.</div>
+    <div class="line-exp"><code>delta</code> = true mean minus mu0 (the GAP you want to detect), in the original units of the data.</div>
+    <div class="line-exp"><code>sd</code> = standard deviation sigma of the data.</div>
+    <div class="line-exp"><code>sig.level</code> = alpha (usually 0.05).</div>
+    <div class="line-exp"><code>type</code> = "one.sample", "two.sample", or "paired".</div>
+    <div class="line-exp"><code>alternative</code> = "two.sided", "greater", or "less".</div>
+    <div class="line-exp"><strong>The magic:</strong> leave out exactly ONE of {n, delta, sd, sig.level, power} and R solves for it. Omit <code>n</code> and pass <code>power = 0.80</code> to get the required sample size.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">R Code Reading — Three Small Experiments</div>
+<pre class="r-code"><span class="cm"># A) What happens when delta goes from 1 to 3 at fixed n=30, sd=5?</span>
+<span class="fn">power.t.test</span>(n=<span class="nb">30</span>, delta=<span class="nb">1</span>, sd=<span class="nb">5</span>, sig.level=<span class="nb">0.05</span>, type=<span class="st">"one.sample"</span>)$power
+<span class="cm"># ≈ 0.32  (small gap, weak power)</span>
+<span class="fn">power.t.test</span>(n=<span class="nb">30</span>, delta=<span class="nb">3</span>, sd=<span class="nb">5</span>, sig.level=<span class="nb">0.05</span>, type=<span class="st">"one.sample"</span>)$power
+<span class="cm"># ≈ 0.97  (tripling delta &rarr; huge jump in power)</span>
+
+<span class="cm"># B) What happens when sd doubles at fixed n=30, delta=2?</span>
+<span class="fn">power.t.test</span>(n=<span class="nb">30</span>, delta=<span class="nb">2</span>, sd=<span class="nb">5</span>, sig.level=<span class="nb">0.05</span>, type=<span class="st">"one.sample"</span>)$power
+<span class="cm"># ≈ 0.78</span>
+<span class="fn">power.t.test</span>(n=<span class="nb">30</span>, delta=<span class="nb">2</span>, sd=<span class="nb">10</span>, sig.level=<span class="nb">0.05</span>, type=<span class="st">"one.sample"</span>)$power
+<span class="cm"># ≈ 0.29  (more noise &rarr; power drops)</span>
+
+<span class="cm"># C) Solve for n that gives 80% power when delta=2, sd=5</span>
+<span class="fn">power.t.test</span>(power=<span class="nb">0.80</span>, delta=<span class="nb">2</span>, sd=<span class="nb">5</span>, sig.level=<span class="nb">0.05</span>, type=<span class="st">"one.sample"</span>)$n
+<span class="cm"># ≈ 52 (round UP to 52 people)</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">A shows delta's effect: triple the gap, power jumps from weak to nearly certain.</div>
+    <div class="line-exp">B shows sigma's effect: double the noise, power falls. Ratio delta/sd is what matters.</div>
+    <div class="line-exp">C shows solving for n: whenever you see "how many subjects do we need," this is the pattern. Always round n UP.</div>
   </div>
 </div>
 
 <div class="quiz-box" data-answer="2">
-  <div class="quiz-label">Quiz - Power</div>
+  <div class="quiz-label">Quiz — Power Basics</div>
   <div class="quiz-q">Which change would INCREASE the power of a test?</div>
   <div class="quiz-opt" data-i="0">Decrease the sample size</div>
   <div class="quiz-opt" data-i="1">Decrease alpha</div>
@@ -1532,6 +2285,275 @@ ci &lt;- <span class="fn">quantile</span>(boot_means, <span class="fn">c</span>(
   <div class="quiz-result" data-explain="More data = more power. Decreasing alpha or increasing sd would DECREASE power."></div>
 </div>
 
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Quiz — Interpret Power in Context</div>
+  <div class="quiz-q">Practice Quiz 1 Q2c gives power ≈ 1.0 when mu0 = 20 and the true mean is 50, sigma = 10, n = 10. What does this mean in plain English?</div>
+  <div class="quiz-opt" data-i="0">The airport's claim is definitely true</div>
+  <div class="quiz-opt" data-i="1">If the true mean is really 50 (not 20), our test will almost always correctly reject H0 with these 10 passengers</div>
+  <div class="quiz-opt" data-i="2">About 100% of passengers wait 50 minutes</div>
+  <div class="quiz-opt" data-i="3">The p-value will be less than 0.01</div>
+  <div class="quiz-result" data-explain="Power = P(reject H0 | H0 false). Power ≈ 1 means: when the truth is mu = 50 and we test against mu0 = 20, we detect it almost every time."></div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — Effect Size and Power</div>
+  <div class="quiz-q">Two studies both have n = 30 and alpha = 0.05. Study A has delta = 1 and sigma = 5. Study B has delta = 5 and sigma = 5. Which will have higher power?</div>
+  <div class="quiz-opt" data-i="0">Study A, because delta is smaller</div>
+  <div class="quiz-opt" data-i="1">They will be equal because n is the same</div>
+  <div class="quiz-opt" data-i="2">Study B, because the gap from mu0 is bigger relative to the noise</div>
+  <div class="quiz-opt" data-i="3">Cannot tell without seeing the data</div>
+  <div class="quiz-result" data-explain="Bigger delta at the same sigma means the true mean is farther from mu0. Easier to detect = higher power."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Quiz — Reading power.t.test Output</div>
+  <div class="quiz-q"><code>power.t.test(power=0.80, delta=3, sd=6, sig.level=0.05, type="one.sample")</code> returns n ≈ 34.05. What do you do with that?</div>
+  <div class="quiz-opt" data-i="0">Round DOWN to 34</div>
+  <div class="quiz-opt" data-i="1">Round UP to 35 — you need at least enough subjects to reach 80% power</div>
+  <div class="quiz-opt" data-i="2">Use 34.05 as-is</div>
+  <div class="quiz-opt" data-i="3">The output is invalid because n must be an integer</div>
+  <div class="quiz-result" data-explain="Always round UP for sample size. 34 would give slightly less than 80% power; 35 gives at least 80%."></div>
+</div>
+
+</div></div>
+
+<!-- ==================== LEVEL 12b (Lecture 4 Replay) ==================== -->
+<div class="level-card" id="level-12b">
+<div class="level-header" onclick="toggleLevel('12b')">
+  <span class="level-title"><span class="num">Level 12b</span> — Lecture 4 Replay: Power Deep Dive (Bert, Ernie, and Why Simulation Wins)</span>
+  <span class="level-xp">+70 XP</span>
+</div>
+<div class="level-body" id="level-body-12b">
+
+<div class="box box-concept">
+  <div class="box-label">Definition — Power, Formally</div>
+  <p><strong>Power = P(reject H0 | Ha is true).</strong> It's the probability your test correctly flags a real effect.</p>
+  <p>Compare to Type I error, which is P(reject H0 | H0 is true). Same verb ("reject H0"), opposite condition. A statistical test is juggling both — it wants to reject when H0 is false (high power) and NOT reject when H0 is true (low Type I error).</p>
+  <p><strong>Rule of thumb from lecture:</strong> 80% power is the industry-standard target. Higher is better. Below 50% power, your study is flipping a coin to detect a real effect.</p>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">The Four Dials (Memorize Directions!)</div>
+  <p>Power is a function of <em>exactly four</em> things. Know which direction each moves it:</p>
+  <table style="width:100%; border-collapse: collapse; margin-top: 8px;">
+    <tr style="background: #f0f0f0;"><th style="border: 1px solid #ccc; padding: 6px;">Dial</th><th style="border: 1px solid #ccc; padding: 6px;">Notation</th><th style="border: 1px solid #ccc; padding: 6px;">Effect on Power</th></tr>
+    <tr><td style="border: 1px solid #ccc; padding: 6px;">Sample size</td><td style="border: 1px solid #ccc; padding: 6px;">n</td><td style="border: 1px solid #ccc; padding: 6px;">↑ n → ↑ power</td></tr>
+    <tr><td style="border: 1px solid #ccc; padding: 6px;">Significance level</td><td style="border: 1px solid #ccc; padding: 6px;">α</td><td style="border: 1px solid #ccc; padding: 6px;">↑ α → ↑ power <em>(but more Type I)</em></td></tr>
+    <tr><td style="border: 1px solid #ccc; padding: 6px;">Standard deviation</td><td style="border: 1px solid #ccc; padding: 6px;">σ</td><td style="border: 1px solid #ccc; padding: 6px;">↑ σ → ↓ power</td></tr>
+    <tr><td style="border: 1px solid #ccc; padding: 6px;">Effect size</td><td style="border: 1px solid #ccc; padding: 6px;">|μ − μ₀| (or δ)</td><td style="border: 1px solid #ccc; padding: 6px;">↑ effect → ↑ power</td></tr>
+  </table>
+  <p style="margin-top: 8px;"><strong>Intuition checks from lecture:</strong></p>
+  <ul>
+    <li>Lowering α from 0.05 to 0.01 makes rejection harder ⇒ power drops.</li>
+    <li>If every UCSD student slept exactly 5.5 hrs (no variability), it'd be obvious the mean isn't 6. Add noise (high σ), and 5.5 gets muddled with 6.</li>
+    <li>An effect size of 2 (true mean = 4 when μ₀ = 6) is easy to detect. Effect size of 0.5 (true mean = 5.5) is hard.</li>
+  </ul>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">The Chicken-and-Egg Problem</div>
+  <p>Here's the deep issue the lecture surfaces: power depends on σ and effect size. But σ and effect size are properties of the <em>real population</em> — the very thing you don't know yet (that's why you're doing a study!).</p>
+  <p>Three ways out:</p>
+  <ol>
+    <li><strong>Literature review.</strong> Find a similar study's σ and plausible effect, plug those in.</li>
+    <li><strong>Pilot study.</strong> Collect a small preliminary sample, use its σ and observed effect as estimates.</li>
+    <li><strong>Post-hoc power.</strong> Compute power after the study. <strong>The professor strongly dislikes this.</strong> Either you rejected H0 (so you had "enough" power) or you didn't (and post-hoc numbers can't save the study). It's treated as uninformative.</li>
+  </ol>
+  <p><strong>Exam tip:</strong> If asked to rank the three approaches, put literature review / pilot study as "acceptable" and post-hoc as "least desirable / not recommended."</p>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">The Non-Central t Distribution (Bert & Ernie)</div>
+  <p>Under H0: μ = 6, the t-statistic (x̄ − 6)/(s/√n) follows a standard t-distribution centered at 0. This is "Bert" — tall, narrow, centered.</p>
+  <p>Under Ha: μ = 4 (the lecture's example), the t-stat is still computed the same way, but now it follows a <strong>non-central t distribution</strong> — shifted AND slightly flattened/widened. This is "Ernie" — shorter, wider, shifted left.</p>
+  <p>Power is the area under Ernie that falls in Bert's rejection region. Graphically: the non-central t's lower tail beyond the critical value −2.776.</p>
+  <p>The non-centrality parameter is:
+  <pre class="r-code">ncp = (μ - μ₀) / (σ / sqrt(n))</pre>
+  It's the "distance in SE units" between the two distributions' centers.</p>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Theory-Based Power (Manual Calculation)</div>
+<pre class="r-code"><span class="cm"># Scenario: n=5, σ=1, μ₀=6, true μ=4, α=0.05 (two-sided)</span>
+n &lt;- <span class="nb">5</span>
+sigma &lt;- <span class="nb">1</span>
+mu0 &lt;- <span class="nb">6</span>
+mu_true &lt;- <span class="nb">4</span>
+
+<span class="cm"># Lower critical value of the null distribution</span>
+crit &lt;- <span class="fn">qt</span>(<span class="nb">0.025</span>, df = n - <span class="nb">1</span>)     <span class="cm"># ≈ -2.776</span>
+
+<span class="cm"># Non-centrality parameter</span>
+ncp &lt;- (mu_true - mu0) / (sigma / <span class="fn">sqrt</span>(n))   <span class="cm"># ≈ -4.47</span>
+
+<span class="cm"># Power = P(T_ncp &lt; crit) under the non-central t</span>
+power &lt;- <span class="fn">pt</span>(crit, df = n - <span class="nb">1</span>, ncp = ncp)
+power
+<span class="cm"># ≈ 0.908</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><strong>What <code>pt(..., ncp = ...)</code> does:</strong> gives you the lower-tail probability under a non-central t distribution. Without <code>ncp</code>, it defaults to the standard t (ncp = 0).</div>
+    <div class="line-exp">The upper-tail part of power (area beyond +2.776 under Ernie) is microscopic here and we ignore it. For bigger ncp's, you might want to add it.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">The Built-In Shortcut — power.t.test()</div>
+<pre class="r-code"><span class="fn">power.t.test</span>(n = <span class="nb">5</span>,
+             delta = <span class="nb">2</span>,              <span class="cm"># |μ_true - μ₀| = |4 - 6|</span>
+             sd = <span class="nb">1</span>,
+             sig.level = <span class="nb">0.05</span>,
+             type = <span class="st">"one.sample"</span>,
+             alternative = <span class="st">"two.sided"</span>)
+<span class="cm"># power ≈ 0.908 — same answer</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><strong>Leave EXACTLY ONE of</strong> n, delta, sd, sig.level, power <strong>as NULL.</strong> R solves for whichever is missing.</div>
+    <div class="line-exp"><code>type = "one.sample"</code> for one-sample; <code>"two.sample"</code> for two-sample; <code>"paired"</code> for paired.</div>
+    <div class="line-exp"><code>delta</code> is the absolute effect size. Use positive numbers even for "less than" alternatives.</div>
+    <div class="line-exp"><strong>Solving for n:</strong> leave n = NULL and supply power = 0.80. The returned n may be fractional — always round UP.</div>
+  </div>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">Why Simulation Beats Theory (4 Reasons from Lecture)</div>
+  <ol>
+    <li><strong>Easier to understand.</strong> Non-central t is confusing. Simulation is just "generate data under Ha, run the test, count rejections."</li>
+    <li><strong>Less memorization.</strong> <code>power.t.test()</code> has specific syntax you forget. Simulation uses the same <code>rnorm</code>/<code>t.test</code> patterns you already know.</li>
+    <li><strong>Generalizes.</strong> <code>power.t.test()</code> only works for t-tests. Simulation works for ANY test — sign test, regression, bootstrap — just swap the test function.</li>
+    <li><strong>Not tied to normal data.</strong> <code>power.t.test()</code> assumes the data is normal under Ha. Simulation can use <code>rgamma</code>, <code>runif</code>, or anything else.</li>
+  </ol>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Simulation-Based Power (The Master Pattern)</div>
+<pre class="r-code"><span class="fn">set.seed</span>(<span class="nb">42</span>)
+B &lt;- <span class="nb">10000</span>
+n &lt;- <span class="nb">5</span>
+mu0 &lt;- <span class="nb">6</span>
+mu_true &lt;- <span class="nb">4</span>
+sigma &lt;- <span class="nb">1</span>
+reject &lt;- <span class="fn">logical</span>(B)
+
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  <span class="cm"># KEY: generate under Ha (mu_true), NOT under H0 (mu0)</span>
+  samp &lt;- <span class="fn">rnorm</span>(n, mean = mu_true, sd = sigma)
+  pval &lt;- <span class="fn">t.test</span>(samp, mu = mu0)$p.value
+  reject[b] &lt;- pval &lt; <span class="nb">0.05</span>
+}
+<span class="fn">mean</span>(reject)
+<span class="cm"># ≈ 0.907 — matches the theory value</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><strong>The ONE line that separates Type I from power:</strong> the mean in <code>rnorm</code>. <code>mean = mu0</code> → Type I sim. <code>mean = mu_true</code> (≠ mu0) → power sim. Everything else is the same structure.</div>
+    <div class="line-exp"><strong>Don't forget <code>mu = mu0</code> inside t.test.</strong> That's the null value we're testing against, NOT the data-generating mean.</div>
+  </div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — Direction of Effects</div>
+  <div class="quiz-q">All else equal, which change makes power go DOWN?</div>
+  <div class="quiz-opt" data-i="0">Increase n from 20 to 100</div>
+  <div class="quiz-opt" data-i="1">Increase effect size from 0.5 to 2.0</div>
+  <div class="quiz-opt" data-i="2">Increase σ from 1 to 5</div>
+  <div class="quiz-opt" data-i="3">Increase α from 0.01 to 0.05</div>
+  <div class="quiz-result" data-explain="More variability (higher σ) drowns out the signal → lower power. The other three all increase power."></div>
+</div>
+
+<div class="quiz-box" data-answer="3">
+  <div class="quiz-label">Quiz — Post-Hoc Power</div>
+  <div class="quiz-q">A researcher ran a study, failed to reject H0, then computed post-hoc power and reported it to justify the result. The professor would say:</div>
+  <div class="quiz-opt" data-i="0">Great — post-hoc power validates null results</div>
+  <div class="quiz-opt" data-i="1">Acceptable if they used power.t.test</div>
+  <div class="quiz-opt" data-i="2">Acceptable only with simulation</div>
+  <div class="quiz-opt" data-i="3">Not recommended — post-hoc power is uninformative after the study is done; literature review or pilot study should be used BEFORE data collection</div>
+  <div class="quiz-result" data-explain="The lecture explicitly warned against post-hoc power. Either you rejected (so you had 'enough' power) or you didn't (and post-hoc numbers can't save the study). Power calculations are decision tools for study design, not post-hoc justifications."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Quiz — power.t.test Arguments</div>
+  <div class="quiz-q">You want to find the sample size needed for 80% power to detect an effect of 3 with sd = 6, in a two-sided one-sample test at α = 0.05. Which call is correct?</div>
+  <div class="quiz-opt" data-i="0"><code>power.t.test(n=0.80, delta=3, sd=6, sig.level=0.05, type="one.sample")</code></div>
+  <div class="quiz-opt" data-i="1"><code>power.t.test(power=0.80, delta=3, sd=6, sig.level=0.05, type="one.sample")</code></div>
+  <div class="quiz-opt" data-i="2"><code>power.t.test(n=80, delta=3, sd=6, type="one.sample", power=NULL)</code></div>
+  <div class="quiz-opt" data-i="3"><code>power.t.test(power=0.80, delta=3, sd=6, n=NULL, sig.level=0.05, type="two.sample")</code></div>
+  <div class="quiz-opt" data-i="4"></div>
+  <div class="quiz-result" data-explain="Leave n unspecified (or NULL — it's the default) and specify power. Option 3 uses type='two.sample', which is wrong. Option 1 is correct."></div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — Type I vs Power Simulation</div>
+  <div class="quiz-q">Look at this code:
+<pre class="r-code"><span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  samp &lt;- <span class="fn">rnorm</span>(<span class="nb">15</span>, mean = <span class="nb">10</span>, sd = <span class="nb">3</span>)
+  reject[b] &lt;- <span class="fn">t.test</span>(samp, mu = <span class="nb">10</span>)$p.value &lt; <span class="nb">0.05</span>
+}
+<span class="fn">mean</span>(reject)</pre>
+What is it estimating, and what's the expected answer?</div>
+  <div class="quiz-opt" data-i="0">Power; about 0.80</div>
+  <div class="quiz-opt" data-i="1">Power; about 0.05</div>
+  <div class="quiz-opt" data-i="2">Type I error rate; about 0.05</div>
+  <div class="quiz-opt" data-i="3">Type II error rate; about 0.05</div>
+  <div class="quiz-result" data-explain="Data mean (10) equals mu0 (10) → H0 is TRUE → this is a Type I error simulation. Expected value ≈ α = 0.05."></div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Fill in the Blank — Power via Simulation for Sign Test</div>
+  <p>Estimate the power of a two-sided sign test at nominal α = 0.05, under N(mean = 0.5, sd = 1) with n = 25, H0: median = 0.</p>
+<pre class="r-code">sign_test_pval &lt;- <span class="kr">function</span>(x, mu0 = <span class="nb">0</span>) {
+  x &lt;- x[x != ____]
+  n &lt;- <span class="fn">length</span>(x)
+  x_above &lt;- <span class="fn">sum</span>(x &gt; ____)
+  p_low  &lt;- <span class="fn">pbinom</span>(x_above, size = n, prob = <span class="nb">0.5</span>)
+  p_high &lt;- <span class="fn">pbinom</span>(x_above - <span class="nb">1</span>, size = n, prob = <span class="nb">0.5</span>, lower.tail = <span class="nb">FALSE</span>)
+  <span class="fn">min</span>(<span class="nb">1</span>, <span class="nb">2</span> * <span class="fn">min</span>(p_low, p_high))
+}
+
+<span class="fn">set.seed</span>(<span class="nb">1</span>)
+B &lt;- <span class="nb">10000</span>
+reject &lt;- <span class="fn">logical</span>(B)
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  samp &lt;- <span class="fn">rnorm</span>(<span class="nb">25</span>, mean = ____, sd = ____)   <span class="cm"># Ha!</span>
+  reject[b] &lt;- sign_test_pval(samp, mu0 = ____) &lt; <span class="nb">0.05</span>
+}
+<span class="fn">mean</span>(reject)
+</pre>
+  <details><summary>Click for answer</summary>
+<pre class="r-code">x &lt;- x[x != mu0]
+x_above &lt;- <span class="fn">sum</span>(x &gt; mu0)
+samp &lt;- <span class="fn">rnorm</span>(<span class="nb">25</span>, mean = <span class="nb">0.5</span>, sd = <span class="nb">1</span>)    <span class="cm"># Ha: true mean = 0.5</span>
+sign_test_pval(samp, mu0 = <span class="nb">0</span>)                  <span class="cm"># test H0: median = 0</span>
+</pre>
+  <p><strong>Key separation:</strong> data is generated with <code>mean = 0.5</code> (Ha) but tested with <code>mu0 = 0</code> (H0). That gap is where power comes from.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Write Your Own — Power for a Skewed-Data Scenario</div>
+  <p>Use the <code>power.t.test()</code> shortcut to compute power for n = 20, σ = 2, effect size = 1, α = 0.05, one-sample two-sided. Then write a simulation that generates data from <em>Gamma(shape = 2, scale = 1)</em> shifted to have the same mean and an equivalent sd, and compare the two power estimates. Briefly explain which you'd trust and why.</p>
+  <details><summary>Click for discussion + code</summary>
+<pre class="r-code"><span class="cm"># Theory-based (assumes normal)</span>
+<span class="fn">power.t.test</span>(n = <span class="nb">20</span>, delta = <span class="nb">1</span>, sd = <span class="nb">2</span>, sig.level = <span class="nb">0.05</span>,
+             type = <span class="st">"one.sample"</span>)$power
+<span class="cm"># ≈ 0.564</span>
+
+<span class="cm"># Simulation under gamma (skewed, same mean/sd approximately)</span>
+<span class="cm"># Gamma(shape=2, scale=1) has mean=2, sd=sqrt(2). We want mean shifted up by 1</span>
+<span class="cm"># relative to mu0, so let's test mu0 = 2 vs. truth mean = 3.</span>
+<span class="fn">set.seed</span>(<span class="nb">1</span>)
+B &lt;- <span class="nb">10000</span>
+reject &lt;- <span class="fn">logical</span>(B)
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  samp &lt;- <span class="fn">rgamma</span>(<span class="nb">20</span>, shape = <span class="nb">2</span>, scale = <span class="nb">1</span>) + <span class="nb">1</span>   <span class="cm"># shift mean to 3</span>
+  reject[b] &lt;- <span class="fn">t.test</span>(samp, mu = <span class="nb">2</span>)$p.value &lt; <span class="nb">0.05</span>
+}
+<span class="fn">mean</span>(reject)
+</pre>
+  <p><strong>What to observe:</strong> the simulation gives a power that may differ meaningfully from the theory value. <code>power.t.test()</code> assumes normal; gamma is skewed. Trust the simulation when your data is suspected non-normal — it reflects the <em>actual</em> test you'll run on your <em>actual</em> data distribution.</p>
+  </details>
+</div>
+
+<button class="complete-btn" onclick="completeLevel('12b')">Mark Level 12b Complete</button>
 </div></div>
 
 <!-- ==================== LEVEL 13 ==================== -->
@@ -1598,6 +2620,64 @@ power &lt;- rejections / n_sims
   <div class="quiz-opt" data-i="2">To increase the sample size</div>
   <div class="quiz-opt" data-i="3">To make the data normally distributed</div>
   <div class="quiz-result" data-explain="Power = P(reject H0 when H0 is FALSE). We need H0 false, so we use mean = mu0 + delta."></div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">R Code Reading — Fill-In-The-Blanks (Practice Quiz 1 Q6 style)</div>
+<pre class="r-code">sim_power &lt;- <span class="kw">function</span>(n, delta, sd, alpha = <span class="nb">0.05</span>, reps = <span class="nb">10000</span>) {
+  count &lt;- <span class="nb">0</span>
+  <span class="kw">for</span> (i <span class="kw">in</span> <span class="nb">1</span>:reps) {
+    samp  &lt;- <span class="fn">rnorm</span>(n = n,
+                    mean = <span class="nb">20</span> + delta,   <span class="cm"># mu0 + delta = TRUE mean</span>
+                    sd   = sd)
+    pval  &lt;- <span class="fn">t.test</span>(samp, mu = <span class="nb">20</span>)$p.value
+    <span class="kw">if</span> (pval &lt; alpha) {
+      count &lt;- count + <span class="nb">1</span>
+    }
+  }
+  <span class="kw">return</span>(count / reps)
+}
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">This is the Practice Quiz 1 Q6 pattern. The blanks they ask about are always: n = n, mean = mu0 + delta, sd = sd, if(pval &lt; alpha), and return(count / reps).</div>
+    <div class="line-exp"><code>mu0 + delta</code> is the true mean. We test against <code>mu = 20</code> which is mu0. Every rejection here is a CORRECT rejection because the truth is 20 + delta ≠ 20.</div>
+    <div class="line-exp"><code>count / reps</code> is the estimated power: the fraction of simulated datasets where the t-test correctly rejects.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">R Code Reading — Spot the Bug</div>
+<pre class="r-code"><span class="cm"># BUG VERSION — what is wrong here for a POWER simulation?</span>
+<span class="kw">for</span> (i <span class="kw">in</span> <span class="nb">1</span>:<span class="nb">10000</span>) {
+  samp &lt;- <span class="fn">rnorm</span>(n = <span class="nb">30</span>, mean = <span class="nb">20</span>, sd = <span class="nb">5</span>)   <span class="cm"># mean = mu0 !</span>
+  p    &lt;- <span class="fn">t.test</span>(samp, mu = <span class="nb">20</span>)$p.value
+  <span class="kw">if</span> (p &lt; <span class="nb">0.05</span>) count &lt;- count + <span class="nb">1</span>
+}
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">The data are generated with mean = 20, which is mu0. So H0 is TRUE. This measures <strong>Type I Error</strong>, not power.</div>
+    <div class="line-exp">Fix: use <code>mean = 20 + delta</code> to make H0 false.</div>
+  </div>
+</div>
+
+<div class="quiz-box" data-answer="0">
+  <div class="quiz-label">Quiz — Power Sim Blanks</div>
+  <div class="quiz-q">In a power simulation for H0: mu = 20, which line should generate the data?</div>
+  <div class="quiz-opt" data-i="0"><code>rnorm(n, mean = 20 + delta, sd = sd)</code></div>
+  <div class="quiz-opt" data-i="1"><code>rnorm(n, mean = 20, sd = sd)</code></div>
+  <div class="quiz-opt" data-i="2"><code>rnorm(n, mean = 0, sd = sd)</code></div>
+  <div class="quiz-opt" data-i="3"><code>rnorm(n, mean = delta, sd = sd)</code></div>
+  <div class="quiz-result" data-explain="Power = P(reject | H0 false). The true mean must differ from mu0 = 20, so mean = 20 + delta."></div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — What does count/reps give?</div>
+  <div class="quiz-q">After 10,000 reps with H0 FALSE, <code>count</code> holds 8,412 rejections. The estimated power is:</div>
+  <div class="quiz-opt" data-i="0">0.05</div>
+  <div class="quiz-opt" data-i="1">8412</div>
+  <div class="quiz-opt" data-i="2">0.8412</div>
+  <div class="quiz-opt" data-i="3">1.0</div>
+  <div class="quiz-result" data-explain="Power ≈ count / reps = 8412 / 10000 = 0.8412. That's 84.12% power."></div>
 </div>
 
 </div></div>
@@ -2304,6 +3384,572 @@ ci &lt;- <span class="fn">quantile</span>(boot_means, <span class="fn">c</span>(
 
 </div></div>
 
+<!-- ==================== LEVEL 23.5: MORE QUIZ 1 R PRACTICE ==================== -->
+<div class="level-card" id="level-23b">
+<div class="level-header" onclick="toggleLevel('23b')">
+  <span class="level-title"><span class="num">Level 23b</span> — Extra R Code Practice (Lectures 1–5)</span>
+  <span class="level-xp">+70 XP</span>
+</div>
+<div class="level-body" id="level-body-23b">
+
+<div class="box box-concept">
+  <div class="box-label">How to Use This Level</div>
+  <p>The real Quiz 1 leans hard on <em>reading</em> R code, not just writing it. The exercises below are short simulation loops, hypothesis test snippets, one-sample tests, p-value calculations, CIs, and power code. Try to predict each output BEFORE peeking at the explanation.</p>
+</div>
+
+<h3>A) Simulation Loops</h3>
+<div class="box box-rcode">
+  <div class="box-label">Loop 1 — Coin flip mean</div>
+<pre class="r-code"><span class="fn">set.seed</span>(<span class="nb">1</span>)
+means &lt;- <span class="fn">rep</span>(<span class="nb">0</span>, <span class="nb">1000</span>)
+<span class="kw">for</span> (i <span class="kw">in</span> <span class="nb">1</span>:<span class="nb">1000</span>) {
+  flips &lt;- <span class="fn">sample</span>(<span class="fn">c</span>(<span class="nb">0</span>, <span class="nb">1</span>), size = <span class="nb">20</span>, replace = <span class="kw">TRUE</span>)
+  means[i] &lt;- <span class="fn">mean</span>(flips)
+}
+<span class="fn">mean</span>(means)
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">Each iteration flips 20 coins and stores the fraction of heads. After 1000 reps, <code>mean(means)</code> is the average-of-averages ≈ 0.5.</div>
+    <div class="line-exp">Common trap: <code>rep(0, 1000)</code> is the empty container, NOT the answer.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Loop 2 — Sample means from Normal data</div>
+<pre class="r-code"><span class="fn">set.seed</span>(<span class="nb">42</span>)
+xbar_vec &lt;- <span class="fn">rep</span>(<span class="kw">NA</span>, <span class="nb">5000</span>)
+<span class="kw">for</span> (i <span class="kw">in</span> <span class="nb">1</span>:<span class="nb">5000</span>) {
+  samp &lt;- <span class="fn">rnorm</span>(n = <span class="nb">30</span>, mean = <span class="nb">10</span>, sd = <span class="nb">2</span>)
+  xbar_vec[i] &lt;- <span class="fn">mean</span>(samp)
+}
+<span class="fn">sd</span>(xbar_vec)
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">Each iteration draws 30 values from N(10, 2) and stores the sample mean.</div>
+    <div class="line-exp"><code>sd(xbar_vec)</code> should be close to sigma/sqrt(n) = 2/sqrt(30) ≈ 0.365. That's the STANDARD ERROR — not the same as the standard deviation of the data.</div>
+  </div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Quiz — Loop Output</div>
+  <div class="quiz-q">In Loop 2, what is <code>xbar_vec</code> after the loop?</div>
+  <div class="quiz-opt" data-i="0">A single number (the grand mean)</div>
+  <div class="quiz-opt" data-i="1">A vector of 5000 sample means</div>
+  <div class="quiz-opt" data-i="2">A matrix of 5000 rows</div>
+  <div class="quiz-opt" data-i="3">All NAs — nothing was assigned</div>
+  <div class="quiz-result" data-explain="The loop fills in xbar_vec[i] 5000 times. Final: 5000 numbers representing 5000 sample means."></div>
+</div>
+
+<h3>B) Reading Hypothesis Test Code</h3>
+<div class="box box-rcode">
+  <div class="box-label">Snippet 1 — Basic t-test</div>
+<pre class="r-code">wait &lt;- <span class="fn">c</span>(<span class="nb">18</span>, <span class="nb">25</span>, <span class="nb">22</span>, <span class="nb">14</span>, <span class="nb">31</span>, <span class="nb">19</span>, <span class="nb">27</span>)
+<span class="fn">t.test</span>(wait, mu = <span class="nb">20</span>)$p.value
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">This is the ONE-LINER asked in Practice Quiz 1 Q1b: <code>t.test(tsa$wait_min, mu = 20)$p.value</code>.</div>
+    <div class="line-exp">Default <code>alternative = "two.sided"</code>, so the p-value covers |t| in both tails.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Snippet 2 — One-sided test</div>
+<pre class="r-code"><span class="fn">t.test</span>(wait, mu = <span class="nb">20</span>, alternative = <span class="st">"greater"</span>)$p.value
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">This tests H0: mu = 20 vs HA: mu &gt; 20. Only the UPPER tail counts.</div>
+    <div class="line-exp">Trap: "greater" is about HA, not about the sample mean.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Snippet 3 — Type I Error on SKEWED data (Practice Quiz 1 Q3b style)</div>
+<pre class="r-code">count &lt;- <span class="nb">0</span>
+<span class="kw">for</span> (i <span class="kw">in</span> <span class="nb">1</span>:<span class="nb">10000</span>) {
+  skewed_data &lt;- <span class="fn">rgamma</span>(n = <span class="nb">5</span>, shape = <span class="nb">1.2</span>, scale = (<span class="nb">20</span> / <span class="nb">1.2</span>))
+  p.val &lt;- <span class="fn">t.test</span>(skewed_data, mu = <span class="nb">20</span>)$p.value
+  <span class="kw">if</span> (p.val &lt; <span class="nb">0.05</span>) {
+    count &lt;- count + <span class="nb">1</span>
+  }
+}
+TypeI &lt;- count / <span class="nb">10000</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">Data are generated from Gamma with mean = shape * scale = 1.2 * (20/1.2) = 20. So H0: mu = 20 is TRUE.</div>
+    <div class="line-exp">Every rejection is a false alarm. <code>count / 10000</code> is the Type I Error rate — expected to be INFLATED above 0.05 because the gamma is skewed and n = 5 is tiny.</div>
+    <div class="line-exp">The three blanks on the quiz: <code>mu = 20</code>, <code>$p.value</code>, <code>0.05</code>.</div>
+  </div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — Identify the Simulation Type</div>
+  <div class="quiz-q">Snippet 3 above generates data with mean = 20 and tests <code>mu = 20</code>. What is it measuring?</div>
+  <div class="quiz-opt" data-i="0">Statistical power</div>
+  <div class="quiz-opt" data-i="1">Effect size</div>
+  <div class="quiz-opt" data-i="2">Type I Error rate</div>
+  <div class="quiz-opt" data-i="3">Confidence interval width</div>
+  <div class="quiz-result" data-explain="Data mean = mu0 = 20 → H0 is TRUE. Counting rejections measures the false-alarm rate = Type I Error."></div>
+</div>
+
+<h3>C) One-Sample Tests — Hypothesis Framing</h3>
+<div class="box box-rcode">
+  <div class="box-label">Snippet 4 — Read the Test, Name the Hypotheses</div>
+<pre class="r-code"><span class="fn">t.test</span>(battery_life, mu = <span class="nb">10</span>, alternative = <span class="st">"less"</span>)
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">H0: mu = 10, HA: mu &lt; 10. Context: battery was advertised at 10 hours; we suspect it is LESS.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Snippet 5 — Manual t-statistic and p-value</div>
+<pre class="r-code">x     &lt;- <span class="fn">c</span>(<span class="nb">22</span>, <span class="nb">19</span>, <span class="nb">25</span>, <span class="nb">27</span>, <span class="nb">21</span>, <span class="nb">18</span>, <span class="nb">24</span>)
+mu0   &lt;- <span class="nb">20</span>
+n     &lt;- <span class="fn">length</span>(x)
+xbar  &lt;- <span class="fn">mean</span>(x)
+s     &lt;- <span class="fn">sd</span>(x)
+t_stat &lt;- (xbar - mu0) / (s / <span class="fn">sqrt</span>(n))
+pval   &lt;- <span class="nb">2</span> * (<span class="nb">1</span> - <span class="fn">pt</span>(<span class="fn">abs</span>(t_stat), df = n - <span class="nb">1</span>))
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">This is how <code>t.test()</code> computes its p-value under the hood.</div>
+    <div class="line-exp"><code>pt(abs(t_stat), df = n-1)</code> = left-tail area up to |t|. Two-sided p-value = 2 · (1 - that).</div>
+  </div>
+</div>
+
+<h3>D) P-values</h3>
+<div class="box box-rcode">
+  <div class="box-label">Snippet 6 — Sign Test p-value (Practice Quiz 1 Q4c/Q5 style)</div>
+<pre class="r-code">x     &lt;- <span class="fn">c</span>(<span class="nb">13.2</span>, <span class="nb">25.0</span>, <span class="nb">8.7</span>, <span class="nb">31.4</span>, <span class="nb">17.9</span>, <span class="nb">22.3</span>, <span class="nb">9.5</span>)
+mu0   &lt;- <span class="nb">20</span>
+signs &lt;- x - mu0
+n_pos &lt;- <span class="fn">sum</span>(signs &gt; <span class="nb">0</span>)   <span class="cm"># count of '+'</span>
+n_neg &lt;- <span class="fn">sum</span>(signs &lt; <span class="nb">0</span>)   <span class="cm"># count of '−'</span>
+n     &lt;- n_pos + n_neg
+min_count &lt;- <span class="fn">min</span>(n_pos, n_neg)
+pval  &lt;- <span class="nb">2</span> * <span class="fn">pbinom</span>(min_count, size = n, prob = <span class="nb">0.5</span>)
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">Signs for x with mu0 = 20: [−, +, −, +, −, +, −]. n_pos = 3, n_neg = 4, min = 3.</div>
+    <div class="line-exp">Two-sided p-value = 2 · P(X ≤ 3) with Binomial(7, 0.5). In R: <code>2 * pbinom(3, 7, 0.5)</code> = 1.0.</div>
+  </div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — p-value Interpretation</div>
+  <div class="quiz-q">A t-test returns p = 0.7043. Which is correct?</div>
+  <div class="quiz-opt" data-i="0">There's a 70% chance H0 is true</div>
+  <div class="quiz-opt" data-i="1">There's a 70% chance HA is true</div>
+  <div class="quiz-opt" data-i="2">If H0 were true, we'd see data at least this extreme about 70% of the time</div>
+  <div class="quiz-opt" data-i="3">The Type I Error rate is 70%</div>
+  <div class="quiz-result" data-explain="p-value = P(observing data at least this extreme | H0 true). It is NOT P(H0)."></div>
+</div>
+
+<h3>E) Confidence Intervals</h3>
+<div class="box box-rcode">
+  <div class="box-label">Snippet 7 — CI from t.test</div>
+<pre class="r-code">res &lt;- <span class="fn">t.test</span>(wait, mu = <span class="nb">20</span>)
+res$conf.int
+<span class="cm"># [15.8, 27.1]  ← 95% CI by default</span>
+</pre>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Snippet 8 — Bootstrap 95% CI</div>
+<pre class="r-code"><span class="fn">set.seed</span>(<span class="nb">152</span>)
+wait_sample &lt;- <span class="fn">c</span>(<span class="nb">18.2</span>, <span class="nb">24.5</span>, <span class="nb">15.9</span>, <span class="nb">30.1</span>, <span class="nb">22.7</span>, <span class="nb">11.3</span>, <span class="nb">28.4</span>, <span class="nb">19.6</span>)
+boot_means &lt;- <span class="kw">NA</span>
+<span class="kw">for</span> (i <span class="kw">in</span> <span class="nb">1</span>:<span class="nb">10000</span>) {
+  boot_means[i] &lt;- <span class="fn">mean</span>(<span class="fn">sample</span>(wait_sample, replace = <span class="kw">TRUE</span>))
+}
+<span class="fn">quantile</span>(boot_means, probs = <span class="fn">c</span>(<span class="nb">0.025</span>, <span class="nb">0.975</span>))
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">This is the exact Practice Quiz 1 Q8 code. If the CI is [15.65, 26.94] and H0: mu = 20, decision is FAIL TO REJECT (20 is inside).</div>
+    <div class="line-exp">Quiz trap: notice <code>sample(wait_sample, replace = TRUE)</code> omits the <code>size</code> argument — default is <code>length(wait_sample)</code>, which is what we want.</div>
+  </div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Quiz — CI Decision</div>
+  <div class="quiz-q">95% bootstrap CI for mean wait time is [15.65, 26.94]. Decide H0: mu = 20 at alpha = 0.05:</div>
+  <div class="quiz-opt" data-i="0">Reject H0 — 20 is inside the CI</div>
+  <div class="quiz-opt" data-i="1">Fail to reject H0 — 20 is inside the CI</div>
+  <div class="quiz-opt" data-i="2">Reject H0 — 20 is outside the CI</div>
+  <div class="quiz-opt" data-i="3">Cannot determine from the CI</div>
+  <div class="quiz-result" data-explain="A value INSIDE the CI is consistent with H0 → fail to reject. You reject only when mu0 is OUTSIDE."></div>
+</div>
+
+<h3>F) Power Calculations</h3>
+<div class="box box-rcode">
+  <div class="box-label">Snippet 9 — Power Curve Loop</div>
+<pre class="r-code">deltas &lt;- <span class="fn">seq</span>(<span class="nb">0</span>, <span class="nb">5</span>, by = <span class="nb">0.5</span>)
+powers &lt;- <span class="fn">rep</span>(<span class="nb">0</span>, <span class="fn">length</span>(deltas))
+<span class="kw">for</span> (j <span class="kw">in</span> <span class="nb">1</span>:<span class="fn">length</span>(deltas)) {
+  powers[j] &lt;- <span class="fn">power.t.test</span>(n = <span class="nb">30</span>, delta = deltas[j], sd = <span class="nb">5</span>,
+                           sig.level = <span class="nb">0.05</span>, type = <span class="st">"one.sample"</span>)$power
+}
+<span class="fn">plot</span>(deltas, powers, type = <span class="st">"l"</span>)
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">Sweeps delta from 0 to 5, stores the theoretical power at each. The plot is a power curve.</div>
+    <div class="line-exp">At delta = 0, power ≈ alpha = 0.05. As delta grows, power approaches 1.</div>
+  </div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Snippet 10 — Simulated Power with sim_power()</div>
+<pre class="r-code"><span class="fn">sim_power</span>(n = <span class="nb">5</span>, delta = <span class="nb">2</span>, sd = <span class="nb">1</span>)
+<span class="cm"># ≈ 0.91</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">Practice Quiz 1 Q6b: this number says "when the true mean is 22 (= mu0 + delta) and sd = 1, a one-sample t-test with n = 5 will correctly reject H0: mu = 20 about 91% of the time."</div>
+    <div class="line-exp">Large delta (2) relative to small sd (1) at even tiny n = 5 gives huge power.</div>
+  </div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Quiz — Power Interpretation</div>
+  <div class="quiz-q"><code>sim_power(n = 5, delta = 2, sd = 1)</code> returns 0.91. What does that mean for TSA wait times?</div>
+  <div class="quiz-opt" data-i="0">91% of passengers have wait = 22 min</div>
+  <div class="quiz-opt" data-i="1">H0 is 91% true</div>
+  <div class="quiz-opt" data-i="2">If the real mean wait is 22 and sd = 1, we will correctly reject H0: mu = 20 about 91% of the time with n = 5 passengers</div>
+  <div class="quiz-opt" data-i="3">The Type I Error rate is 91%</div>
+  <div class="quiz-result" data-explain="Power is P(reject H0 | H0 false) in the scenario generated. Always phrase it as a conditional probability about rejecting."></div>
+</div>
+
+<button class="complete-btn" onclick="completeLevel('23b')">Mark Level 23b Complete</button>
+</div></div>
+
+<!-- ==================== LEVEL 23c (Write Your Own, Lec 1-5) ==================== -->
+<div class="level-card" id="level-23c">
+<div class="level-header" onclick="toggleLevel('23c')">
+  <span class="level-title"><span class="num">Level 23c</span> — Write Your Own R Code: Statistical Tests from Scratch (Lec 1–5)</span>
+  <span class="level-xp">+75 XP</span>
+</div>
+<div class="level-body" id="level-body-23c">
+
+<div class="box box-concept">
+  <div class="box-label">How to Use This Level</div>
+  <p>Each prompt below gives you a scenario and asks you to write code with <em>no scaffolding</em>. Try it on paper or in RStudio before clicking the solution. On the actual Quiz 1, you won't get fill-in-the-blank — you'll need to produce these patterns cold. This level is specifically designed to build that muscle.</p>
+  <p>If you get stuck: re-read Level 23b (fill-in-blanks) and Level 24 (R function glossary) first, then try again.</p>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 1 — One-Sample t-Test, Manually</div>
+  <p>You have <code>x &lt;- c(22, 21, 19, 23, 20, 22, 18, 24, 21, 20)</code>. Test H0: μ = 20 vs. Ha: μ &gt; 20 at α = 0.05. <strong>Do NOT use <code>t.test()</code></strong> — build the test statistic and p-value by hand.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">x &lt;- <span class="fn">c</span>(<span class="nb">22</span>, <span class="nb">21</span>, <span class="nb">19</span>, <span class="nb">23</span>, <span class="nb">20</span>, <span class="nb">22</span>, <span class="nb">18</span>, <span class="nb">24</span>, <span class="nb">21</span>, <span class="nb">20</span>)
+n &lt;- <span class="fn">length</span>(x)
+t_stat &lt;- (<span class="fn">mean</span>(x) - <span class="nb">20</span>) / (<span class="fn">sd</span>(x) / <span class="fn">sqrt</span>(n))
+df &lt;- n - <span class="nb">1</span>
+
+<span class="cm"># one-sided "greater": p-value is the upper tail</span>
+p_val &lt;- <span class="fn">pt</span>(t_stat, df = df, lower.tail = <span class="nb">FALSE</span>)
+
+t_stat
+p_val
+<span class="kr">if</span> (p_val &lt; <span class="nb">0.05</span>) <span class="fn">print</span>(<span class="st">"Reject H0"</span>) <span class="kr">else</span> <span class="fn">print</span>(<span class="st">"Fail to reject"</span>)
+</pre>
+  <p><strong>Gotcha:</strong> Ha: μ &gt; μ₀ → upper tail → <code>lower.tail = FALSE</code>. Don't multiply by 2 (that's only for two-sided).</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 2 — One-Sample Sign Test, Manually</div>
+  <p>Your data: <code>x &lt;- c(3.2, 2.8, 3.5, 3.1, 2.9, 3.0, 3.4, 3.6, 2.7, 3.3, 3.2, 3.8)</code>. Test H0: median = 3.0 vs. Ha: median &gt; 3.0 at the α closest to 0.05. Report the rejection region, actual α, and p-value. Ignore ties with the null value (drop them).</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">x &lt;- <span class="fn">c</span>(<span class="nb">3.2</span>, <span class="nb">2.8</span>, <span class="nb">3.5</span>, <span class="nb">3.1</span>, <span class="nb">2.9</span>, <span class="nb">3.0</span>, <span class="nb">3.4</span>, <span class="nb">3.6</span>, <span class="nb">2.7</span>, <span class="nb">3.3</span>, <span class="nb">3.2</span>, <span class="nb">3.8</span>)
+mu0 &lt;- <span class="nb">3.0</span>
+
+<span class="cm"># Drop ties, count values above mu0</span>
+x_no_ties &lt;- x[x != mu0]
+n &lt;- <span class="fn">length</span>(x_no_ties)
+x_above &lt;- <span class="fn">sum</span>(x_no_ties &gt; mu0)
+
+<span class="cm"># Find rejection region closest to alpha = 0.05</span>
+cutoffs &lt;- <span class="nb">0</span>:n
+alphas &lt;- <span class="fn">sapply</span>(cutoffs, <span class="kr">function</span>(k) {
+  <span class="fn">pbinom</span>(k - <span class="nb">1</span>, size = n, prob = <span class="nb">0.5</span>, lower.tail = <span class="nb">FALSE</span>)
+})
+best_idx    &lt;- <span class="fn">which.min</span>(<span class="fn">abs</span>(alphas - <span class="nb">0.05</span>))
+best_cutoff &lt;- cutoffs[best_idx]
+actual_alpha &lt;- alphas[best_idx]
+
+<span class="cm"># p-value: P(X >= x_above | p = 0.5)</span>
+p_val &lt;- <span class="fn">pbinom</span>(x_above - <span class="nb">1</span>, size = n, prob = <span class="nb">0.5</span>, lower.tail = <span class="nb">FALSE</span>)
+
+<span class="fn">cat</span>(<span class="st">"Rejection region: {"</span>, best_cutoff, <span class="st">", ..., "</span>, n, <span class="st">"}\n"</span>)
+<span class="fn">cat</span>(<span class="st">"Actual alpha:"</span>, actual_alpha, <span class="st">"\n"</span>)
+<span class="fn">cat</span>(<span class="st">"p-value:"</span>, p_val, <span class="st">"\n"</span>)
+</pre>
+  <p><strong>Key idea:</strong> Under H0 on the median, each observation is equally likely to be above or below μ₀, so the count above ~ Binomial(n, 0.5).</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 3 — Two-Sided Sign Test p-value</div>
+  <p>Same data as Prompt 2, but now Ha: median ≠ 3.0. Compute the two-sided sign-test p-value.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">x_no_ties &lt;- x[x != <span class="nb">3.0</span>]
+n &lt;- <span class="fn">length</span>(x_no_ties)
+x_above &lt;- <span class="fn">sum</span>(x_no_ties &gt; <span class="nb">3.0</span>)
+
+p_low  &lt;- <span class="fn">pbinom</span>(x_above, size = n, prob = <span class="nb">0.5</span>)
+p_high &lt;- <span class="fn">pbinom</span>(x_above - <span class="nb">1</span>, size = n, prob = <span class="nb">0.5</span>,
+                  lower.tail = <span class="nb">FALSE</span>)
+p_val &lt;- <span class="fn">min</span>(<span class="nb">1</span>, <span class="nb">2</span> * <span class="fn">min</span>(p_low, p_high))
+p_val
+</pre>
+  <p><strong>Why min(1, 2 * min(...))?</strong> The discrete distribution under H0 is symmetric (Binomial(n, 0.5)), so the two-sided p is roughly 2× the smaller tail. The outer <code>min(1, ...)</code> guards against the tiny case where doubling pushes it above 1.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 4 — Bootstrap 95% CI for the Mean</div>
+  <p>Your data: <code>x &lt;- c(10, 12, 9, 15, 11, 13, 8, 14, 12, 10)</code>. Build a 95% bootstrap confidence interval for the mean using B = 10,000 resamples.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">x &lt;- <span class="fn">c</span>(<span class="nb">10</span>, <span class="nb">12</span>, <span class="nb">9</span>, <span class="nb">15</span>, <span class="nb">11</span>, <span class="nb">13</span>, <span class="nb">8</span>, <span class="nb">14</span>, <span class="nb">12</span>, <span class="nb">10</span>)
+B &lt;- <span class="nb">10000</span>
+n &lt;- <span class="fn">length</span>(x)
+
+<span class="fn">set.seed</span>(<span class="nb">42</span>)
+boot_means &lt;- <span class="fn">numeric</span>(B)
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  resample &lt;- <span class="fn">sample</span>(x, size = n, replace = <span class="nb">TRUE</span>)
+  boot_means[b] &lt;- <span class="fn">mean</span>(resample)
+}
+
+ci &lt;- <span class="fn">quantile</span>(boot_means, <span class="fn">c</span>(<span class="nb">0.025</span>, <span class="nb">0.975</span>))
+ci
+</pre>
+  <p><strong>Three rules:</strong> (1) <code>replace = TRUE</code>, (2) <code>size = n</code> (same size as original), (3) take the 2.5th and 97.5th <strong>percentiles of the bootstrap statistics</strong>, not of the data.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 5 — Power Simulation for a t-test</div>
+  <p>Under N(mean = 0.4, sd = 1) with n = 30, test H0: μ = 0 vs. Ha: μ ≠ 0 at α = 0.05. Simulate the power using 10,000 replicates.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code"><span class="fn">set.seed</span>(<span class="nb">1</span>)
+B &lt;- <span class="nb">10000</span>
+n &lt;- <span class="nb">30</span>
+reject &lt;- <span class="fn">logical</span>(B)
+
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  samp &lt;- <span class="fn">rnorm</span>(n, mean = <span class="nb">0.4</span>, sd = <span class="nb">1</span>)
+  pval &lt;- <span class="fn">t.test</span>(samp, mu = <span class="nb">0</span>)$p.value
+  reject[b] &lt;- pval &lt; <span class="nb">0.05</span>
+}
+power &lt;- <span class="fn">mean</span>(reject)
+power
+</pre>
+  <p><strong>Power pattern (memorize):</strong> generate data under Ha, run the test, count rejections, take the mean. The ONLY thing that distinguishes a power sim from a Type I sim is the data-generating mean (Ha vs. H0).</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 6 — t-Test vs Sign Test Power Comparison</div>
+  <p>Under N(mean = 0.55, sd = 1) with n = 25, H0: μ = 0 (or median = 0) vs. Ha: not equal. Simulate 10,000 reps. Compare the power of the t-test vs. the two-sided sign test. Use α = 0.05 as the nominal cutoff for both.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code"><span class="cm"># Two-sided sign test p-value helper</span>
+sign_test_pvalue &lt;- <span class="kr">function</span>(x, mu0 = <span class="nb">0</span>) {
+  x &lt;- x[x != mu0]
+  n &lt;- <span class="fn">length</span>(x)
+  x_above &lt;- <span class="fn">sum</span>(x &gt; mu0)
+  p_low  &lt;- <span class="fn">pbinom</span>(x_above, size = n, prob = <span class="nb">0.5</span>)
+  p_high &lt;- <span class="fn">pbinom</span>(x_above - <span class="nb">1</span>, size = n, prob = <span class="nb">0.5</span>,
+                    lower.tail = <span class="nb">FALSE</span>)
+  <span class="fn">min</span>(<span class="nb">1</span>, <span class="nb">2</span> * <span class="fn">min</span>(p_low, p_high))
+}
+
+<span class="fn">set.seed</span>(<span class="nb">152</span>)
+B &lt;- <span class="nb">10000</span>
+n &lt;- <span class="nb">25</span>
+t_rej &lt;- <span class="fn">logical</span>(B)
+sign_rej &lt;- <span class="fn">logical</span>(B)
+
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  samp &lt;- <span class="fn">rnorm</span>(n, mean = <span class="nb">0.55</span>, sd = <span class="nb">1</span>)
+  t_rej[b]    &lt;- <span class="fn">t.test</span>(samp, mu = <span class="nb">0</span>)$p.value &lt; <span class="nb">0.05</span>
+  sign_rej[b] &lt;- sign_test_pvalue(samp, mu0 = <span class="nb">0</span>) &lt; <span class="nb">0.05</span>
+}
+<span class="fn">mean</span>(t_rej)
+<span class="fn">mean</span>(sign_rej)
+</pre>
+  <p><strong>Expected result:</strong> t-test power ~ 0.90, sign test power ~ 0.70. At least a 20-point gap, as required. When the normality condition is met, the t-test is more powerful than the sign test.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 7 — Binomial Test for a Proportion</div>
+  <p>A coin is flipped n = 50 times. You observe 32 heads. Test H0: p = 0.5 vs. Ha: p ≠ 0.5 using the exact binomial test. Compute the p-value by hand (and verify with <code>binom.test()</code>).</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">n &lt;- <span class="nb">50</span>
+x &lt;- <span class="nb">32</span>
+p0 &lt;- <span class="nb">0.5</span>
+
+<span class="cm"># Two-sided exact binomial p-value (min-tail doubling)</span>
+p_low  &lt;- <span class="fn">pbinom</span>(x, size = n, prob = p0)
+p_high &lt;- <span class="fn">pbinom</span>(x - <span class="nb">1</span>, size = n, prob = p0, lower.tail = <span class="nb">FALSE</span>)
+p_val  &lt;- <span class="fn">min</span>(<span class="nb">1</span>, <span class="nb">2</span> * <span class="fn">min</span>(p_low, p_high))
+p_val
+
+<span class="cm"># Quick check</span>
+<span class="fn">binom.test</span>(x, n, p = p0)$p.value
+</pre>
+  <p>The two numbers may differ slightly — <code>binom.test()</code> uses a slightly different rule for the two-sided p-value — but they'll be in the same ballpark.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 8 — Type I Error Simulation</div>
+  <p>You're nervous that a t-test applied to skewed data might have wrong Type I error. Simulate: generate 10,000 samples of size n = 8 from Gamma(shape = 2, scale = 3) (which has mean 6). Test H0: μ = 6 vs. Ha: μ ≠ 6 at α = 0.05. Report the proportion of rejections. If the test were valid, it should be ~0.05.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code"><span class="fn">set.seed</span>(<span class="nb">7</span>)
+B &lt;- <span class="nb">10000</span>
+n &lt;- <span class="nb">8</span>
+reject &lt;- <span class="fn">logical</span>(B)
+
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  samp &lt;- <span class="fn">rgamma</span>(n, shape = <span class="nb">2</span>, scale = <span class="nb">3</span>)
+  reject[b] &lt;- <span class="fn">t.test</span>(samp, mu = <span class="nb">6</span>)$p.value &lt; <span class="nb">0.05</span>
+}
+<span class="fn">mean</span>(reject)
+</pre>
+  <p><strong>What to expect:</strong> probably somewhat inflated above 0.05 (e.g., 0.07–0.09), because the skew and small n break the t-test's normality assumption. This is <em>exactly</em> the Lab 2 setup — when this happens, switch to a sign test or bootstrap.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 9 — Find the Rejection Region (from Scratch)</div>
+  <p>You have a binomial test with n = 20, p₀ = 0.4. You want the rejection region for Ha: p &gt; 0.4 whose α is closest to 0.05. State the rejection region and the actual α.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">n &lt;- <span class="nb">20</span>
+p0 &lt;- <span class="nb">0.4</span>
+
+cutoffs &lt;- <span class="nb">0</span>:n
+alphas &lt;- <span class="fn">sapply</span>(cutoffs, <span class="kr">function</span>(k) {
+  <span class="fn">pbinom</span>(k - <span class="nb">1</span>, size = n, prob = p0, lower.tail = <span class="nb">FALSE</span>)
+})
+
+best_idx &lt;- <span class="fn">which.min</span>(<span class="fn">abs</span>(alphas - <span class="nb">0.05</span>))
+best_cutoff &lt;- cutoffs[best_idx]
+actual_alpha &lt;- alphas[best_idx]
+
+<span class="fn">cat</span>(<span class="st">"Rejection region: {"</span>, best_cutoff, <span class="st">", ..., "</span>, n, <span class="st">"}\n"</span>)
+<span class="fn">cat</span>(<span class="st">"Actual alpha:"</span>, <span class="fn">round</span>(actual_alpha, <span class="nb">4</span>), <span class="st">"\n"</span>)
+</pre>
+  <p><strong>Expected:</strong> rejection region {12, ..., 20}, actual α ≈ 0.0565. (You'll get a different answer if you compute it.)</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 10 — Power Curve for a Binomial Test</div>
+  <p>For the Smith setup (n = 9, rejection region {6, 7, 8, 9}), plot power as p_true varies from 0.30 to 0.80 in steps of 0.05. Use base R or ggplot.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">n &lt;- <span class="nb">9</span>
+cutoff &lt;- <span class="nb">6</span>
+p_range &lt;- <span class="fn">seq</span>(<span class="nb">0.30</span>, <span class="nb">0.80</span>, by = <span class="nb">0.05</span>)
+
+power_vec &lt;- <span class="fn">sapply</span>(p_range, <span class="kr">function</span>(p) {
+  <span class="fn">pbinom</span>(cutoff - <span class="nb">1</span>, size = n, prob = p, lower.tail = <span class="nb">FALSE</span>)
+})
+
+<span class="fn">plot</span>(p_range, power_vec, type = <span class="st">"b"</span>,
+     xlab = <span class="st">"True 3-point %"</span>,
+     ylab = <span class="st">"Power"</span>,
+     main = <span class="st">"Power vs Effect Size (n = 9)"</span>)
+<span class="fn">abline</span>(h = <span class="nb">0.80</span>, col = <span class="st">"red"</span>, lty = <span class="nb">2</span>)
+</pre>
+  <p><strong>What you should see:</strong> even at p_true = 0.60, power is modest; you don't get to 80% until p_true is quite large. With n = 9, there's only so much power the test can have.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 11 — Paired t-Test (Differences Trick)</div>
+  <p>Before and after a training program, you measured 8 players' free-throw percentages. Before: <code>c(65, 70, 68, 72, 75, 60, 66, 71)</code>. After: <code>c(70, 73, 72, 75, 78, 63, 70, 74)</code>. Did the program improve their shooting? Use a paired t-test at α = 0.05, both (a) using <code>t.test(..., paired = TRUE)</code> and (b) by computing differences manually.</p>
+  <details><summary>Click for one correct solution</summary>
+<pre class="r-code">before &lt;- <span class="fn">c</span>(<span class="nb">65</span>, <span class="nb">70</span>, <span class="nb">68</span>, <span class="nb">72</span>, <span class="nb">75</span>, <span class="nb">60</span>, <span class="nb">66</span>, <span class="nb">71</span>)
+after  &lt;- <span class="fn">c</span>(<span class="nb">70</span>, <span class="nb">73</span>, <span class="nb">72</span>, <span class="nb">75</span>, <span class="nb">78</span>, <span class="nb">63</span>, <span class="nb">70</span>, <span class="nb">74</span>)
+
+<span class="cm"># (a) paired t-test shortcut</span>
+<span class="fn">t.test</span>(after, before, paired = <span class="nb">TRUE</span>, alternative = <span class="st">"greater"</span>)
+
+<span class="cm"># (b) manually: one-sample t-test on the differences</span>
+diffs &lt;- after - before
+<span class="fn">t.test</span>(diffs, mu = <span class="nb">0</span>, alternative = <span class="st">"greater"</span>)
+</pre>
+  <p><strong>Key insight:</strong> A paired t-test IS a one-sample t-test on the differences. Both versions give the exact same p-value. On Quiz 1, if you see "paired," mentally convert to "one-sample test on after − before."</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 12 — Read This Code and Predict the Output</div>
+  <p>What does this code compute, and what would it print? (No running allowed — just reason through it.)</p>
+<pre class="r-code"><span class="fn">set.seed</span>(<span class="nb">1</span>)
+B &lt;- <span class="nb">5000</span>
+n &lt;- <span class="nb">15</span>
+mu0 &lt;- <span class="nb">10</span>
+reject &lt;- <span class="fn">logical</span>(B)
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  samp &lt;- <span class="fn">rnorm</span>(n, mean = <span class="nb">10</span>, sd = <span class="nb">3</span>)
+  reject[b] &lt;- <span class="fn">t.test</span>(samp, mu = mu0)$p.value &lt; <span class="nb">0.05</span>
+}
+<span class="fn">mean</span>(reject)
+</pre>
+  <details><summary>Click for answer</summary>
+  <p>The data is generated with <strong>mean = 10 = mu0</strong>, i.e., H0 is TRUE. So this is a <strong>Type I error rate simulation</strong>, not a power simulation.</p>
+  <p>The expected value of <code>mean(reject)</code> is approximately <strong>0.05</strong> (the nominal α level), because under H0 the t-test rejects 5% of the time — <em>by construction</em>.</p>
+  <p><strong>Rule of thumb:</strong> If <code>rnorm(..., mean = mu0)</code> → Type I error sim. If <code>rnorm(..., mean = mu0 + delta)</code> with delta ≠ 0 → power sim.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Prompt 13 — Debug This Code</div>
+  <p>Your friend wrote this power simulation but says the answer looks wrong. Find and fix the bug.</p>
+<pre class="r-code"><span class="fn">set.seed</span>(<span class="nb">1</span>)
+B &lt;- <span class="nb">10000</span>
+n &lt;- <span class="nb">20</span>
+reject &lt;- <span class="fn">logical</span>(B)
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  samp &lt;- <span class="fn">rnorm</span>(n, mean = <span class="nb">5</span>, sd = <span class="nb">2</span>)
+  reject[b] &lt;- <span class="fn">t.test</span>(samp)$p.value &lt; <span class="nb">0.05</span>
+}
+<span class="fn">mean</span>(reject)
+</pre>
+  <details><summary>Click for answer</summary>
+  <p><strong>Bug:</strong> the friend forgot the <code>mu = 5</code> argument. So <code>t.test(samp)</code> silently tests H0: μ = 0, not H0: μ = 5. The result will be astronomically high power (near 1.0) not because of a real effect, but because the null value is being tested against is wrong.</p>
+  <p><strong>Fix:</strong></p>
+<pre class="r-code">reject[b] &lt;- <span class="fn">t.test</span>(samp, mu = <span class="nb">5</span>)$p.value &lt; <span class="nb">0.05</span>
+</pre>
+  <p>If H0 is true (which this simulation is since mean = mu0 = 5), the result should be ≈ 0.05.</p>
+  </details>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Meta-Quiz — Which Test?</div>
+  <div class="quiz-q">Smith's 3-point attempts are recorded as Make/Miss per shot. You want to test if her true rate differs from 30%. What's the best test?</div>
+  <div class="quiz-opt" data-i="0">One-sample t-test on makes</div>
+  <div class="quiz-opt" data-i="1">Two-sample t-test</div>
+  <div class="quiz-opt" data-i="2">Exact binomial test (pbinom)</div>
+  <div class="quiz-opt" data-i="3">Sign test</div>
+  <div class="quiz-result" data-explain="Each shot is a Bernoulli trial (make/miss), so the number of makes is Binomial. Exact binomial via pbinom is the right tool. Sign test is for medians of continuous data."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Meta-Quiz — Power vs Type I</div>
+  <div class="quiz-q">You want to check if the t-test maintains α = 0.05 correctly when data is skewed. You simulate with data mean equal to mu0. What are you measuring?</div>
+  <div class="quiz-opt" data-i="0">Power</div>
+  <div class="quiz-opt" data-i="1">Type I error rate</div>
+  <div class="quiz-opt" data-i="2">p-value distribution</div>
+  <div class="quiz-opt" data-i="3">Effect size</div>
+  <div class="quiz-result" data-explain="Data mean = mu0 means H0 is TRUE. Proportion of rejections under H0 = Type I error rate. For power you'd use mean = mu0 + delta."></div>
+</div>
+
+<button class="complete-btn" onclick="completeLevel('23c')">Mark Level 23c Complete</button>
+</div></div>
+
 </div> <!-- end phase-4 -->
 
 
@@ -2349,6 +3995,75 @@ df$column                  <span class="cm"># Column access</span>
 <span class="fn">runif</span>(n, min, max)                    <span class="cm"># Uniform (mean=(min+max)/2)</span>
 <span class="fn">sample</span>(x, size, replace=<span class="kw">TRUE</span>/<span class="kw">FALSE</span>)  <span class="cm"># Random sample</span>
 </pre>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">R Function Glossary — Binomial (needed for the sign test)</div>
+<pre class="r-code"><span class="cm"># dbinom(k, size = n, prob = p)</span>
+<span class="cm">#   Probability of EXACTLY k successes in n trials with success prob p.</span>
+<span class="cm">#   "Height of the bar at k" in a Binomial(n, p) histogram.</span>
+<span class="fn">dbinom</span>(<span class="nb">2</span>, size = <span class="nb">7</span>, prob = <span class="nb">0.5</span>)
+<span class="cm"># = P(X = 2) with 7 flips of a fair coin ≈ 0.164</span>
+
+<span class="cm"># pbinom(k, size = n, prob = p)</span>
+<span class="cm">#   Probability of AT MOST k successes (left-tail CDF).</span>
+<span class="fn">pbinom</span>(<span class="nb">2</span>, size = <span class="nb">7</span>, prob = <span class="nb">0.5</span>)
+<span class="cm"># = P(X ≤ 2) ≈ 0.227</span>
+
+<span class="cm"># Sign test two-sided p-value pattern (from Practice Quiz 1 Q4 &amp; Q5):</span>
+<span class="fn">pbinom</span>(min_count, size = n, prob = <span class="nb">0.5</span>) * <span class="nb">2</span>
+
+<span class="cm"># rbinom(n_draws, size, prob)</span>
+<span class="cm">#   Simulate random Binomial counts.</span>
+<span class="fn">rbinom</span>(<span class="nb">5</span>, size = <span class="nb">10</span>, prob = <span class="nb">0.5</span>)
+<span class="cm"># = 5 random values of "# heads in 10 flips", e.g. 6 4 5 7 3</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">Remember the prefixes: <code>d</code> = <em>density</em> (exact value), <code>p</code> = <em>probability</em> (cumulative ≤), <code>r</code> = <em>random</em> (simulate).</div>
+    <div class="line-exp">For the sign test, n is the number of non-zero differences and p = 0.5 under H0.</div>
+  </div>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">R Function Glossary — t-Distribution (useful for manual t-test math)</div>
+<pre class="r-code"><span class="cm"># pt(t_stat, df)</span>
+<span class="cm">#   CDF of the t-distribution: P(T ≤ t_stat) with df degrees of freedom.</span>
+<span class="fn">pt</span>(<span class="nb">2.0</span>, df = <span class="nb">9</span>)
+<span class="cm"># = P(T ≤ 2.0) ≈ 0.963</span>
+
+<span class="cm"># Two-sided p-value for observed t-stat with df = n - 1:</span>
+<span class="nb">2</span> * (<span class="nb">1</span> - <span class="fn">pt</span>(<span class="fn">abs</span>(t_stat), df = n - <span class="nb">1</span>))
+
+<span class="cm"># qt(p, df)</span>
+<span class="cm">#   Quantile function: the t-value with left-tail area = p.</span>
+<span class="fn">qt</span>(<span class="nb">0.975</span>, df = <span class="nb">9</span>)
+<span class="cm"># ≈ 2.262  (critical value for a 95% two-sided CI with n = 10)</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp"><code>qt(0.975, df = n-1)</code> is the "t* critical value" that appears in a manual t-CI: x̄ ± t* · s/√n.</div>
+    <div class="line-exp"><code>pt</code> turns a t-statistic into a p-value. <code>qt</code> turns a probability into a t-value. They are inverses.</div>
+  </div>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">R Function Glossary — Gamma (the "skewed data" distribution)</div>
+<pre class="r-code"><span class="cm"># dgamma(x, shape, scale)</span>
+<span class="cm">#   Height of the gamma density at x.</span>
+<span class="fn">dgamma</span>(<span class="nb">10</span>, shape = <span class="nb">2</span>, scale = <span class="nb">5</span>)
+<span class="cm"># ≈ 0.054  (density at x = 10 for Gamma(2, 5))</span>
+
+<span class="cm"># rgamma(n, shape, scale)</span>
+<span class="cm">#   Generate n random draws from Gamma(shape, scale).</span>
+<span class="cm">#   Mean = shape * scale. Right-skewed.</span>
+<span class="fn">set.seed</span>(<span class="nb">1</span>)
+<span class="fn">rgamma</span>(<span class="nb">5</span>, shape = <span class="nb">1.2</span>, scale = <span class="nb">20</span>/<span class="nb">1.2</span>)
+<span class="cm"># = skewed sample with true mean = 20 (from Practice Quiz 1 Q3b)</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">Shape controls skewness: small shape (e.g., 1.2) = heavily right-skewed.</div>
+    <div class="line-exp">To make the mean equal any value M, set <code>scale = M / shape</code>.</div>
+    <div class="line-exp">You mostly use <code>rgamma</code> in Quiz 1 to simulate SKEWED data for Type I Error experiments.</div>
+  </div>
 </div>
 
 <div class="box box-concept">
@@ -2566,6 +4281,286 @@ result$statistic   <span class="cm"># t-stat</span>
   <div class="quiz-result" data-explain="d = 0.25 is in the 'small' range. Cohen's: 0.2 = small, 0.5 = medium, 0.8 = large."></div>
 </div>
 
+</div></div>
+
+<!-- ==================== APPENDIX: BOOTSTRAP vs PERMUTATION ==================== -->
+<div class="level-card" id="level-appendix">
+<div class="level-header" onclick="toggleLevel('appendix')">
+  <span class="level-title"><span class="num">Appendix</span> — Bootstrap vs Permutation Test (Quick Compare)</span>
+  <span class="level-xp">+20 XP</span>
+</div>
+<div class="level-body" id="level-body-appendix">
+
+<div class="box box-concept">
+  <div class="box-label">Why This Appendix Exists</div>
+  <p>Bootstrap and permutation tests sound similar — both use resampling — but they answer different questions. Permutation is NOT a Quiz 1 topic, so this is a short reference to keep the two methods from blurring together.</p>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">The One-Sentence Difference</div>
+  <ul>
+    <li><strong>Bootstrap</strong>: resample WITH replacement from your data to estimate how much a statistic (like the mean) bounces around. Answers "what's my confidence interval?"</li>
+    <li><strong>Permutation test</strong>: shuffle the group labels between two groups to build a null distribution. Answers "could this difference between Group A and Group B have happened by chance?"</li>
+  </ul>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">Side-by-Side Table</div>
+  <table class="cmp-table">
+    <tr><th>Aspect</th><th>Bootstrap</th><th>Permutation Test</th></tr>
+    <tr><td>Purpose</td><td>Confidence interval / uncertainty of a statistic</td><td>Hypothesis test for "no difference between groups"</td></tr>
+    <tr><td>What you resample</td><td>Values from one sample, WITH replacement</td><td>Group LABELS, WITHOUT replacement (reshuffled)</td></tr>
+    <tr><td>Typical setup</td><td>One sample, asking about its mean / median / SD</td><td>Two samples, asking if they differ</td></tr>
+    <tr><td>Decision rule</td><td>Reject H0 if mu0 is OUTSIDE the CI</td><td>p-value = fraction of shuffles producing an at-least-as-extreme difference</td></tr>
+    <tr><td>On Quiz 1?</td><td>Yes (Lecture 5, Practice Q8)</td><td>No — just know it exists</td></tr>
+  </table>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Micro-Example (for orientation only)</div>
+<pre class="r-code"><span class="cm"># Bootstrap — CI for mean of one sample</span>
+boot_means &lt;- <span class="fn">replicate</span>(<span class="nb">10000</span>,
+  <span class="fn">mean</span>(<span class="fn">sample</span>(x, replace = <span class="kw">TRUE</span>)))
+<span class="fn">quantile</span>(boot_means, <span class="fn">c</span>(<span class="nb">.025</span>, <span class="nb">.975</span>))
+
+<span class="cm"># Permutation — p-value for two-sample mean difference</span>
+obs  &lt;- <span class="fn">mean</span>(a) - <span class="fn">mean</span>(b)
+pool &lt;- <span class="fn">c</span>(a, b)
+diffs &lt;- <span class="fn">replicate</span>(<span class="nb">10000</span>, {
+  shuffled &lt;- <span class="fn">sample</span>(pool)
+  <span class="fn">mean</span>(shuffled[<span class="nb">1</span>:<span class="fn">length</span>(a)]) - <span class="fn">mean</span>(shuffled[(<span class="fn">length</span>(a)+<span class="nb">1</span>):<span class="fn">length</span>(pool)])
+})
+<span class="fn">mean</span>(<span class="fn">abs</span>(diffs) &gt;= <span class="fn">abs</span>(obs))   <span class="cm"># = permutation p-value</span>
+</pre>
+  <div class="code-explain">
+    <div class="line-exp">Bootstrap: sample WITH replacement from a SINGLE sample, many times. Look at quantiles.</div>
+    <div class="line-exp">Permutation: merge the two groups, shuffle labels (WITHOUT replacement), recompute the difference. Count how often it's at least as big.</div>
+    <div class="line-exp">Memory aid: <em>Bootstrap = replacement. Permutation = shuffle.</em></div>
+  </div>
+</div>
+
+<div class="box box-warning">
+  <div class="box-label">Quiz 1 Reality Check</div>
+  <p>If a Quiz 1 question describes resampling a single sample with replacement and building a CI, it's the <strong>bootstrap</strong>. If a question describes reshuffling labels between two groups, it's a <strong>permutation test</strong> — mention it, but know you won't be asked to code it.</p>
+</div>
+
+</div></div>
+
+<!-- ==================== LEVEL: EXAM EVE DRILL ==================== -->
+<div class="level-card" id="level-exam-eve">
+<div class="level-header" onclick="toggleLevel('exam-eve')">
+  <span class="level-title"><span class="num">Exam Eve</span> — 48-Hour Drill: Mixed Questions at Real Quiz Difficulty</span>
+  <span class="level-xp">+100 XP</span>
+</div>
+<div class="level-body" id="level-body-exam-eve">
+
+<div class="box box-concept">
+  <div class="box-label">How to Use This Drill</div>
+  <p>These are calibrated to feel like real Quiz 1 items: a mix of conceptual multiple-choice, code-reading, and short "produce this code" prompts, touching Lec 1–5. Work through them in order. If you get one wrong, <em>go back to the relevant level</em> (named in the explanation) and re-read — don't just read the answer and move on.</p>
+  <p><strong>Rough time budget:</strong> 60–90 min for the whole drill.</p>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Q1 — Rejection Region Interpretation</div>
+  <div class="quiz-q">For H0: p = 0.30 vs. Ha: p &gt; 0.30 with n = 9, the rejection region closest to α = 0.05 is {6, 7, 8, 9} with actual α ≈ 0.0253. You observe X = 6 makes. What do you do?</div>
+  <div class="quiz-opt" data-i="0">Compute p-value first, then compare to 0.05</div>
+  <div class="quiz-opt" data-i="1">Fail to reject H0 — 6 is at the boundary</div>
+  <div class="quiz-opt" data-i="2">Reject H0 — 6 is in the rejection region</div>
+  <div class="quiz-opt" data-i="3">Can't decide without more data</div>
+  <div class="quiz-result" data-explain="The rejection region IS the decision rule. If X ∈ {6, 7, 8, 9}, reject — period. You don't need to also check the p-value (though it would also be below actual α)."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Q2 — pbinom Strictness</div>
+  <div class="quiz-q">To compute P(X ≥ 7) for X ~ Binomial(15, 0.4), which is correct?</div>
+  <div class="quiz-opt" data-i="0"><code>pbinom(7, 15, 0.4, lower.tail = FALSE)</code></div>
+  <div class="quiz-opt" data-i="1"><code>pbinom(6, 15, 0.4, lower.tail = FALSE)</code></div>
+  <div class="quiz-opt" data-i="2"><code>1 - pbinom(7, 15, 0.4)</code></div>
+  <div class="quiz-opt" data-i="3"><code>pbinom(7, 15, 0.4) + dbinom(7, 15, 0.4)</code></div>
+  <div class="quiz-result" data-explain="lower.tail = FALSE gives P(X > q). To get P(X ≥ 7), use q = 6. Option 2 gives P(X > 7) = P(X ≥ 8). Option 0 also gives P(X ≥ 8)."></div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Q3 — Conditions for t-test</div>
+  <div class="quiz-q">Which is a REQUIRED condition for the one-sample t-test to give a valid p-value?</div>
+  <div class="quiz-opt" data-i="0">The data values follow a t distribution</div>
+  <div class="quiz-opt" data-i="1">The sampling distribution of x̄ follows a t distribution</div>
+  <div class="quiz-opt" data-i="2">Observations are independent (from a random sample)</div>
+  <div class="quiz-opt" data-i="3">Sample size is at least 30</div>
+  <div class="quiz-result" data-explain="Random sampling / independence is the fundamental condition. Normality is helpful for small n but not strictly required for large n (CLT). It's the test STATISTIC (not the data, not x̄) that follows a t distribution under H0."></div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Q4 — mu Default Trap</div>
+  <div class="quiz-q"><code>t.test(wait_times, alternative = "greater")</code> returns p = 0.002. You wanted to test H0: μ = 15. Is this p-value useful?</div>
+  <div class="quiz-opt" data-i="0">Yes — the default alternative works for any null</div>
+  <div class="quiz-opt" data-i="1">Yes — t.test detects the appropriate null value</div>
+  <div class="quiz-opt" data-i="2">No — you forgot <code>mu = 15</code>; R tested against 0</div>
+  <div class="quiz-opt" data-i="3">No — you need paired = TRUE</div>
+  <div class="quiz-result" data-explain="<code>mu</code> defaults to 0. If you don't write <code>mu = 15</code>, R silently tests H0: μ = 0. This is one of the most common Quiz 1 traps."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Q5 — Read This Simulation</div>
+  <div class="quiz-q">
+<pre class="r-code">set.seed(9)
+n &lt;- 20; B &lt;- 10000
+rej &lt;- logical(B)
+for (b in 1:B) {
+  s &lt;- rgamma(n, shape = 2, scale = 3)
+  rej[b] &lt;- t.test(s, mu = 6)$p.value &lt; 0.05
+}
+mean(rej)
+</pre>
+  What is this simulation estimating, and what will the answer be closest to?</div>
+  <div class="quiz-opt" data-i="0">Power; about 0.80</div>
+  <div class="quiz-opt" data-i="1">Type I error rate of a t-test on skewed data; somewhat above 0.05 (inflated)</div>
+  <div class="quiz-opt" data-i="2">Type I error rate; exactly 0.05</div>
+  <div class="quiz-opt" data-i="3">Power of the sign test; unknown</div>
+  <div class="quiz-result" data-explain="Gamma(2, 3) has mean 6 = mu0 → H0 true → this is a Type I error sim. Because gamma is skewed and n = 20 is moderate, the t-test's Type I will be inflated above 0.05 (likely 0.06–0.09)."></div>
+</div>
+
+<div class="quiz-box" data-answer="0">
+  <div class="quiz-label">Q6 — Sign Test, Median vs Mean</div>
+  <div class="quiz-q">A 2025-2026 player's minutes played per game are approximately symmetric. H0: median = 33.5 vs. Ha: median ≠ 33.5. The sign test p-value is 0.08. A two-sided t-test for H0: μ = 33.5 gives p = 0.04. What's a reasonable conclusion?</div>
+  <div class="quiz-opt" data-i="0">The two tests can disagree; for symmetric data they test effectively the same thing, but the sign test has lower power, so mismatched p-values are plausible</div>
+  <div class="quiz-opt" data-i="1">The data must be wrong</div>
+  <div class="quiz-opt" data-i="2">The tests must always agree; recheck calculations</div>
+  <div class="quiz-opt" data-i="3">The t-test has inflated Type I error here</div>
+  <div class="quiz-result" data-explain="Same null for symmetric data (mean = median), but the sign test has lower power than the t-test when t-test conditions are met. Getting different p-values — one above, one below 0.05 — is entirely reasonable."></div>
+</div>
+
+<div class="quiz-box" data-answer="3">
+  <div class="quiz-label">Q7 — Bootstrap Three Rules</div>
+  <div class="quiz-q">Which of the following is NOT a rule of bootstrap CI construction?</div>
+  <div class="quiz-opt" data-i="0">Resample WITH replacement</div>
+  <div class="quiz-opt" data-i="1">Resample SIZE equal to the original n</div>
+  <div class="quiz-opt" data-i="2">Take percentiles of the bootstrap statistics, not the raw data</div>
+  <div class="quiz-opt" data-i="3">Set a seed so the CI is deterministic; without a seed, bootstrap is wrong</div>
+  <div class="quiz-result" data-explain="Bootstrap is inherently random — seed makes it reproducible but isn't required for correctness. The first three are essential; the fourth is a misconception."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Q8 — Power Direction</div>
+  <div class="quiz-q">A colleague argues that lowering α from 0.05 to 0.01 is always a good idea because it gives stronger evidence. What's the best counter?</div>
+  <div class="quiz-opt" data-i="0">It doesn't change anything meaningful</div>
+  <div class="quiz-opt" data-i="1">Lowering α reduces Type I error but also reduces power — real effects become harder to detect</div>
+  <div class="quiz-opt" data-i="2">Lowering α increases Type I error</div>
+  <div class="quiz-opt" data-i="3">Lowering α changes the distribution of the test statistic</div>
+  <div class="quiz-result" data-explain="Classic Type I / power tradeoff. Smaller α makes the rejection region smaller → less chance of rejecting, whether H0 is true or false. Good for Type I, bad for power."></div>
+</div>
+
+<div class="quiz-box" data-answer="2">
+  <div class="quiz-label">Q9 — Power Calculation Setup</div>
+  <div class="quiz-q">You want to find the sample size needed for 90% power to detect a true mean of 12 when H0: μ = 10, assuming sd = 3. Which call to <code>power.t.test()</code> is correct?</div>
+  <div class="quiz-opt" data-i="0"><code>power.t.test(n = 90, delta = 2, sd = 3, type = "one.sample")</code></div>
+  <div class="quiz-opt" data-i="1"><code>power.t.test(power = 0.90, delta = 12, sd = 3, sig.level = 0.05, type = "one.sample")</code></div>
+  <div class="quiz-opt" data-i="2"><code>power.t.test(power = 0.90, delta = 2, sd = 3, sig.level = 0.05, type = "one.sample")</code></div>
+  <div class="quiz-opt" data-i="3"><code>power.t.test(n = NULL, power = 0.90, delta = 2, sd = 3, sig.level = 0.05, type = "two.sample")</code></div>
+  <div class="quiz-result" data-explain="delta is the EFFECT SIZE — the absolute difference |12 − 10| = 2 — not the true mean. Option 1 wrongly uses delta = 12. Option 3 uses two.sample. Option 2 is correct."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Q10 — Non-Parametric Advantages</div>
+  <div class="quiz-q">Why did the sign test hold its nominal α on gamma-distributed data where the t-test failed?</div>
+  <div class="quiz-opt" data-i="0">The sign test converts gamma data to normal</div>
+  <div class="quiz-opt" data-i="1">The sign test's null distribution is Binomial(n, 0.5) by construction — independent of the data's distribution</div>
+  <div class="quiz-opt" data-i="2">The sign test is more powerful</div>
+  <div class="quiz-opt" data-i="3">Gamma data has a known median by default</div>
+  <div class="quiz-result" data-explain="This is the defining property of non-parametric tests. The sign test only asks whether each value is above or below μ₀; the answer is 50/50 under H0 no matter what the data distribution is."></div>
+</div>
+
+<div class="quiz-box" data-answer="0">
+  <div class="quiz-label">Q11 — Two-Sample vs One-Sample</div>
+  <div class="quiz-q">You're testing whether UCSD students sleep differently from a known national average of 7 hours. Your sample of 50 UCSD students has mean 6.8, sd 1.2. Which test?</div>
+  <div class="quiz-opt" data-i="0">One-sample t-test against μ₀ = 7</div>
+  <div class="quiz-opt" data-i="1">Two-sample t-test between UCSD and the nation</div>
+  <div class="quiz-opt" data-i="2">Paired t-test</div>
+  <div class="quiz-opt" data-i="3">Sign test</div>
+  <div class="quiz-result" data-explain="You have one sample (UCSD) being compared to a known value (7). That's a one-sample test, not two-sample. Two-sample requires two actual samples of data. Paired requires matched pairs."></div>
+</div>
+
+<div class="quiz-box" data-answer="1">
+  <div class="quiz-label">Q12 — Post-Hoc Power</div>
+  <div class="quiz-q">You failed to reject H0 in a study. Which is the best next step?</div>
+  <div class="quiz-opt" data-i="0">Compute post-hoc power to justify the null result</div>
+  <div class="quiz-opt" data-i="1">Report the null result honestly; for future studies, plan sample size via pilot data or literature review</div>
+  <div class="quiz-opt" data-i="2">Switch to a non-parametric test until you reject</div>
+  <div class="quiz-opt" data-i="3">Drop outliers until the test rejects</div>
+  <div class="quiz-result" data-explain="Post-hoc power is discouraged. The ethical path: report the result, then plan future studies better. Options 2 and 3 are forms of p-hacking."></div>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Q13 — Short Code Prompt: Paired Differences</div>
+  <p>Before/after ratings from 6 customers: Before = (4, 5, 3, 4, 5, 4), After = (5, 5, 4, 5, 6, 5). Test whether ratings increased, using a paired test. α = 0.05.</p>
+  <details><summary>Click for solution</summary>
+<pre class="r-code">before &lt;- <span class="fn">c</span>(<span class="nb">4</span>, <span class="nb">5</span>, <span class="nb">3</span>, <span class="nb">4</span>, <span class="nb">5</span>, <span class="nb">4</span>)
+after  &lt;- <span class="fn">c</span>(<span class="nb">5</span>, <span class="nb">5</span>, <span class="nb">4</span>, <span class="nb">5</span>, <span class="nb">6</span>, <span class="nb">5</span>)
+
+<span class="fn">t.test</span>(after, before, paired = <span class="nb">TRUE</span>, alternative = <span class="st">"greater"</span>)
+<span class="cm"># OR equivalently:</span>
+<span class="fn">t.test</span>(after - before, mu = <span class="nb">0</span>, alternative = <span class="st">"greater"</span>)
+</pre>
+  <p><strong>Key insight:</strong> Paired t-test = one-sample t-test on the differences. If you remember that, you only have to memorize one pattern.</p>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Q14 — Short Code Prompt: Power Simulation for Sign Test</div>
+  <p>Estimate the power of a two-sided sign test at α = 0.05 with n = 20, when data ~ N(mean = 0.8, sd = 2) and H0: median = 0. Use 10,000 reps.</p>
+  <details><summary>Click for solution</summary>
+<pre class="r-code">sign_test_pval &lt;- <span class="kr">function</span>(x, mu0 = <span class="nb">0</span>) {
+  x &lt;- x[x != mu0]
+  n &lt;- <span class="fn">length</span>(x)
+  a &lt;- <span class="fn">sum</span>(x &gt; mu0)
+  pl &lt;- <span class="fn">pbinom</span>(a,     size = n, prob = <span class="nb">0.5</span>)
+  ph &lt;- <span class="fn">pbinom</span>(a - <span class="nb">1</span>, size = n, prob = <span class="nb">0.5</span>, lower.tail = <span class="nb">FALSE</span>)
+  <span class="fn">min</span>(<span class="nb">1</span>, <span class="nb">2</span> * <span class="fn">min</span>(pl, ph))
+}
+
+<span class="fn">set.seed</span>(<span class="nb">1</span>)
+B &lt;- <span class="nb">10000</span>; n &lt;- <span class="nb">20</span>
+reject &lt;- <span class="fn">logical</span>(B)
+<span class="kr">for</span> (b <span class="kr">in</span> <span class="nb">1</span>:B) {
+  samp &lt;- <span class="fn">rnorm</span>(n, mean = <span class="nb">0.8</span>, sd = <span class="nb">2</span>)
+  reject[b] &lt;- sign_test_pval(samp, mu0 = <span class="nb">0</span>) &lt; <span class="nb">0.05</span>
+}
+<span class="fn">mean</span>(reject)
+</pre>
+  </details>
+</div>
+
+<div class="box box-rcode">
+  <div class="box-label">Q15 — Short Code Prompt: Find Best Cutoff, Report Actual α</div>
+  <p>For H0: p = 0.40 vs. Ha: p &gt; 0.40 with n = 18, find the one-sided rejection region closest to α = 0.05. Print the rejection region boundary and the actual α.</p>
+  <details><summary>Click for solution</summary>
+<pre class="r-code">n &lt;- <span class="nb">18</span>; p0 &lt;- <span class="nb">0.40</span>
+cutoffs &lt;- <span class="nb">0</span>:n
+alphas &lt;- <span class="fn">sapply</span>(cutoffs, <span class="kr">function</span>(k) {
+  <span class="fn">pbinom</span>(k - <span class="nb">1</span>, size = n, prob = p0, lower.tail = <span class="nb">FALSE</span>)
+})
+idx &lt;- <span class="fn">which.min</span>(<span class="fn">abs</span>(alphas - <span class="nb">0.05</span>))
+<span class="fn">cat</span>(<span class="st">"Rejection region: {"</span>, cutoffs[idx], <span class="st">", ..., "</span>, n, <span class="st">"}\n"</span>)
+<span class="fn">cat</span>(<span class="st">"Actual alpha:"</span>, <span class="fn">round</span>(alphas[idx], <span class="nb">4</span>), <span class="st">"\n"</span>)
+</pre>
+  </details>
+</div>
+
+<div class="box box-concept">
+  <div class="box-label">Final Self-Check — If You're Shaky On Any of These, Revisit the Named Level</div>
+  <ul>
+    <li>What's the difference between Type I error and power? (Lvl 7, 12b)</li>
+    <li>Why is 0.0625 the smallest α for n = 5 in a two-sided sign test? (Lvl 7c, 11b)</li>
+    <li>What's the pbinom "k − 1 trick" and when do you use it? (Lvl 7c, 24)</li>
+    <li>What's the ONE LINE that separates a Type I simulation from a power simulation? (Lvl 9, 13, 12b)</li>
+    <li>Can a t-test be valid on skewed data? If not, what's the fix? (Lvl 7, 11, 11b)</li>
+    <li>What are the three ways to estimate σ / effect size for a power calculation, and which is discouraged? (Lvl 12b)</li>
+    <li>Why do we multiply by 2 for a two-sided t-test p-value but NOT for the Binomial case? (Lvl 7b, 7c)</li>
+  </ul>
+  <p>If you can answer all seven out loud without hesitating, you're ready. If you pause on any of them, that's your next 20 minutes.</p>
+</div>
+
+<button class="complete-btn" onclick="completeLevel('exam-eve')">Mark Exam Eve Complete — Good Luck!</button>
 </div></div>
 
 </div> <!-- end phase-5 -->
