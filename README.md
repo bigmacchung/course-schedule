@@ -10,7 +10,6 @@ Interactive weekly schedule dashboard : classes, office hours, and finals at a g
 
 | Course | Title | Instructor |
 |--------|-------|------------|
-| DSC 40B | Theoretical Foundations of Data Science II | Marina Langlois |
 | DSC 106 | Intro to Data Visualization | Samuel Lau |
 | DSC 152 | Applied Statistical Data Analysis | Peter Benjamin Chi |
 | MGT 159T | Data Science with AI | Robert Sanders |
