@@ -58,6 +58,45 @@ h1 {
   box-shadow: 0 2px 12px rgba(0,0,0,0.05);
 }
 
+.study-guides-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 10px;
+}
+
+.study-guides-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.study-guide-btn {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 9px 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #1a1a2e;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.study-guide-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.study-guide-btn.bridge {
+  background: linear-gradient(135deg, #56B4E9, #0072B2);
+  color: #fff;
+  border-color: transparent;
+}
+
+
 /* Filter controls */
 .controls {
   width: 100%;
@@ -136,10 +175,10 @@ h1 {
 }
 
   /* Legend colors */
-  .c-106 { --clr: #34a853; }
-  .c-152 { --clr: #ea4335; }
-  .c-mgt { --clr: #ff6f00; }
-  .c-usp { --clr: #e91e63; }
+  .c-106 { --clr: #0072B2; }
+  .c-152 { --clr: #E69F00; }
+  .c-mgt { --clr: #009E73; }
+  .c-usp { --clr: #CC79A7; }
 
   /* Grid */
   .calendar {
@@ -342,19 +381,30 @@ h1 {
   }
 
   @media (max-width: 960px) {
-    body { padding: 12px; }
-
-    .topbar {
-      flex-direction: column;
-      align-items: stretch;
+    body {
+      padding: 12px;
     }
 
-    h1, .subtitle {
-      text-align: center;
+    .topbar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .title-block,
+    .controls,
+    .study-guides-panel {
+      width: 100%;
+      max-width: 760px;
     }
 
     .study-guides-panel {
-      width: 100%;
+      justify-self: unset;
+    }
+
+    h1,
+    .subtitle {
+      text-align: center;
     }
 
     .calendar {
@@ -385,15 +435,17 @@ h1 {
 
 <div class="controls">
   <div class="controls-row">
-    <button class="toggle-btn active c-106" data-filter="dsc106" style="color: #34a853;"><span class="dot" style="background:#34a853"></span>DSC 106</button>
-    <button class="toggle-btn active c-152" data-filter="dsc152" style="color: #ea4335;"><span class="dot" style="background:#ea4335"></span>DSC 152</button>
-    <button class="toggle-btn active c-mgt" data-filter="mgt159t" style="color: #ff6f00;"><span class="dot" style="background:#ff6f00"></span>MGT 159T</button>
-    <button class="toggle-btn active c-usp" data-filter="usp4" style="color: #e91e63;"><span class="dot" style="background:#e91e63"></span>USP 4</button>
+    <button class="toggle-btn active c-106" data-filter="dsc106" style="color: #0072B2;"><span class="dot" style="background:#0072B2"></span>DSC 106</button>
+    <button class="toggle-btn active c-152" data-filter="dsc152" style="color: #E69F00;"><span class="dot" style="background:#E69F00"></span>DSC 152</button>
+    <button class="toggle-btn active c-mgt" data-filter="mgt159t" style="color: #009E73;"><span class="dot" style="background:#009E73"></span>MGT 159T</button>
+    <button class="toggle-btn active c-usp" data-filter="usp4" style="color: #CC79A7;"><span class="dot" style="background:#CC79A7"></span>USP 4</button>
   </div>
 
   <div class="controls-row">
-    <button class="toggle-btn active c-106" data-filter="dsc106-oh" style="color: #34a853;"><span class="dot" style="background:#34a853"></span>DSC 106 OH</button>
-    <button class="toggle-btn active c-152" data-filter="dsc152-oh" style="color: #ea4335;"><span class="dot" style="background:#ea4335"></span>DSC 152 OH</button>
+    <button class="toggle-btn active c-106" data-filter="dsc106-oh" style="color: #0072B2;"><span class="dot" style="background:#0072B2"></span>DSC 106 OH</button>
+    <button class="toggle-btn active c-152" data-filter="dsc152-oh" style="color: #E69F00;"><span class="dot" style="background:#E69F00"></span>DSC 152 OH</button>
+    <button class="toggle-btn active c-mgt" data-filter="mgt159t-oh" style="color: #009E73;"><span class="dot" style="background:#009E73"></span>MGT 159T OH</button>
+    <button class="toggle-btn active c-usp" data-filter="usp4-oh" style="color: #CC79A7;"><span class="dot" style="background:#CC79A7"></span>USP 4 OH</button>
   </div>
 </div>
 
@@ -403,9 +455,9 @@ h1 {
 
 <div class="finals-section">
   <h2>Final Exams</h2>
-  <div class="final-item"><span class="final-dot" style="background:#ea4335"></span><span class="final-date">Sat Jun 6, 3:00–5:59 PM</span><span class="final-course">DSC 152</span><span class="final-loc">TBA</span></div>
-  <div class="final-item"><span class="final-dot" style="background:#34a853"></span><span class="final-date">Thu Jun 11, 11:30 AM–2:29 PM</span><span class="final-course">DSC 106</span><span class="final-loc">CTL 0125</span></div>
-  <div class="final-item"><span class="final-dot" style="background:#ff6f00"></span><span class="final-date">Fri Jun 12, 7:00–9:59 PM</span><span class="final-course">MGT 159T</span><span class="final-loc">TBA</span></div>
+  <div class="final-item"><span class="final-dot" style="background:#E69F00"></span><span class="final-date">Sat Jun 6, 3:00–5:59 PM</span><span class="final-course">DSC 152</span><span class="final-loc">TBA</span></div>
+  <div class="final-item"><span class="final-dot" style="background:#0072B2"></span><span class="final-date">Thu Jun 11, 11:30 AM–2:29 PM</span><span class="final-course">DSC 106</span><span class="final-loc">CTL 0125</span></div>
+  <div class="final-item"><span class="final-dot" style="background:#009E73"></span><span class="final-date">Fri Jun 12, 7:00–9:59 PM</span><span class="final-course">MGT 159T</span><span class="final-loc">TBA</span></div>
 </div>
 
 <footer style="margin-top:24px;text-align:center;color:#999;font-size:0.8rem;">
@@ -448,7 +500,9 @@ const events = [
   [3, 9.5, 10.833, 'DSC 152', 'Lecture', 'HSS 1330', 'lec', 'dsc152', 'DSC 152 Lecture\n9:30–10:50 AM\nHSS 1330 • Chi, Peter Benjamin'],
 
   // Thursday OH
-  [3, 12.5, 13.5, 'DSC 152 OH', 'Peter', 'HDSI 355', 'oh', 'dsc152-oh', 'DSC 152 Office Hours\nPeter (Instructor)\n12:30–1:30 PM\nHDSI 355'],
+  [3, 12, 13, 'MGT 159T OH', 'Data Science with AI', 'Zoom', 'oh', 'mgt159t-oh', 'MGT 159T Office Hours\nData Science with AI\nThursday\n12:00–1:00 PM\nZoom', 'split-third-1'],
+  [3, 12, 13, 'USP 4 OH', 'Office Hours', 'Zoom', 'oh', 'usp4-oh', 'USP 4 Office Hours\nThursday\n12:00–1:00 PM\nZoom', 'split-third-2'],
+  [3, 12.5, 13.5, 'DSC 152 OH', 'Peter', 'HDSI 355', 'oh', 'dsc152-oh', 'DSC 152 Office Hours\nPeter (Instructor)\n12:30–1:30 PM\nHDSI 355', 'split-third-3'],
   [3, 15, 16, 'DSC 106 OH', 'Minyoung Kim', 'HDSI 355', 'oh', 'dsc106-oh', 'DSC 106 Office Hours\nMinyoung Kim\n3:00–4:00 PM\nHDSI 355'],
 
   // ===== FRIDAY =====
@@ -464,12 +518,14 @@ const events = [
 ];
 
 const COLORS = {
-  dsc106: '#34a853',
-  'dsc106-oh': '#34a853',
-  dsc152: '#ea4335',
-  'dsc152-oh': '#ea4335',
-  mgt159t: '#ff6f00',
-  usp4: '#e91e63'
+  dsc106: '#0072B2',
+  'dsc106-oh': '#0072B2',
+  dsc152: '#E69F00',
+  'dsc152-oh': '#E69F00',
+  mgt159t: '#009E73',
+  'mgt159t-oh': '#009E73',
+  usp4: '#CC79A7',
+  'usp4-oh': '#CC79A7'
 };
 
 const cal = document.getElementById('cal');
@@ -598,7 +654,9 @@ const activeFilters = new Set([
   'mgt159t',
   'usp4',
   'dsc106-oh',
-  'dsc152-oh'
+  'dsc152-oh',
+  'mgt159t-oh',
+  'usp4-oh'
 ]);
 
 document.querySelectorAll('.toggle-btn').forEach(btn => {
