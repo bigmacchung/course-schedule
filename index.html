@@ -14,125 +14,126 @@
     padding: 24px;
   }
 
+/* ===== Centered top layout + aligned filter buttons ===== */
+
+.topbar {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 280px;
+  align-items: start;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.title-block {
+  grid-column: 2;
+  justify-self: center;
+  width: 100%;
+  max-width: 760px;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+  color: #1a1a2e;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.study-guides-panel {
+  grid-column: 3;
+  width: 280px;
+  justify-self: end;
+  flex-shrink: 0;
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+/* Filter controls */
+.controls {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.controls-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  min-width: 120px;
+  justify-content: center;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 2px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toggle-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.toggle-btn.active {
+  border-color: currentColor;
+}
+
+/* Responsive version for tablet + mobile */
+@media (max-width: 960px) {
+  body {
+    padding: 12px;
+  }
+
   .topbar {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 24px;
-    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: center;
   }
 
-  .title-block {
-    flex: 1;
-    min-width: 280px;
-  }
-
-  h1 {
-    text-align: center;
-    font-size: 1.6rem;
-    margin-bottom: 4px;
-    color: #1a1a2e;
-  }
-
-  .subtitle {
-    text-align: center;
-    color: #666;
-    font-size: 0.95rem;
-    margin-bottom: 0;
+  .title-block,
+  .controls,
+  .study-guides-panel {
+    width: 100%;
+    max-width: 760px;
   }
 
   .study-guides-panel {
-    width: 280px;
-    flex-shrink: 0;
-    background: #fff;
-    border: 1px solid #e3e3e3;
-    border-radius: 14px;
-    padding: 14px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    justify-self: unset;
   }
 
-  .study-guides-title {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-bottom: 10px;
-  }
-
-  .study-guides-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .study-guide-btn {
-    display: inline-block;
-    width: 100%;
+  h1,
+  .subtitle {
     text-align: center;
-    padding: 9px 12px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 999px;
-    text-decoration: none;
-    color: #1a1a2e;
-    font-weight: 600;
-    transition: all 0.2s;
   }
 
-  .study-guide-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  .calendar {
+    min-width: 760px;
   }
-
-  .study-guide-btn.bridge {
-    background: linear-gradient(135deg, #22d3ee, #818cf8);
-    color: #0b0e14;
-    border-color: transparent;
-  }
-
-  /* Filter controls */
-  .controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-
-  .controls-row {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .toggle-btn {
-    padding: 7px 16px;
-    border-radius: 20px;
-    border: 2px solid #ddd;
-    background: #fff;
-    cursor: pointer;
-    font-size: 0.82rem;
-    font-weight: 600;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .toggle-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-
-  .toggle-btn.active {
-    border-color: currentColor;
-  }
-
-  .toggle-btn .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
+}
 
   /* Legend colors */
   .c-106 { --clr: #34a853; }
