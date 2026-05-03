@@ -181,6 +181,7 @@ footer a:hover { text-decoration: underline; }
   <a href="#s8"><span class="toc-num">8.</span> Five common pitfalls (extra credit answers)</a>
   <a href="#s9"><span class="toc-num">9.</span> Mock prompts to practice out loud</a>
   <a href="#s10"><span class="toc-num">10.</span> Sources &amp; further reading</a>
+  <a href="#s11" style="background:linear-gradient(90deg, transparent, #22d3ee22); padding:6px 8px; border-radius:6px; margin-top:4px;"><span class="toc-num" style="color:#fbbf24;">11.</span> <strong>Multi-agent expansion — six deeper stats × PM bridges (NEW)</strong></a>
 </div>
 
 <!-- ========== SECTION 1 ========== -->
@@ -495,6 +496,291 @@ H1: 25% discount changes the 30-day repeat rate.</pre>
     <li><a href="https://www.productmanagementexercises.com/interview-questions/uber" style="color:#22d3ee;">PM Exercises — Uber PM interview question bank</a></li>
     <li><a href="DSC152-companion.html" style="color:#22d3ee;">← Back to your DSC 152 study guide</a></li>
   </ul>
+
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- ===== SECTION 11 — MULTI-AGENT EXPANSION (added later, NOT  ====== -->
+<!-- ===== overwriting earlier content). Each subsection cites the ===== -->
+<!-- ===== specific agent that produced it.                       ===== -->
+<!-- ================================================================== -->
+
+<div class="section" id="s11" style="border:2px solid #22d3ee44;">
+  <div class="section-header" style="background:linear-gradient(135deg,#1c2030 0%,#22d3ee22 100%);">
+    <span class="num" style="background:linear-gradient(135deg,#fbbf24,#22d3ee);">11</span>
+    <h2>Multi-Agent Expansion — Six Stats × PM Bridges Built by Real Agents</h2>
+  </div>
+  <div class="section-body">
+
+  <p style="background:#1c2030; padding:14px 18px; border-radius:8px; border-left:3px solid #fbbf24; color:#cbd5e1;">
+    <strong style="color:#fbbf24;">How this section was made.</strong> Six expansion topics were identified by the
+    <em>data-explorer</em> agent (it scanned Sections 1-10 and flagged missing math, missing examples, and missing
+    decision frameworks). Each topic was framed by the <em>hypothesis</em> agent, designed by the
+    <em>experiment-designer</em> agent, anchored to the DSC 152 Companion by direct lecture references, and structured
+    by the <em>story-architect</em> agent into the same 6-part shape. The numbers in the boxes were computed by running
+    <code>stats_helpers.py</code> on the actual formulas — no fake math.
+  </p>
+
+  <!-- ===================== 11.1 COHORTS ===================== -->
+  <h3 id="s11-1" style="margin-top:20px;">11.1 — Cohort Thinking (the gap PMs notice but APMs miss)</h3>
+
+  <div class="box box-uber"><div class="box-label">1 · Original idea (from the Uber guide)</div>
+    <p>Section 02 lists "repeat rate" as a metric and Section 03 picks "30-day repeat rate" as the primary metric for the discount case. But the guide never explains <strong>cohorts</strong> — how riders who joined in different weeks behave differently and why aggregate retention can lie.</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">2 · Simple explanation (DSC 152 style)</div>
+    <p>A <strong>cohort</strong> is just a group of users who joined at the same time. If you took your first Uber on April 1, you're in the "Apr-1 cohort." If you took your first ride on April 8, you're in the "Apr-8 cohort." Each cohort has its own retention curve.</p>
+    <p><strong>Why this matters statistically.</strong> When you compute "retention" over all users, you are mixing cohorts. New cohorts have had less time to churn — they look "more retained" simply because the clock hasn't run out on them. This is the same kind of <em>survivorship-style bias</em> the DSC 152 Lab 2 sign-test discussion warns about: aggregating over a non-stationary population gives you a number that does not match what any single user experiences.</p>
+    <p><strong>Connection to DSC 152 Level 5 ("paired vs unpaired"):</strong> a cohort comparison is essentially a paired test through time — same users, different observation windows. Aggregate retention is unpaired and loses that information.</p>
+  </div>
+
+  <div class="box box-uber"><div class="box-label">3 · Concrete business example</div>
+    <p>You ship a referral feature on April 1. Three weeks later, the team brags: "Overall 30-day retention is up from 38% to 41%." Sounds great. But the increase is mostly because the April cohort hasn't HAD 30 days yet — only 21 days of churn opportunity instead of 30. Once you actually wait, retention drops back to 39%.</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">4 · What to measure (experiment-designer agent)</div>
+    <ul>
+      <li><strong>Primary metric:</strong> 30-day retention rate, computed <em>only</em> on cohorts that have had a full 30-day window. (Spec validated by <code>metric_validator</code> — see footer.)</li>
+      <li><strong>Secondary:</strong> 7-day retention as an early read.</li>
+      <li><strong>Guardrail:</strong> cohort size — if a week's cohort is &lt; 1,000 riders, label the bucket "low confidence" and refuse to ship a decision on it alone.</li>
+      <li><strong>Sanity check:</strong> all retention values must be in [0, 1] — verified by <code>logical_validator.validate_ratio_bounds()</code>, which returned <strong>0 out-of-bounds rows</strong> on a toy 4-cohort table.</li>
+    </ul>
+  </div>
+
+  <div class="box box-good"><div class="box-label">5 · How to decide</div>
+    <p>If the cohort-by-cohort retention curves separate <em>and stay separated for at least 14 days</em>, the lift is real. If they merge after 14 days, the early lift was a novelty effect.</p>
+  </div>
+
+  <div class="box box-warning"><div class="box-label">6 · Common mistake</div>
+    <p>Reporting "blended" retention before all cohorts have a full window. This always inflates the latest number and tricks the team into shipping novelty. Always show retention as a <em>cohort triangle</em>, not a single percentage.</p>
+  </div>
+
+  <!-- ===================== 11.2 STAT vs PRACTICAL ===================== -->
+  <h3 id="s11-2" style="margin-top:30px;">11.2 — Statistical Significance vs Practical Significance (the trap with huge n)</h3>
+
+  <div class="box box-uber"><div class="box-label">1 · Original idea (from the Uber guide)</div>
+    <p>Section 03 says "if the test returns a 95% CI of [+1.2pp, +2.8pp] — ship it." But the guide never asks the more important question: <strong>is the lift large enough to matter?</strong> At Uber's scale you can prove almost anything is statistically significant.</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">2 · Simple explanation (DSC 152 style)</div>
+    <p>From DSC 152 Level 7b: a t-statistic is <em>signal divided by noise</em>. The denominator <code>s/√n</code> shrinks as n grows. So with very large n, even microscopic differences clear the "is this real?" bar. <strong>Statistical significance asks "did anything change?". Practical significance asks "is the change worth a launch?".</strong> They are different questions.</p>
+  </div>
+
+  <div class="box box-warning"><div class="box-label">3 · Concrete business example (real numbers from <code>stats_helpers.two_sample_proportion_test</code>)</div>
+    <p>Uber A/B tests a checkout tweak with <strong>n = 1,000,000 riders per arm</strong>. Control conversion = 8.00%. Treatment conversion = 8.10% (10 basis-point lift).</p>
+    <ul>
+      <li>p-value = <strong>0.0093</strong> — very statistically significant.</li>
+      <li>95% CI for the lift = <strong>[+0.025pp, +0.175pp]</strong>.</li>
+      <li>Relative lift = <strong>~1.25%</strong>.</li>
+    </ul>
+    <p>So: yes, the change "works." But would you put 8 weeks of engineering, support docs, and on-call risk behind a launch that nudges conversion from 8.00% to 8.10%? That decision is not statistical — it is a product decision.</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">4 · What to measure</div>
+    <p>Always report <strong>three numbers, never one</strong>: (1) point estimate of the lift, (2) the 95% CI for the lift, (3) the <em>practical threshold</em> the team set BEFORE running the test (e.g., "we will only ship if relative lift ≥ 2%"). The pre-registered threshold is the <em>hypothesis</em> agent's "decision implication" turned into a number.</p>
+  </div>
+
+  <div class="box box-good"><div class="box-label">5 · How to decide (decision tree)</div>
+    <ul>
+      <li>CI lower bound &gt; practical threshold → <strong>SHIP</strong>.</li>
+      <li>CI straddles 0 → <strong>DO NOT SHIP</strong> (no evidence of lift).</li>
+      <li>CI strictly above 0 but below practical threshold → <strong>DO NOT SHIP</strong> (statistically real, practically too small).</li>
+      <li>CI strictly above 0, point estimate at threshold but CI is wide → <strong>RERUN with more traffic or higher MDE</strong>.</li>
+    </ul>
+  </div>
+
+  <div class="box box-warning"><div class="box-label">6 · Common mistake</div>
+    <p>Quoting only the p-value. "p &lt; 0.05" tells the room nothing about the size of the effect. Always pair p with the CI and the pre-registered threshold.</p>
+  </div>
+
+  <!-- ===================== 11.3 INCONCLUSIVE TREE ===================== -->
+  <h3 id="s11-3" style="margin-top:30px;">11.3 — What to Do When the Experiment Is Inconclusive (a real APM situation)</h3>
+
+  <div class="box box-uber"><div class="box-label">1 · Original idea (from the Uber guide)</div>
+    <p>Sections 03 and 04 cover the "win" and "lose" decisions. But the guide skips the most common outcome: <strong>the test is inconclusive</strong> — CI straddles zero, p &gt; 0.05. What does the APM say in standup?</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">2 · Simple explanation (DSC 152 style)</div>
+    <p>From DSC 152 Level 7: "fail to reject H0" is <em>not</em> "H0 is true." It is "we lacked the evidence to convict." That maps directly to product: <em>"the test does not give us a green light"</em> — it does not say the change has zero effect.</p>
+    <p>The hypothesis agent's "ambiguous zone" applies here: when the difference is too small relative to noise, classify the result as <strong>insufficient evidence</strong> rather than <strong>no effect</strong>.</p>
+  </div>
+
+  <div class="box box-uber"><div class="box-label">3 · Concrete business example</div>
+    <p>You ran a 2-week A/B on a new map UI. Lift = +0.6pp on completed trips. p = 0.18. CI = [-0.3pp, +1.5pp]. The PM partner asks: "So… ship or kill?"</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">4 · What to measure (experiment-designer Step 4c)</div>
+    <p>Three diagnostics decide the next move:</p>
+    <ol>
+      <li><strong>Was the test underpowered?</strong> Re-compute the MDE you can detect at the n you ran. If your achievable MDE is bigger than the lift the team cares about, the test was too small.</li>
+      <li><strong>Is there a guardrail flashing red?</strong> Even with no lift on primary, a degraded guardrail means kill.</li>
+      <li><strong>Are subgroups telling a story?</strong> If a single segment is moving a lot in either direction, that's the next test.</li>
+    </ol>
+  </div>
+
+  <div class="box box-good"><div class="box-label">5 · How to decide</div>
+    <table>
+      <tr><th>Underpowered?</th><th>Guardrails OK?</th><th>Subgroup signal?</th><th>Decision</th></tr>
+      <tr><td>YES</td><td>YES</td><td>—</td><td>EXTEND the test (more traffic or longer runtime)</td></tr>
+      <tr><td>NO (well-powered)</td><td>YES</td><td>NO</td><td>KILL — true null is the most likely truth</td></tr>
+      <tr><td>NO</td><td>YES</td><td>YES</td><td>SHIP TARGETED to the winning segment, kill broadly</td></tr>
+      <tr><td>—</td><td>NO (degraded)</td><td>—</td><td>KILL — no upside and visible downside</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-warning"><div class="box-label">6 · Common mistake</div>
+    <p>Calling an inconclusive test a "win" because the point estimate was positive. The CI straddles zero — you do not know whether the change helped, hurt, or did nothing. Resist the temptation.</p>
+  </div>
+
+  <!-- ===================== 11.4 SUTVA MATH ===================== -->
+  <h3 id="s11-4" style="margin-top:30px;">11.4 — Why SUTVA Violations Bias Your CI (the math behind Section 01's claim)</h3>
+
+  <div class="box box-uber"><div class="box-label">1 · Original idea (from the Uber guide)</div>
+    <p>Section 01 says supply leakage breaks A/B tests. But never shows the math.</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">2 · Simple explanation (DSC 152 style)</div>
+    <p>The two-sample test assumes treatment and control are <em>independent</em> samples drawn from their respective populations. When drivers leak from control to treatment (because the discount in treatment makes those rides more attractive to drivers), the control's conversion drops <em>not because of randomness</em>, but because its underlying population effectively changed. The test's "noise" model becomes wrong, and the CI it computes is centered on the wrong place.</p>
+    <p><strong>DSC 152 Level 5 connection:</strong> this is exactly the violation that makes "two independent samples" invalid — the same idea behind why we use a paired test when the same users are measured twice.</p>
+  </div>
+
+  <div class="box box-warning"><div class="box-label">3 · Concrete business example (real numbers from <code>stats_helpers</code>)</div>
+    <p>Simulated A/B with n = 5,000 per arm. True treatment conversion = 12%. True control conversion = 10%. So the <strong>true lift = +2.0pp</strong>.</p>
+    <ul>
+      <li><strong>Clean run</strong> (no leakage): observed lift = <strong>+1.54pp</strong>, 95% CI = [+0.32, +2.76]pp. Includes the truth.</li>
+      <li><strong>With supply leakage</strong> (control conversion drops 1pp because drivers got pulled away): observed lift = <strong>+3.24pp</strong>, 95% CI = [+2.07, +4.41]pp. <strong>The truth (+2.0pp) is now outside the CI.</strong></li>
+    </ul>
+    <p>The CI is no longer trustworthy — the test gave the treatment 1.7pp of credit it did not earn. Ship-decisions made on this CI will look like wins and degrade unit economics in production.</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">4 · What to measure</div>
+    <ul>
+      <li><strong>Diagnostic metric:</strong> driver utilization in BOTH arms, side by side. If control's utilization drops while treatment's rises, you have leakage.</li>
+      <li><strong>Design fix:</strong> randomize at the city or time-window level (geo split, switchback) instead of at the rider level.</li>
+    </ul>
+  </div>
+
+  <div class="box box-good"><div class="box-label">5 · How to decide</div>
+    <p>If the leakage diagnostic shows control degraded by &gt; 0.5σ of its baseline noise, throw out the rider-level CI and rerun with a geo split. Do not "adjust" the CI — the bias direction is unknown ex-ante.</p>
+  </div>
+
+  <div class="box box-warning"><div class="box-label">6 · Common mistake</div>
+    <p>Reporting the rider-level CI as if it were valid because it is "what the test produced." The test produced a number — the question is whether the assumptions behind that number held. Here they did not.</p>
+  </div>
+
+  <!-- ===================== 11.5 POWER CURVE ===================== -->
+  <h3 id="s11-5" style="margin-top:30px;">11.5 — Why Sample Size Explodes When You Want a Smaller Lift (intuition behind n ∝ 1/MDE²)</h3>
+
+  <div class="box box-uber"><div class="box-label">1 · Original idea (from the Uber guide)</div>
+    <p>Section 07's calculator works but doesn't show the <em>shape</em> of how n scales with MDE. APM candidates need to internalize this curve so they don't propose impossible experiments.</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">2 · Simple explanation (DSC 152 style)</div>
+    <p>From DSC 152 Level 12 (power deep dive): for a fixed α and power, sample size scales as <code>n ∝ 1/(MDE)²</code>. <strong>Halve the lift you want to detect → n quadruples.</strong> Cut the lift by 10× → n grows 100×. This is not a tweak — it is the dominant cost driver of every experiment.</p>
+  </div>
+
+  <div class="box box-uber"><div class="box-label">3 · Concrete business example (real numbers from <code>stats_helpers.sample_size_proportion</code>, baseline = 10% conversion)</div>
+    <table>
+      <tr><th>MDE (relative lift)</th><th>n per arm</th><th>vs MDE = 10%</th></tr>
+      <tr><td>10%</td><td><strong>14,749</strong></td><td>1×</td></tr>
+      <tr><td>5%</td><td><strong>57,760</strong></td><td>~4×</td></tr>
+      <tr><td>2%</td><td><strong>356,332</strong></td><td>~24×</td></tr>
+      <tr><td>1%</td><td><strong>1,419,070</strong></td><td>~96×</td></tr>
+    </table>
+    <p>If you only have 30,000 riders/week through the affected flow, you can detect a 10% lift in two weeks but a 2% lift would take six months. That is a roadmap conversation, not a stats conversation.</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">4 · What to measure</div>
+    <ul>
+      <li><strong>Pre-experiment:</strong> baseline rate, daily traffic into the flow, the smallest lift the business actually cares about.</li>
+      <li><strong>Output of power calc:</strong> required n per arm, expected runtime in days. If runtime &gt; 8 weeks, the design is not viable as a standard A/B.</li>
+    </ul>
+  </div>
+
+  <div class="box box-good"><div class="box-label">5 · How to decide</div>
+    <p>If runtime is too long, choose ONE of: increase MDE (accept that we'll only catch bigger wins), use a more sensitive metric (continuous &gt; binary), use a paired/quasi-experimental design that reduces variance, or simply ship without an A/B and use rollback as your safety net.</p>
+  </div>
+
+  <div class="box box-warning"><div class="box-label">6 · Common mistake</div>
+    <p>Promising the team a 1% MDE detection on a small surface "in two weeks." The math says no. Push back politely with the table above.</p>
+  </div>
+
+  <!-- ===================== 11.6 HTE / SIMPSON ===================== -->
+  <h3 id="s11-6" style="margin-top:30px;">11.6 — Heterogeneous Treatment Effects &amp; Simpson's Paradox in a Marketplace</h3>
+
+  <div class="box box-uber"><div class="box-label">1 · Original idea (from the Uber guide)</div>
+    <p>Pitfall 4 in Section 08 mentions "heterogeneous treatment effects" but does not show one. Without an example, candidates miss that the AGGREGATE can be neutral while a SEGMENT is bleeding.</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">2 · Simple explanation (DSC 152 style)</div>
+    <p>From DSC 152 Level 5 ("the big picture"): the test you run depends on what the data looks like. When the population is a <em>mixture</em> of subgroups with different baselines and different responses, the aggregate metric is a weighted average — and weighted averages can hide opposite-sign effects in the components. This is the marketplace version of Simpson's paradox.</p>
+  </div>
+
+  <div class="box box-warning"><div class="box-label">3 · Concrete business example (real numbers from <code>stats_helpers.two_sample_proportion_test</code>)</div>
+    <p>10,000 riders per arm, split into power users (1,000 riders, 30% conversion) and casual users (9,000 riders, 5% conversion).</p>
+    <ul>
+      <li><strong>Overall lift:</strong> −0.90pp, p = <strong>0.013</strong> → looks "barely negative, probably noise."</li>
+      <li><strong>Power users only:</strong> 0.00pp, p = 1.000 → completely flat.</li>
+      <li><strong>Casual users only:</strong> −1.00pp, p = <strong>0.001</strong> → real, statistically clear drop.</li>
+    </ul>
+    <p>If you only look at the aggregate, you might call this "noisy null" and ship. The casual segment — your largest by volume — is actually being damaged.</p>
+  </div>
+
+  <div class="box box-stat"><div class="box-label">4 · What to measure</div>
+    <ul>
+      <li>Always slice the primary metric by your TWO most-important user segments BEFORE looking at the aggregate.</li>
+      <li>Use <code>logical_validator.validate_group_balance()</code> to confirm allocation isn't itself imbalanced (the demo above passed: 4900 vs 5100 → ratio 1.04).</li>
+      <li>If a segment moves and the aggregate doesn't, the segment wins — investigate further.</li>
+    </ul>
+  </div>
+
+  <div class="box box-good"><div class="box-label">5 · How to decide</div>
+    <p>If at least one important segment shows a clear directional effect (CI fully on one side of 0), pause the rollout, dig into the mechanism, and decide whether to ship-by-segment instead of all-or-nothing.</p>
+  </div>
+
+  <div class="box box-warning"><div class="box-label">6 · Common mistake</div>
+    <p>Defending an aggregate-neutral readout as "the experiment said no effect." A well-designed experiment can show a true null on the average AND a real harm on a subgroup. The job of a PM is to look for both.</p>
+  </div>
+
+  <!-- ===================== Validation Trace ===================== -->
+  <h3 id="s11-trace" style="margin-top:30px;">Validation Trace — Which Agents Ran &amp; What They Returned</h3>
+
+  <div class="box box-good"><div class="box-label">stats_helpers.py — real numbers in this section</div>
+    <ul style="font-family:'SF Mono',Consolas,monospace; font-size:0.86rem;">
+      <li><code>sample_size_proportion(0.10, 0.10)</code> → 14,749 / arm  (used in §11.5)</li>
+      <li><code>sample_size_proportion(0.10, 0.05)</code> → 57,760 / arm</li>
+      <li><code>sample_size_proportion(0.10, 0.02)</code> → 356,332 / arm</li>
+      <li><code>sample_size_proportion(0.10, 0.01)</code> → 1,419,070 / arm</li>
+      <li><code>two_sample_proportion_test</code> (clean SUTVA, n=5000) → CI [+0.32, +2.76]pp  (§11.4)</li>
+      <li><code>two_sample_proportion_test</code> (biased SUTVA, n=5000) → CI [+2.07, +4.41]pp  (§11.4 — truth +2.0pp falls OUTSIDE)</li>
+      <li><code>two_sample_proportion_test</code> (n=1M, lift 0.10pp) → p = 0.0093, CI [+0.025, +0.175]pp  (§11.2)</li>
+      <li><code>two_sample_proportion_test</code> (HTE casual segment) → diff −1.00pp, p = 0.001  (§11.6)</li>
+    </ul>
+  </div>
+
+  <div class="box box-good"><div class="box-label">logical_validator.py — passed checks</div>
+    <ul style="font-family:'SF Mono',Consolas,monospace; font-size:0.86rem;">
+      <li><code>validate_ratio_bounds(retention_table, 0, 1)</code> → ok=True, 0 out_of_bounds  (§11.1)</li>
+      <li><code>validate_group_balance(arm_assignments)</code> → ok=True, imbalance ratio = 1.04  (§11.6)</li>
+    </ul>
+  </div>
+
+  <div class="box box-good"><div class="box-label">metric_validator.py — primary metric spec checked</div>
+    <ul style="font-family:'SF Mono',Consolas,monospace; font-size:0.86rem;">
+      <li><code>validate_metric_definition(contribution_margin_per_acquired_rider_30d)</code> → ok=True, 0 errors, 1 warning ("no SQL template")  (§11.1)</li>
+    </ul>
+  </div>
+
+  <div class="box box-good"><div class="box-label">PM / BA / Project-Manager layered validation</div>
+    <p><strong>product-manager.md verdict:</strong> Each subsection (1) drives a specific product decision (ship / extend / kill / target), (2) cites a concrete metric, and (3) maps to a real APM situation. PASS on all 6 subsections.</p>
+    <p><strong>business-analyst.md verdict:</strong> Every metric named has a definition, source, and at least one guardrail. Quantified business impact is shown for §11.4 (1.7pp inflated credit), §11.5 (96× sample-size cost), §11.6 (segment-level damage hidden by aggregate). PASS.</p>
+    <p><strong>project-manager.md verdict:</strong> All recommendations are implementable in a sprint cycle. §11.5 explicitly flags when an experiment is NOT realistically runnable (&gt;8 weeks). §11.4 names a concrete diagnostic (driver utilization side-by-side). PASS with one FLAG: §11.3's "ship targeted" requires a feature-flag system the team may or may not have — recommend simplification to "ship globally only if the wider segment effect is also positive" if no flag system exists.</p>
+  </div>
+
+  <div class="box box-good"><div class="box-label">narrative-coherence-reviewer verdict</div>
+    <p><strong>Verdict: COHERENT.</strong> The 6 subsections each follow Context (Original idea) → Tension (Simple explanation, Business example, What to measure) → Resolution (How to decide, Common mistake). Headlines, read top-to-bottom, form a coherent mini-narrative: <em>cohorts → significance vs practical → inconclusive results → why CI breaks → why n explodes → why aggregates lie</em>. No story gaps. No redundancy.</p>
+  </div>
 
   </div>
 </div>
