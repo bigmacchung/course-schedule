@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSC 152 — Math Teacher Final Cram</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #0b0e14 0%, #1a1335 60%, #0b0e14 100%);
+  color: #e2e8f0;
+  line-height: 1.65;
+  font-size: 16px;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0b0e14; }
+::-webkit-scrollbar-thumb { background: #5b21b6; border-radius: 4px; }
+
+/* ===== HEADER + GAMIFICATION BAR ===== */
+.gameheader {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #1c2030 0%, #2d1b69 100%);
+  border-bottom: 2px solid #fbbf2444;
+  padding: 16px 24px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
+}
+.gameheader h1 {
+  font-size: 1.4rem; color: #e2e8f0;
+  background: linear-gradient(135deg, #fbbf24, #c084fc, #22d3ee);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.gameheader .subtitle { font-size: 0.85rem; color: #94a3b8; margin-top: 4px; }
+.scorebar {
+  display: flex; gap: 14px; align-items: center;
+  background: rgba(0,0,0,0.35); padding: 8px 16px; border-radius: 999px;
+  font-weight: 700; font-size: 0.9rem;
+}
+.scorebar .pts { color: #fbbf24; }
+.scorebar .streak { color: #f87171; }
+.scorebar .lvl { color: #4ade80; }
+.back-btn {
+  display: inline-block; padding: 6px 14px; background: #1e293b;
+  color: #22d3ee; border-radius: 6px; text-decoration: none;
+  font-size: 0.85rem; font-weight: 600; border: 1px solid #334155;
+}
+
+/* ===== ACHIEVEMENT POPUP ===== */
+.achievement {
+  position: fixed; top: 80px; right: 20px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #0b0e14; padding: 16px 22px; border-radius: 12px;
+  font-weight: 700; font-size: 0.95rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: slideIn 0.4s ease;
+  z-index: 1000;
+}
+@keyframes slideIn { from { transform: translateX(420px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.18); } 100% { transform: scale(1); } }
+.pop-anim { animation: pop 0.3s ease; }
+
+/* ===== MAIN ===== */
+.main { max-width: 1080px; margin: 0 auto; padding: 24px; }
+
+/* ===== TOC ===== */
+.toc {
+  background: #1c2030; padding: 18px 22px; border-radius: 14px;
+  border: 1px solid #5b21b6; margin-bottom: 28px;
+}
+.toc h2 { font-size: 1rem; color: #fbbf24; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+.toc a {
+  display: block; padding: 8px 12px; margin: 4px 0;
+  color: #e2e8f0; text-decoration: none; border-radius: 8px;
+  border-left: 3px solid #5b21b6; transition: background 0.15s;
+}
+.toc a:hover { background: #2d1b69; }
+.toc a .num { color: #fbbf24; font-weight: 700; margin-right: 10px; }
+
+/* ===== LESSON CARD ===== */
+.lesson {
+  background: #141821; border: 2px solid #2d1b69;
+  border-radius: 16px; margin-bottom: 32px; overflow: hidden;
+}
+.lesson-header {
+  background: linear-gradient(135deg, #2d1b69 0%, #5b21b6 100%);
+  padding: 18px 24px;
+}
+.lesson-header h2 { font-size: 1.3rem; color: #fff; }
+.lesson-header .lesson-num {
+  background: #fbbf24; color: #0b0e14;
+  padding: 3px 10px; border-radius: 999px;
+  font-weight: 800; font-size: 0.8rem; margin-right: 10px;
+  display: inline-block;
+}
+.lesson-body { padding: 24px; }
+
+/* ===== PART BLOCKS ===== */
+.part {
+  background: #1c2030; border-radius: 12px;
+  padding: 18px 22px; margin: 16px 0;
+  border-left: 4px solid #5b21b6;
+}
+.part-title {
+  font-size: 0.95rem; font-weight: 700;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.part-1 { border-left-color: #4ade80; } .part-1 .part-title { color: #4ade80; }
+.part-2 { border-left-color: #c084fc; } .part-2 .part-title { color: #c084fc; }
+.part-3 { border-left-color: #22d3ee; } .part-3 .part-title { color: #22d3ee; }
+.part-4 { border-left-color: #fb923c; } .part-4 .part-title { color: #fb923c; }
+.part-5 { border-left-color: #fbbf24; } .part-5 .part-title { color: #fbbf24; }
+.part-6 { border-left-color: #818cf8; } .part-6 .part-title { color: #818cf8; }
+.part-7 { border-left-color: #a3e635; } .part-7 .part-title { color: #a3e635; }
+.part-8 { border-left-color: #f87171; } .part-8 .part-title { color: #f87171; }
+
+p { margin: 8px 0; }
+ul, ol { margin: 8px 0 8px 24px; }
+li { margin: 4px 0; }
+strong { color: #fff; }
+em { color: #cbd5e1; }
+code {
+  background: #0f172a; padding: 2px 7px; border-radius: 4px;
+  font-family: 'SF Mono', Consolas, monospace; font-size: 0.88rem; color: #22d3ee;
+}
+pre {
+  background: #0f172a; padding: 12px 14px; border-radius: 8px;
+  font-family: 'SF Mono', Consolas, monospace; font-size: 0.85rem;
+  color: #e2e8f0; overflow-x: auto; margin: 10px 0; line-height: 1.5;
+}
+
+/* ===== FORMULA BOX (math-language section) ===== */
+.formula {
+  background: #2d1b69; padding: 14px 18px; border-radius: 10px;
+  text-align: center; font-size: 1.15rem; color: #fbbf24;
+  margin: 14px 0; font-family: 'Cambria Math', Georgia, serif;
+}
+
+/* ===== INTERACTIVE WIDGETS ===== */
+.widget {
+  background: #0f172a; border: 2px solid #fbbf2444; border-radius: 12px;
+  padding: 18px; margin: 14px 0;
+}
+.widget canvas {
+  width: 100%; height: 280px; background: #1c2030;
+  border-radius: 8px; display: block; margin-bottom: 12px;
+}
+.widget label {
+  display: block; margin: 10px 0 6px; color: #cbd5e1; font-size: 0.9rem;
+}
+.widget input[type=range] {
+  width: 100%; -webkit-appearance: none; appearance: none;
+  background: #334155; height: 6px; border-radius: 3px; outline: none;
+}
+.widget input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  cursor: pointer;
+}
+.widget .out {
+  background: #1c2030; padding: 10px 14px; border-radius: 8px;
+  margin-top: 8px; font-family: 'SF Mono', Consolas, monospace; font-size: 0.88rem;
+}
+
+/* ===== QUIZ ===== */
+.quiz {
+  background: #0f172a; border-left: 4px solid #818cf8;
+  padding: 16px 20px; border-radius: 10px; margin: 12px 0;
+}
+.quiz .q-tag {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: #818cf8; font-weight: 700; margin-bottom: 6px;
+}
+.quiz .q-text { color: #e2e8f0; margin-bottom: 12px; font-weight: 500; }
+.quiz .opt {
+  background: #1c2030; padding: 9px 14px; margin: 6px 0;
+  border-radius: 8px; cursor: pointer; transition: all 0.15s;
+  font-size: 0.92rem; border: 1px solid transparent;
+}
+.quiz .opt:hover { background: #2a3142; border-color: #818cf8; }
+.quiz.answered .opt { cursor: default; }
+.quiz .opt.correct { background: #14532d; border-color: #4ade80; color: #4ade80; }
+.quiz .opt.wrong { background: #4c1d24; border-color: #f87171; color: #f87171; }
+.quiz .reveal { display: none; margin-top: 10px; padding: 10px 14px; background: #1c2030; border-radius: 8px; border-left: 3px solid #4ade80; font-size: 0.88rem; }
+.quiz.answered .reveal { display: block; }
+
+/* ===== TYPED-ANSWER QUIZ ===== */
+.typequiz input {
+  background: #1c2030; color: #fbbf24; border: 1px solid #334155;
+  padding: 8px 12px; border-radius: 6px; font-family: 'SF Mono', Consolas, monospace;
+  font-size: 0.9rem; width: 220px; margin-right: 6px;
+}
+.typequiz button {
+  background: linear-gradient(135deg, #818cf8, #5b21b6); color: #fff;
+  border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;
+}
+
+/* ===== GAME ===== */
+.boss-battle {
+  background: linear-gradient(135deg, #2d1b69, #5b21b6);
+  padding: 22px; border-radius: 16px; margin-top: 30px;
+  border: 2px solid #fbbf24; text-align: center;
+}
+.boss-battle h2 { color: #fbbf24; margin-bottom: 8px; }
+.boss-battle .start-btn {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #0b0e14; border: none; padding: 14px 28px;
+  border-radius: 10px; font-weight: 800; font-size: 1.05rem;
+  cursor: pointer; margin-top: 12px;
+}
+.boss-q {
+  display: none; background: #0f172a; padding: 18px;
+  border-radius: 10px; margin-top: 16px; text-align: left;
+}
+.boss-q.active { display: block; }
+.boss-progress { color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px; }
+
+/* ===== COMMON MISTAKES ===== */
+.mistake {
+  background: #4c1d24; border-left: 4px solid #f87171;
+  padding: 12px 18px; border-radius: 8px; margin: 10px 0;
+  font-size: 0.92rem;
+}
+.mistake .why { color: #fcd5d5; margin-top: 4px; }
+
+/* ===== TABLE ===== */
+table {
+  width: 100%; border-collapse: collapse; margin: 12px 0;
+  background: #0f172a; border-radius: 8px; overflow: hidden;
+}
+th, td {
+  padding: 10px 12px; text-align: left; border-bottom: 1px solid #1e293b;
+  font-size: 0.9rem;
+}
+th { background: #2d1b69; color: #fbbf24; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; }
+tr:last-child td { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<!-- ===== STICKY HEADER WITH GAMIFICATION ===== -->
+<div class="gameheader">
+  <div>
+    <h1>🎮 DSC 152 — Math Teacher Final Cram</h1>
+    <div class="subtitle">Built with the math-teacher SKILL · 4 lessons · 8-part strict format · 30+ practice questions</div>
+    <a class="back-btn" href="DSC152-companion.html" style="margin-top:8px;">← Back to companion</a>
+  </div>
+  <div class="scorebar">
+    <span class="pts">⭐ <span id="score-pts">0</span> XP</span>
+    <span class="streak">🔥 <span id="score-streak">0</span> streak</span>
+    <span class="lvl">📈 Lv <span id="score-lvl">1</span></span>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ===== TOC ===== -->
+<div class="toc">
+  <h2>The 4 Cram Lessons</h2>
+  <a href="#lesson-1"><span class="num">L1</span> p-value vs α — the two numbers everybody mixes up</a>
+  <a href="#lesson-2"><span class="num">L2</span> Type I, Type II, β, and Power — the four error words</a>
+  <a href="#lesson-3"><span class="num">L3</span> Critical value t* — what it is, how to read a t-table, how to compute it in R</a>
+  <a href="#lesson-4"><span class="num">L4</span> Confidence Interval — the "range" view of the same decision</a>
+  <a href="#boss"><span class="num">🏆</span> Boss Battle — 10 mixed exam-style questions</a>
+</div>
+
+<!-- ============================================================== -->
+<!-- ===== LESSON 1: p-value vs alpha ============================ -->
+<!-- ============================================================== -->
+<div class="lesson" id="lesson-1">
+  <div class="lesson-header"><h2><span class="lesson-num">L1</span>p-value vs α — the two numbers everybody mixes up</h2></div>
+  <div class="lesson-body">
+
+  <!-- 1 SIMPLE -->
+  <div class="part part-1">
+    <div class="part-title">🧠 Simple explanation (very easy English)</div>
+    <p>You make a guess: <em>"Nothing changed."</em> This is called <strong>H₀</strong> (H-zero, the null guess).</p>
+    <p>Then you look at your data. The <strong>p-value</strong> is a number between 0 and 1. It answers ONE question:</p>
+    <p style="text-align:center; font-style:italic; color:#fbbf24; margin:8px 0;">"If H₀ were really true, how often would I see data this surprising?"</p>
+    <p>Small p-value (close to 0) → my data is super surprising → maybe H₀ is wrong.</p>
+    <p>Big p-value (close to 1) → my data is normal → H₀ is fine.</p>
+    <p><strong>α (alpha)</strong> is the line in the sand. You pick it BEFORE looking at data. Usually α = 0.05.</p>
+    <p>Rule: if <strong>p &lt; α</strong> → reject H₀.  If <strong>p ≥ α</strong> → fail to reject H₀.</p>
+  </div>
+
+  <!-- 2 MATH -->
+  <div class="part part-2">
+    <div class="part-title">📐 Math language (exam style — use these exact words)</div>
+    <ul>
+      <li><strong>Null hypothesis (H₀):</strong> the default claim about a parameter (often "no effect" or "the value equals μ₀").</li>
+      <li><strong>Alternative hypothesis (H_a):</strong> the claim you would believe if H₀ is rejected.</li>
+      <li><strong>Significance level (α):</strong> the maximum Type I error rate you will tolerate; chosen <em>before</em> the test.</li>
+      <li><strong>p-value:</strong> P(observing data at least as extreme as ours, given H₀ is true).</li>
+      <li><strong>Decision rule:</strong> reject H₀ if p &lt; α; otherwise fail to reject H₀.</li>
+    </ul>
+    <div class="formula">
+      p-value = P( T &nbsp;more extreme than&nbsp; t_observed &nbsp;|&nbsp; H₀ true )
+    </div>
+  </div>
+
+  <!-- 3 CONNECTION -->
+  <div class="part part-3">
+    <div class="part-title">🔗 Connection (idea ↔ math)</div>
+    <table>
+      <tr><th>Plain English</th><th>Exam phrasing</th></tr>
+      <tr><td>"How weird is my data if nothing changed?"</td><td>p-value</td></tr>
+      <tr><td>"How weird is too weird?"</td><td>α (significance level)</td></tr>
+      <tr><td>"My data is too weird — H₀ probably wrong"</td><td>Reject H₀</td></tr>
+      <tr><td>"Not weird enough — can't accuse H₀"</td><td>Fail to reject H₀</td></tr>
+    </table>
+    <p><strong>Key:</strong> p-value comes from the DATA. α comes from YOU. They are not the same thing — they only meet at the comparison.</p>
+  </div>
+
+  <!-- 4 EXAMPLE -->
+  <div class="part part-4">
+    <div class="part-title">🍎 Intuitive example (step by step)</div>
+    <p>Your friend says: "I always flip a fair coin." You don't trust them. You flip it 10 times and it lands heads 9 times.</p>
+    <ol>
+      <li><strong>H₀:</strong> coin is fair (P(heads) = 0.5).  <strong>H_a:</strong> coin is unfair.</li>
+      <li>Pick α = 0.05 (a 5% false-alarm tolerance).</li>
+      <li>Compute p-value: under a fair coin, P(at least 9 heads in 10 flips) ≈ 0.011.</li>
+      <li>Compare: 0.011 &lt; 0.05 → reject H₀. The coin is probably not fair.</li>
+    </ol>
+    <p><em>Read out loud:</em> "If the coin really were fair, we'd see 9-or-more heads only 1.1% of the time. That's rare enough to doubt fairness."</p>
+  </div>
+
+  <!-- 5 INTERACTIVE -->
+  <div class="part part-5">
+    <div class="part-title">🎮 Interactive component — drag α and watch decisions flip</div>
+    <div class="widget">
+      <p style="font-size:0.9rem; color:#94a3b8;">Pretend your test gave p = <span id="p-shown" style="color:#fbbf24; font-weight:700;">0.030</span>. Slide α below and watch the decision change.</p>
+      <label>Set α (slide this): <span id="alpha-shown" style="color:#fbbf24; font-weight:700;">0.05</span></label>
+      <input type="range" id="alpha-slider" min="0.001" max="0.20" step="0.001" value="0.05">
+      <div class="out" id="decision-out"></div>
+      <label style="margin-top:14px;">Now change the p-value (pretend a new test): <span id="pval-shown" style="color:#22d3ee; font-weight:700;">0.030</span></label>
+      <input type="range" id="pval-slider" min="0.001" max="0.40" step="0.001" value="0.030">
+    </div>
+  </div>
+
+  <!-- 6 PRACTICE -->
+  <div class="part part-6">
+    <div class="part-title">❓ Practice questions</div>
+
+    <h4 style="color:#cbd5e1; margin-top:6px;">A · Basic (understanding)</h4>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Basic Q1</div>
+      <div class="q-text">α is chosen…</div>
+      <div class="opt" data-i="0">after computing the p-value</div>
+      <div class="opt" data-i="1">by the data</div>
+      <div class="opt" data-i="2">before looking at the data</div>
+      <div class="opt" data-i="3">automatically by R</div>
+      <div class="reveal">α must be picked BEFORE data, otherwise you could cheat by tuning α to match the result you want.</div>
+    </div>
+
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Basic Q2</div>
+      <div class="q-text">If p = 0.40 and α = 0.05, the correct decision is…</div>
+      <div class="opt" data-i="0">fail to reject H₀</div>
+      <div class="opt" data-i="1">reject H₀</div>
+      <div class="opt" data-i="2">accept H₀</div>
+      <div class="opt" data-i="3">cannot decide without more data</div>
+      <div class="reveal">0.40 ≥ 0.05 → fail to reject H₀. We never say "accept H₀" — that is forbidden language.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">B · Medium (application)</h4>
+
+    <div class="quiz" data-correct="1">
+      <div class="q-tag">Medium Q1</div>
+      <div class="q-text">A small p-value means…</div>
+      <div class="opt" data-i="0">H₀ is definitely false</div>
+      <div class="opt" data-i="1">the data would be unusual under H₀</div>
+      <div class="opt" data-i="2">α is small</div>
+      <div class="opt" data-i="3">your sample is small</div>
+      <div class="reveal">p is the probability of seeing data this extreme assuming H₀ is true. Small p = our data is unusual under H₀.</div>
+    </div>
+
+    <div class="quiz" data-correct="3">
+      <div class="q-tag">Medium Q2</div>
+      <div class="q-text">Which is NOT a correct interpretation of p = 0.03?</div>
+      <div class="opt" data-i="0">If H₀ is true, data this extreme appears 3% of the time</div>
+      <div class="opt" data-i="1">It is the smallest α at which we would still reject</div>
+      <div class="opt" data-i="2">We reject H₀ at α = 0.05</div>
+      <div class="opt" data-i="3">There is a 3% chance H₀ is true</div>
+      <div class="reveal">Option 3 is the most common error. p is NOT the probability that H₀ is true. It is a conditional probability assuming H₀ is true.</div>
+    </div>
+
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Medium Q3</div>
+      <div class="q-text">You set α = 0.01 (stricter). What happens to the chance of falsely rejecting a true H₀?</div>
+      <div class="opt" data-i="0">it goes down</div>
+      <div class="opt" data-i="1">it goes up</div>
+      <div class="opt" data-i="2">it stays at 0.05</div>
+      <div class="opt" data-i="3">it depends on the p-value</div>
+      <div class="reveal">α = 0.01 means we tolerate only 1% false rejections. Stricter α → fewer false alarms (lower Type I error). But also lower power!</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">C · Fun mini-game — Type the decision</h4>
+    <div class="quiz typequiz" data-target="reject">
+      <div class="q-tag">Game</div>
+      <div class="q-text">Test gives p = 0.018, you set α = 0.05. Type "reject" or "fail to reject" exactly.</div>
+      <input type="text" id="game-input-1" placeholder="reject  /  fail to reject">
+      <button onclick="checkType('game-input-1','reject', 10)">Submit</button>
+      <div class="reveal" id="game-rev-1">0.018 &lt; 0.05 → reject H₀.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">D · Exam style (real wording)</h4>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Exam Q1</div>
+      <div class="q-text">A two-sided one-sample t-test returns p = 0.072. At significance level α = 0.05, the conclusion is:</div>
+      <div class="opt" data-i="0">Reject H₀; the population mean differs from μ₀</div>
+      <div class="opt" data-i="1">Accept H₀; the population mean equals μ₀</div>
+      <div class="opt" data-i="2">Fail to reject H₀; insufficient evidence that the mean differs from μ₀</div>
+      <div class="opt" data-i="3">Reject H₀ at α = 0.10 only</div>
+      <div class="reveal">0.072 ≥ 0.05 → fail to reject H₀. Use the exact phrase "fail to reject" and "insufficient evidence." NEVER say "accept H₀."</div>
+    </div>
+
+    <div class="quiz" data-correct="1">
+      <div class="q-tag">Exam Q2</div>
+      <div class="q-text">If we lower α from 0.05 to 0.01, holding everything else fixed, the probability of a Type I error…</div>
+      <div class="opt" data-i="0">stays exactly 0.05</div>
+      <div class="opt" data-i="1">becomes 0.01</div>
+      <div class="opt" data-i="2">depends on n</div>
+      <div class="opt" data-i="3">becomes 1 − 0.01 = 0.99</div>
+      <div class="reveal">α IS the Type I error rate by construction. Lowering α to 0.01 sets the Type I error rate at 0.01.</div>
+    </div>
+
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Exam Q3</div>
+      <div class="q-text">In R, which line of code returns the p-value of a one-sample t-test against μ₀ = 6?</div>
+      <div class="opt" data-i="0"><code>t.test(x, mu = 6)$p.value</code></div>
+      <div class="opt" data-i="1"><code>t.test(x, alpha = 6)$p.value</code></div>
+      <div class="opt" data-i="2"><code>p.test(x, mu = 6)</code></div>
+      <div class="opt" data-i="3"><code>t.test(x)$p.value</code> only</div>
+      <div class="reveal">The argument is <code>mu</code>, not alpha. Without <code>mu</code>, R defaults to mu = 0 — a classic exam trap.</div>
+    </div>
+  </div>
+
+  <!-- 7 ANSWERS — embedded in each quiz reveal already, plus a recap -->
+  <div class="part part-7">
+    <div class="part-title">✅ Answers + concept recap</div>
+    <p>All correct answers + explanations are inside each quiz's reveal box. Click an option to expose them. Recap of the rule one more time:</p>
+    <p style="text-align:center; padding:10px; background:#0f172a; border-radius:8px; color:#fbbf24; font-weight:700;">
+      p &lt; α → REJECT H₀ &nbsp; · &nbsp; p ≥ α → FAIL TO REJECT H₀
+    </p>
+  </div>
+
+  <!-- 8 MISTAKES -->
+  <div class="part part-8">
+    <div class="part-title">⚠️ Common mistakes (memorize what NOT to do)</div>
+    <div class="mistake"><strong>Mistake 1 — "p is the probability H₀ is true."</strong>
+      <div class="why">No. p is the probability of <em>data this extreme assuming H₀ is true</em>. Conditional, not the other way.</div>
+    </div>
+    <div class="mistake"><strong>Mistake 2 — "We accept H₀."</strong>
+      <div class="why">Forbidden language. We "fail to reject" — the jury says "not guilty," never "innocent."</div>
+    </div>
+    <div class="mistake"><strong>Mistake 3 — Picking α after seeing the p-value.</strong>
+      <div class="why">α MUST be chosen first. Choosing α after looking at p is data dredging.</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<!-- ============================================================== -->
+<!-- ===== LESSON 2: Type I/II/Power ============================= -->
+<!-- ============================================================== -->
+<div class="lesson" id="lesson-2">
+  <div class="lesson-header"><h2><span class="lesson-num">L2</span>Type I, Type II, β, and Power — the four error words</h2></div>
+  <div class="lesson-body">
+
+  <!-- 1 SIMPLE -->
+  <div class="part part-1">
+    <div class="part-title">🧠 Simple explanation (very easy English)</div>
+    <p>A jury can be wrong in two ways:</p>
+    <ul>
+      <li>Convict an innocent person → BAD ERROR #1 = <strong>Type I</strong></li>
+      <li>Let a guilty person go free → BAD ERROR #2 = <strong>Type II</strong></li>
+    </ul>
+    <p>Translate to stats:</p>
+    <ul>
+      <li><strong>Type I:</strong> reject H₀ when H₀ is actually TRUE. (Said "effect" when there was none.)</li>
+      <li><strong>Type II:</strong> fail to reject H₀ when H₀ is actually FALSE. (Missed a real effect.)</li>
+    </ul>
+    <p><strong>Power</strong> = how good your test is at catching real effects. Higher power = fewer Type II errors.</p>
+  </div>
+
+  <!-- 2 MATH -->
+  <div class="part part-2">
+    <div class="part-title">📐 Math language (exam style)</div>
+    <ul>
+      <li><strong>α</strong> = P(reject H₀ | H₀ true) = Type I error rate.</li>
+      <li><strong>β</strong> = P(fail to reject H₀ | H₀ false) = Type II error rate.</li>
+      <li><strong>Power</strong> = 1 − β = P(reject H₀ | H₀ false).</li>
+    </ul>
+    <div class="formula">Power = 1 − β = P( reject H₀ | H_a true )</div>
+    <p>Four levers move power: bigger sample size <strong>n</strong>, bigger true effect, smaller noise σ, bigger α.</p>
+  </div>
+
+  <!-- 3 CONNECTION -->
+  <div class="part part-3">
+    <div class="part-title">🔗 Connection (idea ↔ math)</div>
+    <table>
+      <tr><th>Plain English</th><th>Greek letter / phrase</th></tr>
+      <tr><td>"False alarm rate"</td><td>α (Type I)</td></tr>
+      <tr><td>"Miss rate"</td><td>β (Type II)</td></tr>
+      <tr><td>"Catch rate"</td><td>Power = 1 − β</td></tr>
+      <tr><td>"My test gets stronger when I…"</td><td>increase n, increase effect, decrease σ, increase α</td></tr>
+    </table>
+  </div>
+
+  <!-- 4 EXAMPLE -->
+  <div class="part part-4">
+    <div class="part-title">🍎 Intuitive example</div>
+    <p>You build a test that flags spam emails. You set α = 0.05. Out of 100 normal emails, your test wrongly flags 5 of them as spam. That is your <strong>Type I error rate (α)</strong>.</p>
+    <p>Out of 100 actual spam emails, your test misses 20 of them (lets them through). That is β = 0.20. Your <strong>power = 1 − 0.20 = 0.80</strong>. You catch 80% of real spam.</p>
+    <p>If you tighten α to 0.01 (only flag really obvious spam), you get fewer Type I errors — but you also catch less real spam. Power drops. Classic trade-off.</p>
+  </div>
+
+  <!-- 5 INTERACTIVE -->
+  <div class="part part-5">
+    <div class="part-title">🎮 Interactive — drag n / effect / σ / α and watch power change</div>
+    <div class="widget">
+      <label>Sample size n: <span id="pw-n-shown">30</span></label>
+      <input type="range" id="pw-n" min="5" max="500" value="30" step="1">
+      <label>True effect (μ − μ₀): <span id="pw-eff-shown">1.0</span></label>
+      <input type="range" id="pw-eff" min="0.0" max="3.0" value="1.0" step="0.05">
+      <label>Noise σ: <span id="pw-sd-shown">2.0</span></label>
+      <input type="range" id="pw-sd" min="0.5" max="5.0" value="2.0" step="0.05">
+      <label>α: <span id="pw-a-shown">0.05</span></label>
+      <input type="range" id="pw-a" min="0.001" max="0.20" value="0.05" step="0.001">
+      <div class="out" id="pw-out"></div>
+    </div>
+  </div>
+
+  <!-- 6 PRACTICE -->
+  <div class="part part-6">
+    <div class="part-title">❓ Practice questions</div>
+
+    <h4 style="color:#cbd5e1;">A · Basic</h4>
+    <div class="quiz" data-correct="1">
+      <div class="q-tag">Basic Q1</div>
+      <div class="q-text">Type I error happens when…</div>
+      <div class="opt" data-i="0">we fail to reject a false H₀</div>
+      <div class="opt" data-i="1">we reject a true H₀</div>
+      <div class="opt" data-i="2">our sample is too small</div>
+      <div class="opt" data-i="3">α equals β</div>
+      <div class="reveal">Type I = false alarm. Reject H₀ when H₀ was actually true.</div>
+    </div>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Basic Q2</div>
+      <div class="q-text">If β = 0.30, then power equals…</div>
+      <div class="opt" data-i="0">0.30</div>
+      <div class="opt" data-i="1">0.05</div>
+      <div class="opt" data-i="2">0.70</div>
+      <div class="opt" data-i="3">0.95</div>
+      <div class="reveal">Power = 1 − β = 1 − 0.30 = 0.70.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">B · Medium</h4>
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Medium Q1</div>
+      <div class="q-text">Quadrupling n (×4) tends to make power…</div>
+      <div class="opt" data-i="0">go up</div>
+      <div class="opt" data-i="1">go down</div>
+      <div class="opt" data-i="2">stay constant</div>
+      <div class="opt" data-i="3">become negative</div>
+      <div class="reveal">Bigger n → smaller standard error → easier to detect real effects → power up.</div>
+    </div>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Medium Q2</div>
+      <div class="q-text">Which change ALWAYS hurts power?</div>
+      <div class="opt" data-i="0">increasing n</div>
+      <div class="opt" data-i="1">increasing effect size</div>
+      <div class="opt" data-i="2">increasing noise σ</div>
+      <div class="opt" data-i="3">increasing α</div>
+      <div class="reveal">Bigger σ inflates the standard error and makes it harder to see signal through noise.</div>
+    </div>
+
+    <div class="quiz" data-correct="3">
+      <div class="q-tag">Medium Q3</div>
+      <div class="q-text">If you tighten α from 0.05 to 0.01, what happens to power?</div>
+      <div class="opt" data-i="0">power increases</div>
+      <div class="opt" data-i="1">no change</div>
+      <div class="opt" data-i="2">power becomes 1</div>
+      <div class="opt" data-i="3">power decreases</div>
+      <div class="reveal">Tighter α moves the rejection threshold further out → harder to reject → lower power. Classic seesaw.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">C · Fun game — type the missing word</h4>
+    <div class="quiz typequiz" data-target="power">
+      <div class="q-tag">Game</div>
+      <div class="q-text">Fill in: "1 minus β equals ____" — type the single word.</div>
+      <input type="text" id="game-input-2" placeholder="word">
+      <button onclick="checkType('game-input-2','power', 15)">Submit</button>
+      <div class="reveal" id="game-rev-2">Power = 1 − β. The catch rate of your test.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">D · Exam style</h4>
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Exam Q1</div>
+      <div class="q-text">In a test of H₀: μ = 6 vs H_a: μ ≠ 6, the test fails to reject H₀ when the true population mean is actually 7. This is a:</div>
+      <div class="opt" data-i="0">Type II error</div>
+      <div class="opt" data-i="1">Type I error</div>
+      <div class="opt" data-i="2">Sampling error</div>
+      <div class="opt" data-i="3">Bias</div>
+      <div class="reveal">H₀ was false (true mean 7, claimed 6) and we failed to reject. That is the textbook Type II.</div>
+    </div>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Exam Q2</div>
+      <div class="q-text">In R, <code>power.t.test(n=30, delta=1, sd=2, sig.level=0.05)$power</code> returns the…</div>
+      <div class="opt" data-i="0">Type I error rate</div>
+      <div class="opt" data-i="1">p-value</div>
+      <div class="opt" data-i="2">probability of correctly rejecting H₀ when true mean differs by 1</div>
+      <div class="opt" data-i="3">required sample size</div>
+      <div class="reveal"><code>$power</code> returns 1 − β. The probability the test catches a real effect of size delta = 1.</div>
+    </div>
+
+    <div class="quiz" data-correct="1">
+      <div class="q-tag">Exam Q3</div>
+      <div class="q-text">A study has only n = 8 and a small effect. Even at α = 0.05 it would have power ≈ 0.18. The study is:</div>
+      <div class="opt" data-i="0">over-powered, will reject everything</div>
+      <div class="opt" data-i="1">under-powered, very likely to miss a real effect</div>
+      <div class="opt" data-i="2">unbiased</div>
+      <div class="opt" data-i="3">guaranteed Type I error</div>
+      <div class="reveal">Power 0.18 means an 82% chance of MISSING the effect even if it's real. Under-powered → high β.</div>
+    </div>
+  </div>
+
+  <!-- 7 ANSWERS recap -->
+  <div class="part part-7">
+    <div class="part-title">✅ Recap (the 4 lines to memorize)</div>
+    <p style="background:#0f172a; padding:12px; border-radius:8px; line-height:1.9;">
+      α = P(reject H₀ | H₀ TRUE) — the false alarm rate, you pick it (0.05).<br>
+      β = P(fail to reject H₀ | H₀ FALSE) — the miss rate.<br>
+      Power = 1 − β — the catch rate.<br>
+      Trade-off: ↓α → ↓Power. ↑n → ↑Power. ↑σ → ↓Power. ↑effect → ↑Power.
+    </p>
+  </div>
+
+  <!-- 8 MISTAKES -->
+  <div class="part part-8">
+    <div class="part-title">⚠️ Common mistakes</div>
+    <div class="mistake"><strong>Mistake 1 — Confusing Type I with Type II.</strong>
+      <div class="why">Mnemonic: "I" looks like 1 → α (the FIRST one you choose). "II" looks like 2 → β (the SECOND one, which falls out of the math).</div>
+    </div>
+    <div class="mistake"><strong>Mistake 2 — Thinking lower α always = better test.</strong>
+      <div class="why">Lower α reduces false alarms but lowers power. There is always a trade-off.</div>
+    </div>
+    <div class="mistake"><strong>Mistake 3 — Power = 1 − α.</strong>
+      <div class="why">No! Power = 1 − β. α and β are independent and live on opposite "truth columns."</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<!-- ============================================================== -->
+<!-- ===== LESSON 3: Critical value t* =========================== -->
+<!-- ============================================================== -->
+<div class="lesson" id="lesson-3">
+  <div class="lesson-header"><h2><span class="lesson-num">L3</span>Critical value t* — what it is, how to read a t-table, how to compute in R</h2></div>
+  <div class="lesson-body">
+
+  <div class="part part-1">
+    <div class="part-title">🧠 Simple explanation</div>
+    <p>Imagine the t-distribution as a hill. Most of the area is in the middle. The two skinny tails are far from the center.</p>
+    <p>The <strong>critical value t*</strong> is the EXACT t-number that marks the edge of those tails.</p>
+    <p>If your test's t-statistic lands beyond t* → reject H₀. If it lands inside → fail to reject H₀.</p>
+    <p>t* depends on TWO things: (1) how strict you are (your α), (2) your degrees of freedom (df = n − 1).</p>
+  </div>
+
+  <div class="part part-2">
+    <div class="part-title">📐 Math language</div>
+    <ul>
+      <li><strong>Critical value t*</strong>: the t-value such that P(|T| &gt; t*) = α for a two-sided test.</li>
+      <li><strong>Degrees of freedom (df)</strong>: for a one-sample t-test, df = n − 1.</li>
+      <li><strong>Confidence level C</strong>: 1 − α. So 95% CI corresponds to α = 0.05.</li>
+    </ul>
+    <div class="formula">For two-sided CI at level C:  t* = qt( (1 + C) / 2, df )</div>
+    <p>For α = 0.05 (95% CI), df = 14: t* = qt(0.975, 14) = <strong>2.145</strong>.</p>
+  </div>
+
+  <div class="part part-3">
+    <div class="part-title">🔗 Connection (idea ↔ math)</div>
+    <table>
+      <tr><th>Plain English</th><th>R code</th></tr>
+      <tr><td>"the upper threshold for a 95% CI, df=14"</td><td><code>qt(0.975, 14)</code></td></tr>
+      <tr><td>"the lower threshold (mirror)"</td><td><code>qt(0.025, 14)</code> = −t*</td></tr>
+      <tr><td>"the upper threshold for a 99% CI, df=9"</td><td><code>qt(0.995, 9)</code> = 3.250</td></tr>
+    </table>
+  </div>
+
+  <div class="part part-4">
+    <div class="part-title">🍎 Step-by-step example (Khan Academy classic)</div>
+    <p>"Find t* for a 98% CI from n = 15 observations."</p>
+    <ol>
+      <li>Confidence = 98% → α = 0.02 → α/2 = 0.01 in each tail.</li>
+      <li>df = n − 1 = 15 − 1 = 14.</li>
+      <li>Look up row df = 14, column "upper-tail 0.01" in a t-table → t* = 2.624.</li>
+      <li>In R: <code>qt(0.99, 14)</code> = 2.624. Same answer.</li>
+    </ol>
+  </div>
+
+  <div class="part part-5">
+    <div class="part-title">🎮 Interactive — t-distribution visualizer</div>
+    <div class="widget">
+      <canvas id="canvas-tdist"></canvas>
+      <label>Confidence level: <span id="ci-shown">95</span>%</label>
+      <input type="range" id="ci-slider" min="80" max="99" value="95" step="1">
+      <label>Degrees of freedom: <span id="df-shown">14</span></label>
+      <input type="range" id="df-slider" min="1" max="50" value="14" step="1">
+      <div class="out" id="tstar-out"></div>
+    </div>
+  </div>
+
+  <div class="part part-6">
+    <div class="part-title">❓ Practice questions</div>
+
+    <h4 style="color:#cbd5e1;">A · Basic</h4>
+    <div class="quiz" data-correct="1">
+      <div class="q-tag">Basic Q1</div>
+      <div class="q-text">For a one-sample t-test with n = 20, df equals…</div>
+      <div class="opt" data-i="0">20</div>
+      <div class="opt" data-i="1">19</div>
+      <div class="opt" data-i="2">21</div>
+      <div class="opt" data-i="3">2</div>
+      <div class="reveal">df = n − 1 = 19.</div>
+    </div>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Basic Q2</div>
+      <div class="q-text">For a 95% confidence interval, the total tail probability α equals…</div>
+      <div class="opt" data-i="0">0.95</div>
+      <div class="opt" data-i="1">0.025</div>
+      <div class="opt" data-i="2">0.05</div>
+      <div class="opt" data-i="3">0.975</div>
+      <div class="reveal">95% in middle → 5% in tails total → α = 0.05. Per tail = 0.025.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">B · Medium</h4>
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Medium Q1</div>
+      <div class="q-text">df decreases. Holding α = 0.05, what happens to t* (upper)?</div>
+      <div class="opt" data-i="0">decreases toward 0</div>
+      <div class="opt" data-i="1">stays the same</div>
+      <div class="opt" data-i="2">increases (gets bigger)</div>
+      <div class="opt" data-i="3">becomes negative</div>
+      <div class="reveal">Smaller df → fatter-tailed t-distribution → need a larger t* to reach 5% in the tails.</div>
+    </div>
+
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Medium Q2</div>
+      <div class="q-text">For 99% CI with df = 9, t* = ?</div>
+      <div class="opt" data-i="0">3.250</div>
+      <div class="opt" data-i="1">2.262</div>
+      <div class="opt" data-i="2">1.833</div>
+      <div class="opt" data-i="3">2.821</div>
+      <div class="reveal">99% CI → α = 0.01 → upper tail prob 0.005 → R: qt(0.995, 9) = 3.250.</div>
+    </div>
+
+    <div class="quiz" data-correct="1">
+      <div class="q-tag">Medium Q3</div>
+      <div class="q-text">In R, which command gives the upper t* for a 90% CI with df = 24?</div>
+      <div class="opt" data-i="0"><code>qt(0.90, 24)</code></div>
+      <div class="opt" data-i="1"><code>qt(0.95, 24)</code></div>
+      <div class="opt" data-i="2"><code>qt(0.05, 24)</code></div>
+      <div class="opt" data-i="3"><code>pt(0.95, 24)</code></div>
+      <div class="reveal">90% CI → α = 0.10 → α/2 = 0.05 → upper cut at (1 − 0.05) = 0.95. So qt(0.95, 24).</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">C · Fun game — type the value</h4>
+    <div class="quiz typequiz" data-target="2.624">
+      <div class="q-tag">Game</div>
+      <div class="q-text">Type t* (3 decimals) for 98% CI with df = 14.</div>
+      <input type="text" id="game-input-3" placeholder="e.g. 2.624">
+      <button onclick="checkType('game-input-3','2.624', 20)">Submit</button>
+      <div class="reveal" id="game-rev-3">qt(0.99, 14) = 2.624. Memorize this Khan Academy classic.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">D · Exam style</h4>
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Exam Q1</div>
+      <div class="q-text">A two-sided one-sample t-test has n = 25 and α = 0.05. The critical values are approximately:</div>
+      <div class="opt" data-i="0">±1.96</div>
+      <div class="opt" data-i="1">±2.776</div>
+      <div class="opt" data-i="2">±2.064</div>
+      <div class="opt" data-i="3">±2.353</div>
+      <div class="reveal">df = 24, α/2 = 0.025 each tail. qt(0.975, 24) ≈ 2.064. Note ±1.96 is the z-value (n → ∞).</div>
+    </div>
+
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Exam Q2</div>
+      <div class="q-text">If your computed t-statistic is t = −2.40 and your critical values are ±2.064 (df = 24), the decision is:</div>
+      <div class="opt" data-i="0">Reject H₀ — t falls in the lower rejection region</div>
+      <div class="opt" data-i="1">Fail to reject H₀</div>
+      <div class="opt" data-i="2">Accept H_a</div>
+      <div class="opt" data-i="3">Need the p-value to decide</div>
+      <div class="reveal">|t| = 2.40 &gt; 2.064 → reject. Note: "accept H_a" is acceptable phrasing in some texts but most professors prefer "reject H₀."</div>
+    </div>
+
+    <div class="quiz" data-correct="3">
+      <div class="q-tag">Exam Q3</div>
+      <div class="q-text">A 95% confidence interval for μ is x̄ ± t* · (s / √n). Which of the following is the closest expression for t* with n = 16?</div>
+      <div class="opt" data-i="0"><code>qt(0.95, 16)</code></div>
+      <div class="opt" data-i="1"><code>qnorm(0.975)</code></div>
+      <div class="opt" data-i="2"><code>pt(0.975, 15)</code></div>
+      <div class="opt" data-i="3"><code>qt(0.975, 15)</code></div>
+      <div class="reveal">df = 15, upper-tail cutoff at (1 − 0.025) = 0.975. The "q" gives a quantile from a probability — that is what we need.</div>
+    </div>
+  </div>
+
+  <div class="part part-7">
+    <div class="part-title">✅ Recap</div>
+    <p style="background:#0f172a; padding:12px; border-radius:8px;">
+      For a two-sided CI at confidence C, df = n − 1: <code>t* = qt((1 + C) / 2, df)</code>.<br>
+      Smaller df → bigger t* (fatter-tail correction).
+    </p>
+  </div>
+
+  <div class="part part-8">
+    <div class="part-title">⚠️ Common mistakes</div>
+    <div class="mistake"><strong>Mistake 1 — Using α instead of (1 − α/2) in qt().</strong>
+      <div class="why">qt(0.05, 14) gives the LOWER cutoff (negative t*). The UPPER cutoff is qt(0.975, 14).</div>
+    </div>
+    <div class="mistake"><strong>Mistake 2 — Forgetting df = n − 1.</strong>
+      <div class="why">df depends on the sample size minus one for a one-sample t. Two-sample formulas differ — be careful.</div>
+    </div>
+    <div class="mistake"><strong>Mistake 3 — Using z (1.96) instead of t (2.064 etc.) for small n.</strong>
+      <div class="why">Z is fine when σ is known or n is huge. For real samples with unknown σ, use t.</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<!-- ============================================================== -->
+<!-- ===== LESSON 4: Confidence Interval ========================= -->
+<!-- ============================================================== -->
+<div class="lesson" id="lesson-4">
+  <div class="lesson-header"><h2><span class="lesson-num">L4</span>Confidence Interval — the "range" view of the same decision</h2></div>
+  <div class="lesson-body">
+
+  <div class="part part-1">
+    <div class="part-title">🧠 Simple explanation</div>
+    <p>You measured x̄ = 23.5 minutes. But the true mean might be a little different. A <strong>confidence interval (CI)</strong> is a range that probably contains the true mean.</p>
+    <p>"95% CI" = built so that, if you repeated the experiment 100 times, about 95 of the intervals you'd build would catch the true mean.</p>
+    <p>Big magic: rejecting H₀ at α = 0.05 happens EXACTLY when the claimed value μ₀ is OUTSIDE the 95% CI.</p>
+  </div>
+
+  <div class="part part-2">
+    <div class="part-title">📐 Math language</div>
+    <div class="formula">CI = x̄ ± t* · ( s / √n )</div>
+    <ul>
+      <li><strong>x̄</strong> = sample mean.</li>
+      <li><strong>t*</strong> = critical value from Lesson 3 (depends on df and confidence).</li>
+      <li><strong>s / √n</strong> = standard error of the mean.</li>
+      <li><strong>t* · (s / √n)</strong> = margin of error.</li>
+    </ul>
+    <p><strong>Standard error</strong> shrinks as n grows: SE = s / √n.</p>
+  </div>
+
+  <div class="part part-3">
+    <div class="part-title">🔗 Connection (idea ↔ math)</div>
+    <table>
+      <tr><th>Plain English</th><th>Exam phrasing</th></tr>
+      <tr><td>"how wide is the band of plausible means"</td><td>margin of error = t* · SE</td></tr>
+      <tr><td>"how confident am I"</td><td>confidence level C (1 − α)</td></tr>
+      <tr><td>"the claimed value is INSIDE the band"</td><td>fail to reject H₀</td></tr>
+      <tr><td>"the claimed value is OUTSIDE the band"</td><td>reject H₀</td></tr>
+    </table>
+  </div>
+
+  <div class="part part-4">
+    <div class="part-title">🍎 Step-by-step example</div>
+    <p>50 wait times: x̄ = 23.5, s = 8.0, n = 50, claim μ₀ = 20. Build the 95% CI.</p>
+    <ol>
+      <li>SE = s / √n = 8 / √50 ≈ 1.131.</li>
+      <li>df = 49 → t* = qt(0.975, 49) ≈ 2.010.</li>
+      <li>Margin = 2.010 × 1.131 ≈ 2.273.</li>
+      <li>CI = 23.5 ± 2.273 → <strong>[21.23, 25.77]</strong>.</li>
+      <li>μ₀ = 20 is OUTSIDE [21.23, 25.77] → REJECT H₀ at α = 0.05.</li>
+    </ol>
+  </div>
+
+  <div class="part part-5">
+    <div class="part-title">🎮 Interactive — see the CI shrink as n grows</div>
+    <div class="widget">
+      <canvas id="canvas-ci"></canvas>
+      <label>Sample size n: <span id="ci-n-shown">50</span></label>
+      <input type="range" id="ci-n-slider" min="3" max="500" value="50" step="1">
+      <label>Sample mean x̄: <span id="ci-mean-shown">23.5</span></label>
+      <input type="range" id="ci-mean-slider" min="15" max="32" value="23.5" step="0.1">
+      <label>Sample SD s: <span id="ci-sd-shown">8.0</span></label>
+      <input type="range" id="ci-sd-slider" min="1" max="20" value="8" step="0.1">
+      <label>Confidence level: <span id="ci-c-shown">95</span>%</label>
+      <input type="range" id="ci-c-slider" min="80" max="99" value="95" step="1">
+      <div class="out" id="ci-out"></div>
+    </div>
+  </div>
+
+  <div class="part part-6">
+    <div class="part-title">❓ Practice questions</div>
+
+    <h4 style="color:#cbd5e1;">A · Basic</h4>
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Basic Q1</div>
+      <div class="q-text">If μ₀ = 20 lies inside a 95% CI of [18.4, 22.1], the conclusion at α = 0.05 is:</div>
+      <div class="opt" data-i="0">fail to reject H₀</div>
+      <div class="opt" data-i="1">reject H₀</div>
+      <div class="opt" data-i="2">accept H₀</div>
+      <div class="opt" data-i="3">cannot decide</div>
+      <div class="reveal">μ₀ INSIDE the CI → fail to reject. The CI represents plausible values for μ; 20 is plausible.</div>
+    </div>
+
+    <div class="quiz" data-correct="1">
+      <div class="q-tag">Basic Q2</div>
+      <div class="q-text">As n increases, the standard error s/√n…</div>
+      <div class="opt" data-i="0">grows</div>
+      <div class="opt" data-i="1">shrinks</div>
+      <div class="opt" data-i="2">stays exactly the same</div>
+      <div class="opt" data-i="3">depends on x̄</div>
+      <div class="reveal">SE = s / √n. Bigger denominator → smaller SE → narrower CI.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">B · Medium</h4>
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Medium Q1</div>
+      <div class="q-text">A 99% CI is ___ a 95% CI from the same data.</div>
+      <div class="opt" data-i="0">narrower than</div>
+      <div class="opt" data-i="1">the same as</div>
+      <div class="opt" data-i="2">wider than</div>
+      <div class="opt" data-i="3">a subset of</div>
+      <div class="reveal">Higher confidence → bigger t* → wider band. You're more sure, so you cast a wider net.</div>
+    </div>
+
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Medium Q2</div>
+      <div class="q-text">x̄ = 10, s = 4, n = 16, t* (df 15, 95%) ≈ 2.131. The 95% CI is closest to:</div>
+      <div class="opt" data-i="0">[7.87, 12.13]</div>
+      <div class="opt" data-i="1">[8.00, 12.00]</div>
+      <div class="opt" data-i="2">[6.00, 14.00]</div>
+      <div class="opt" data-i="3">[9.95, 10.05]</div>
+      <div class="reveal">SE = 4 / √16 = 1. Margin = 2.131 × 1 = 2.131. CI = 10 ± 2.131 = [7.87, 12.13].</div>
+    </div>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Medium Q3</div>
+      <div class="q-text">A correct interpretation of a 95% CI is:</div>
+      <div class="opt" data-i="0">"95% probability the true mean is in this interval"</div>
+      <div class="opt" data-i="1">"95% of the data falls in this interval"</div>
+      <div class="opt" data-i="2">"If we repeated this 100 times, ~95 of the intervals would contain the true mean"</div>
+      <div class="opt" data-i="3">"x̄ has a 95% chance of being correct"</div>
+      <div class="reveal">CI is a property of the PROCEDURE, not a probability about a single computed interval. Long-run frequency interpretation.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">C · Fun game — type the margin</h4>
+    <div class="quiz typequiz" data-target="1.1">
+      <div class="q-tag">Game</div>
+      <div class="q-text">x̄ = 8, s = 5, n = 100, t* = 1.984. What is the 95% margin of error? (Round to 1 decimal.)</div>
+      <input type="text" id="game-input-4" placeholder="e.g. 1.0">
+      <button onclick="checkType('game-input-4','1.0', 25)">Submit</button>
+      <div class="reveal" id="game-rev-4">Margin = t* × s/√n = 1.984 × 5/10 = 0.99 ≈ 1.0. Either 1.0 or 0.99 is accepted.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">D · Exam style</h4>
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Exam Q1</div>
+      <div class="q-text">A 95% CI for the mean delivery time is [27.3, 31.5] minutes. Test H₀: μ = 30 vs H_a: μ ≠ 30 at α = 0.05:</div>
+      <div class="opt" data-i="0">Fail to reject H₀</div>
+      <div class="opt" data-i="1">Reject H₀</div>
+      <div class="opt" data-i="2">Insufficient information</div>
+      <div class="opt" data-i="3">Increase the sample size</div>
+      <div class="reveal">30 is inside [27.3, 31.5] → fail to reject H₀. CI ↔ test correspondence.</div>
+    </div>
+
+    <div class="quiz" data-correct="1">
+      <div class="q-tag">Exam Q2</div>
+      <div class="q-text">In R, <code>t.test(x, mu = 6)$conf.int</code> returns:</div>
+      <div class="opt" data-i="0">the p-value</div>
+      <div class="opt" data-i="1">the 95% confidence interval for the mean</div>
+      <div class="opt" data-i="2">the test statistic</div>
+      <div class="opt" data-i="3">the standard error</div>
+      <div class="reveal"><code>$conf.int</code> extracts the CI. Default confidence is 0.95; pass <code>conf.level = 0.99</code> to change it.</div>
+    </div>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Exam Q3</div>
+      <div class="q-text">If you need to halve the margin of error (same s and confidence), n must:</div>
+      <div class="opt" data-i="0">double</div>
+      <div class="opt" data-i="1">stay the same</div>
+      <div class="opt" data-i="2">quadruple (×4)</div>
+      <div class="opt" data-i="3">decrease by half</div>
+      <div class="reveal">Margin ∝ 1/√n. Halving margin needs √n to double, i.e. n × 4. Same lesson as power scaling.</div>
+    </div>
+  </div>
+
+  <div class="part part-7">
+    <div class="part-title">✅ Recap</div>
+    <p style="background:#0f172a; padding:12px; border-radius:8px;">
+      CI = x̄ ± t* · (s/√n). μ₀ inside CI ↔ fail to reject. Higher confidence → wider CI. Bigger n → narrower CI.
+    </p>
+  </div>
+
+  <div class="part part-8">
+    <div class="part-title">⚠️ Common mistakes</div>
+    <div class="mistake"><strong>Mistake 1 — "95% probability the true mean is in MY interval."</strong>
+      <div class="why">Once you compute it, the interval either contains μ or doesn't. The 95% refers to the long-run procedure.</div>
+    </div>
+    <div class="mistake"><strong>Mistake 2 — "CI is just for visualization, not for tests."</strong>
+      <div class="why">CI and a two-sided test are mathematically equivalent. If the null value is outside the CI, you reject.</div>
+    </div>
+    <div class="mistake"><strong>Mistake 3 — Using s² (variance) instead of s (SD) in margin formula.</strong>
+      <div class="why">SE uses standard deviation, not variance. Don't square it.</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<!-- ============================================================== -->
+<!-- ===== BOSS BATTLE — 10 mixed exam-style questions =========== -->
+<!-- ============================================================== -->
+<div class="boss-battle" id="boss">
+  <h2>🏆 Boss Battle — 10 mixed exam-style questions</h2>
+  <p>Earn +30 XP per correct answer. Streak bonus at 5 in a row. Try without notes!</p>
+  <button class="start-btn" id="boss-start" onclick="startBoss()">Start Boss Battle</button>
+  <div id="boss-area"></div>
+</div>
+
+
+</div>
+
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// =================== GAMIFICATION (per gamification.md) ===================
+let pts = 0, streak = 0;
+function pop(el) { el.classList.add('pop-anim'); setTimeout(()=>el.classList.remove('pop-anim'), 320); }
+function award(amount, msg) {
+  pts += amount; streak += 1;
+  const ptsEl = document.getElementById('score-pts');
+  const streakEl = document.getElementById('score-streak');
+  ptsEl.textContent = pts; pop(ptsEl);
+  streakEl.textContent = streak; pop(streakEl);
+  document.getElementById('score-lvl').textContent = 1 + Math.floor(pts / 100);
+  if (msg) showAch(msg);
+  // Achievements
+  if (streak === 5 && !window._streak5) { window._streak5 = true; showAch('🔥 Hot Streak — 5 in a row! +25 XP'); pts += 25; ptsEl.textContent = pts; }
+  if (streak === 10 && !window._streak10) { window._streak10 = true; showAch('💯 On Fire — 10 in a row! +50 XP'); pts += 50; ptsEl.textContent = pts; }
+  if (pts >= 200 && !window._pts200) { window._pts200 = true; showAch('🚀 200 XP Club!'); }
+  if (pts >= 500 && !window._pts500) { window._pts500 = true; showAch('🏆 Math Master — 500 XP!'); }
+}
+function breakStreak() { streak = 0; document.getElementById('score-streak').textContent = 0; }
+function showAch(text) {
+  const div = document.createElement('div');
+  div.className = 'achievement';
+  div.textContent = text;
+  document.body.appendChild(div);
+  setTimeout(()=>div.remove(), 3500);
+}
+
+// =================== QUIZ HANDLER ===================
+document.querySelectorAll('.quiz:not(.typequiz)').forEach(quiz => {
+  const correct = parseInt(quiz.dataset.correct, 10);
+  quiz.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (quiz.classList.contains('answered')) return;
+      const i = parseInt(opt.dataset.i, 10);
+      quiz.classList.add('answered');
+      if (i === correct) { opt.classList.add('correct'); award(10, '+10 XP'); }
+      else { opt.classList.add('wrong'); breakStreak();
+        quiz.querySelectorAll('.opt').forEach(o => { if (parseInt(o.dataset.i,10) === correct) o.classList.add('correct'); });
+      }
+    });
+  });
+});
+
+// =================== TYPE-IN GAME HANDLER ===================
+function checkType(inputId, expected, points) {
+  const v = document.getElementById(inputId).value.trim().toLowerCase().replace(/^=+/,'');
+  const target = expected.toLowerCase();
+  const quiz = document.getElementById(inputId).closest('.quiz');
+  if (quiz.classList.contains('answered')) return;
+  quiz.classList.add('answered');
+  // Loose numeric match
+  const numV = parseFloat(v), numT = parseFloat(target);
+  let ok = false;
+  if (!isNaN(numV) && !isNaN(numT)) ok = Math.abs(numV - numT) <= 0.05;
+  else ok = (v === target);
+  if (ok) { award(points, '+' + points + ' XP — nailed it!'); document.getElementById(inputId).style.background = '#14532d'; }
+  else { breakStreak(); document.getElementById(inputId).style.background = '#4c1d24'; }
+}
+
+// =================== L1 INTERACTIVE: p vs alpha decision ===================
+const aSlider = document.getElementById('alpha-slider');
+const pSlider = document.getElementById('pval-slider');
+function updateL1() {
+  const a = parseFloat(aSlider.value), p = parseFloat(pSlider.value);
+  document.getElementById('alpha-shown').textContent = a.toFixed(3);
+  document.getElementById('pval-shown').textContent = p.toFixed(3);
+  document.getElementById('p-shown').textContent = p.toFixed(3);
+  const dec = (p < a) ? 'REJECT H₀' : 'FAIL TO REJECT H₀';
+  const color = (p < a) ? '#f87171' : '#4ade80';
+  const why = (p < a) ? `${p.toFixed(3)} &lt; ${a.toFixed(3)} → data is unusual under H₀ → reject` :
+                          `${p.toFixed(3)} ≥ ${a.toFixed(3)} → data is not unusual enough → fail to reject`;
+  document.getElementById('decision-out').innerHTML = `<strong style="color:${color}; font-size:1.1rem;">${dec}</strong><br><span style="color:#94a3b8;">${why}</span>`;
+}
+if (aSlider) { aSlider.addEventListener('input', updateL1); pSlider.addEventListener('input', updateL1); updateL1(); }
+
+// =================== L2 INTERACTIVE: power calculator (Welch / one-sample t) ===================
+function pnorm(z) {
+  // Standard normal CDF approximation (Abramowitz-Stegun 26.2.17)
+  const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429, p=0.3275911;
+  const sign = z < 0 ? -1 : 1;
+  z = Math.abs(z) / Math.sqrt(2);
+  const t = 1.0 / (1.0 + p*z);
+  const y = 1.0 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t*Math.exp(-z*z);
+  return 0.5 * (1.0 + sign*y);
+}
+function qnorm(p) {
+  // Beasley-Springer-Moro
+  const a=[-39.696830, 220.946098, -275.928510, 138.357751, -30.664798, 2.506628];
+  const b=[-54.476098, 161.585836, -155.698979, 66.801311, -13.280681];
+  const c=[-0.007784894, -0.322396458, -2.400758278, -2.549732540, 4.374664141, 2.938163983];
+  const d=[0.007784695, 0.322467129, 2.445134137, 3.754408661];
+  let q, r;
+  if (p < 0.02425) { q = Math.sqrt(-2*Math.log(p)); return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+  if (p <= 0.97575) { q = p - 0.5; r = q*q; return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q / (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1); }
+  q = Math.sqrt(-2*Math.log(1-p)); return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+}
+function approxPower(n, eff, sd, alpha) {
+  // Approximate one-sample power using normal approximation (good enough for visual)
+  const se = sd / Math.sqrt(n);
+  const ncp = eff / se;
+  const zCrit = qnorm(1 - alpha/2);
+  return 1 - pnorm(zCrit - ncp) + pnorm(-zCrit - ncp);
+}
+function updatePw() {
+  const n = parseFloat(document.getElementById('pw-n').value);
+  const eff = parseFloat(document.getElementById('pw-eff').value);
+  const sd = parseFloat(document.getElementById('pw-sd').value);
+  const a = parseFloat(document.getElementById('pw-a').value);
+  document.getElementById('pw-n-shown').textContent = n;
+  document.getElementById('pw-eff-shown').textContent = eff.toFixed(2);
+  document.getElementById('pw-sd-shown').textContent = sd.toFixed(2);
+  document.getElementById('pw-a-shown').textContent = a.toFixed(3);
+  const power = approxPower(n, eff, sd, a);
+  const beta = 1 - power;
+  let label = power >= 0.8 ? '<span style="color:#4ade80;">Well powered ✓</span>' : (power >= 0.5 ? '<span style="color:#fbbf24;">Moderate ⚠</span>' : '<span style="color:#f87171;">Under-powered ✗</span>');
+  document.getElementById('pw-out').innerHTML = `Power = <strong style="color:#fbbf24;">${(power*100).toFixed(1)}%</strong> · β = ${(beta*100).toFixed(1)}% · ${label}`;
+}
+if (document.getElementById('pw-n')) {
+  ['pw-n','pw-eff','pw-sd','pw-a'].forEach(id => document.getElementById(id).addEventListener('input', updatePw));
+  updatePw();
+}
+
+// =================== L3 INTERACTIVE: t-distribution visualizer ===================
+const TSTAR = {
+  80: {1:3.078,2:1.886,3:1.638,4:1.533,5:1.476,10:1.372,14:1.345,15:1.341,20:1.325,25:1.316,30:1.310,40:1.303,50:1.299,100:1.290},
+  90: {1:6.314,2:2.920,3:2.353,4:2.132,5:2.015,10:1.812,14:1.761,15:1.753,20:1.725,25:1.708,30:1.697,40:1.684,50:1.676,100:1.660},
+  95: {1:12.706,2:4.303,3:3.182,4:2.776,5:2.571,10:2.228,14:2.145,15:2.131,20:2.086,25:2.060,30:2.042,40:2.021,50:2.009,100:1.984},
+  98: {1:31.821,2:6.965,3:4.541,4:3.747,5:3.365,10:2.764,14:2.624,15:2.602,20:2.528,25:2.485,30:2.457,40:2.423,50:2.403,100:2.364},
+  99: {1:63.657,2:9.925,3:5.841,4:4.604,5:4.032,10:3.169,14:2.977,15:2.947,20:2.845,25:2.787,30:2.750,40:2.704,50:2.678,100:2.626}
+};
+function lookupTstar(c, df) {
+  const row = TSTAR[c]; if (!row) return null;
+  const keys = Object.keys(row).map(Number).sort((a,b)=>a-b);
+  // exact
+  if (row[df] !== undefined) return row[df];
+  // closest two for linear interp
+  let lo = keys[0], hi = keys[keys.length-1];
+  for (let i = 0; i < keys.length - 1; i++) { if (keys[i] <= df && keys[i+1] >= df) { lo = keys[i]; hi = keys[i+1]; break; } }
+  if (df < keys[0]) return row[keys[0]];
+  if (df > keys[keys.length-1]) return row[keys[keys.length-1]];
+  const t = (df - lo) / (hi - lo);
+  return row[lo] + t * (row[hi] - row[lo]);
+}
+const cvT = document.getElementById('canvas-tdist');
+function drawTDist() {
+  if (!cvT) return;
+  const ctx = cvT.getContext('2d');
+  const W = cvT.width = cvT.offsetWidth, H = cvT.height = 280;
+  ctx.clearRect(0,0,W,H);
+  const c = parseInt(document.getElementById('ci-slider').value, 10);
+  const df = parseInt(document.getElementById('df-slider').value, 10);
+  document.getElementById('ci-shown').textContent = c;
+  document.getElementById('df-shown').textContent = df;
+  const tstar = lookupTstar(c, df) || 2.0;
+  // Approx t-density via normal-shape-with-fatter-tails — for visual only
+  function tDensity(x, df) {
+    // Reasonable visual approx: scaled Gaussian (good for moderate df)
+    const sd = Math.sqrt(df / Math.max(df - 2, 0.5));
+    return Math.exp(-x*x/(2*sd*sd)) / (sd * Math.sqrt(2*Math.PI));
+  }
+  // Plot
+  const xMin = -4.5, xMax = 4.5; const yMax = 0.45;
+  function px(x) { return (x - xMin)/(xMax - xMin) * W; }
+  function py(y) { return H - 30 - y/yMax * (H - 60); }
+  // Shade tails
+  ctx.fillStyle = 'rgba(248,113,113,0.35)';
+  ctx.beginPath(); ctx.moveTo(px(-4.5), H-30);
+  for (let x = -4.5; x <= -tstar; x += 0.05) ctx.lineTo(px(x), py(tDensity(x, df)));
+  ctx.lineTo(px(-tstar), H-30); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(px(tstar), H-30);
+  for (let x = tstar; x <= 4.5; x += 0.05) ctx.lineTo(px(x), py(tDensity(x, df)));
+  ctx.lineTo(px(4.5), H-30); ctx.closePath(); ctx.fill();
+  // Curve
+  ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let x = xMin; x <= xMax; x += 0.05) { const y = tDensity(x, df); if (x === xMin) ctx.moveTo(px(x), py(y)); else ctx.lineTo(px(x), py(y)); }
+  ctx.stroke();
+  // Critical lines
+  ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 2; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(px(-tstar), 20); ctx.lineTo(px(-tstar), H-30); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(px(tstar), 20); ctx.lineTo(px(tstar), H-30); ctx.stroke();
+  ctx.setLineDash([]);
+  // Axis
+  ctx.strokeStyle = '#475569'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, H-30); ctx.lineTo(W, H-30); ctx.stroke();
+  // Labels
+  ctx.fillStyle = '#fbbf24'; ctx.font = '14px sans-serif';
+  ctx.fillText(`+t* = ${tstar.toFixed(3)}`, px(tstar)+5, 35);
+  ctx.fillText(`−t* = ${(-tstar).toFixed(3)}`, px(-tstar) - 90, 35);
+  ctx.fillStyle = '#94a3b8';
+  ctx.fillText('reject', px(tstar)+5, H-10);
+  ctx.fillText('reject', px(-tstar)-50, H-10);
+  ctx.fillText('fail to reject (middle)', W/2 - 80, H-10);
+  // Output
+  document.getElementById('tstar-out').innerHTML =
+    `t* = <strong style="color:#fbbf24;">${tstar.toFixed(3)}</strong> &nbsp;·&nbsp; α = ${((100-c)/100).toFixed(3)} &nbsp;·&nbsp; df = ${df} &nbsp;·&nbsp; R: <code>qt(${((1+c/100)/2).toFixed(4)}, ${df})</code>`;
+}
+if (cvT) {
+  document.getElementById('ci-slider').addEventListener('input', drawTDist);
+  document.getElementById('df-slider').addEventListener('input', drawTDist);
+  setTimeout(drawTDist, 50);
+  window.addEventListener('resize', () => setTimeout(drawTDist, 100));
+}
+
+// =================== L4 INTERACTIVE: CI visualizer ===================
+const cvCI = document.getElementById('canvas-ci');
+function drawCI() {
+  if (!cvCI) return;
+  const ctx = cvCI.getContext('2d');
+  const W = cvCI.width = cvCI.offsetWidth, H = cvCI.height = 280;
+  ctx.clearRect(0,0,W,H);
+  const n = parseInt(document.getElementById('ci-n-slider').value, 10);
+  const xb = parseFloat(document.getElementById('ci-mean-slider').value);
+  const s = parseFloat(document.getElementById('ci-sd-slider').value);
+  const c = parseInt(document.getElementById('ci-c-slider').value, 10);
+  document.getElementById('ci-n-shown').textContent = n;
+  document.getElementById('ci-mean-shown').textContent = xb.toFixed(1);
+  document.getElementById('ci-sd-shown').textContent = s.toFixed(1);
+  document.getElementById('ci-c-shown').textContent = c;
+  const df = n - 1;
+  const tstar = lookupTstar(c, df) || 2.0;
+  const se = s / Math.sqrt(n);
+  const margin = tstar * se;
+  const lo = xb - margin, hi = xb + margin;
+  // Plot scale
+  const xMin = 10, xMax = 35;
+  function px(x) { return (x - xMin)/(xMax - xMin) * (W - 60) + 30; }
+  // Axis
+  ctx.strokeStyle = '#475569'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(30, H/2); ctx.lineTo(W-30, H/2); ctx.stroke();
+  // Tick marks
+  ctx.fillStyle = '#94a3b8'; ctx.font = '12px sans-serif';
+  for (let x = 10; x <= 35; x += 5) { ctx.beginPath(); ctx.moveTo(px(x), H/2 - 4); ctx.lineTo(px(x), H/2 + 4); ctx.stroke(); ctx.fillText(x, px(x) - 6, H/2 + 20); }
+  // CI band
+  ctx.fillStyle = 'rgba(34,211,238,0.25)';
+  ctx.fillRect(px(lo), H/2 - 50, px(hi) - px(lo), 50);
+  ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(px(lo), H/2 - 30); ctx.lineTo(px(lo), H/2 + 30); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(px(hi), H/2 - 30); ctx.lineTo(px(hi), H/2 + 30); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(px(lo), H/2); ctx.lineTo(px(hi), H/2); ctx.stroke();
+  // x̄ marker
+  ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(px(xb), H/2, 7, 0, 2*Math.PI); ctx.fill();
+  ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 13px sans-serif'; ctx.fillText('x̄', px(xb) - 5, H/2 - 14);
+  // μ₀ = 20 reference line
+  ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2; ctx.setLineDash([6,4]);
+  ctx.beginPath(); ctx.moveTo(px(20), 20); ctx.lineTo(px(20), H-20); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#f87171'; ctx.fillText('μ₀ = 20', px(20) + 5, 35);
+  // Output
+  const inside = (lo <= 20 && 20 <= hi);
+  const dec = inside ? '<span style="color:#4ade80;">μ₀ inside CI → fail to reject H₀</span>' :
+                       '<span style="color:#f87171;">μ₀ outside CI → REJECT H₀</span>';
+  document.getElementById('ci-out').innerHTML =
+    `CI = [<strong>${lo.toFixed(2)}</strong>, <strong>${hi.toFixed(2)}</strong>] · margin = ${margin.toFixed(3)} · SE = ${se.toFixed(3)} · t*(${df}, ${c}%) = ${tstar.toFixed(3)}<br>${dec}`;
+}
+if (cvCI) {
+  ['ci-n-slider','ci-mean-slider','ci-sd-slider','ci-c-slider'].forEach(id => document.getElementById(id).addEventListener('input', drawCI));
+  setTimeout(drawCI, 50);
+  window.addEventListener('resize', () => setTimeout(drawCI, 100));
+}
+
+// =================== BOSS BATTLE — 10 mixed exam questions ===================
+const BOSS_QS = [
+  {q:"p = 0.04, α = 0.05. Decision?", opts:["fail to reject H₀","reject H₀","accept H₀","need more data"], a:1},
+  {q:"For 95% CI with df = 19, t* ≈ ?", opts:["1.729","2.093","2.861","1.96"], a:1},
+  {q:"Power = 1 − ?", opts:["α","β","p-value","SE"], a:1},
+  {q:"Increasing n quadruples → margin of error becomes…", opts:["×4","unchanged","×½","÷2"], a:3},
+  {q:"R: <code>qt(0.99, 9)</code> returns ≈", opts:["2.262","3.250","2.821","1.833"], a:1},
+  {q:"A 99% CI is ___ the 95% CI from the same data:", opts:["narrower","wider","equal","random"], a:1},
+  {q:"Type I error means…", opts:["reject true H₀","reject false H₀","fail to reject false H₀","sample bias"], a:0},
+  {q:"<code>t.test(x, mu = 6)$p.value</code> returns…", opts:["the t-statistic","the CI","the p-value","the critical value"], a:2},
+  {q:"x̄ = 5, s = 4, n = 16, t* = 2.131. Margin of error =", opts:["2.131","8.524","1.066","4"], a:0},
+  {q:"If μ₀ is OUTSIDE the 95% CI, the two-sided test at α = 0.05 will…", opts:["fail to reject H₀","reject H₀","be inconclusive","need a one-sided test"], a:1},
+];
+let bossIdx = 0, bossPts = 0, bossStreak = 0;
+function startBoss() {
+  bossIdx = 0; bossPts = 0; bossStreak = 0;
+  document.getElementById('boss-start').style.display = 'none';
+  renderBoss();
+}
+function renderBoss() {
+  const area = document.getElementById('boss-area');
+  if (bossIdx >= BOSS_QS.length) {
+    area.innerHTML = `<div class="boss-q active" style="text-align:center;">
+      <h3 style="color:#fbbf24;">🏆 Boss Battle complete!</h3>
+      <p style="margin:10px 0; font-size:1.1rem;">Score: <strong style="color:#fbbf24;">${bossPts} / ${BOSS_QS.length * 30}</strong></p>
+      <p>Best streak: <strong>${bossStreak}</strong></p>
+      <p style="margin-top:14px; color:#94a3b8;">${bossPts >= 270 ? '🎯 You are quiz-ready.' : bossPts >= 180 ? '⚡ Strong. Review the missed items in the relevant lesson.' : '📚 Re-cram lessons 1-4 before the quiz.'}</p>
+    </div>`;
+    return;
+  }
+  const Q = BOSS_QS[bossIdx];
+  area.innerHTML = `<div class="boss-q active">
+    <div class="boss-progress">Question ${bossIdx + 1} of ${BOSS_QS.length} · streak: ${bossStreak}</div>
+    <div class="q-text" style="font-size:1.05rem;">${Q.q}</div>
+    ${Q.opts.map((o,i) => `<div class="opt" onclick="bossPick(${i})">${o}</div>`).join('')}
+  </div>`;
+}
+function bossPick(i) {
+  const Q = BOSS_QS[bossIdx];
+  const opts = document.querySelectorAll('#boss-area .opt');
+  if (i === Q.a) { opts[i].classList.add('correct'); bossPts += 30; bossStreak += 1; award(30, '+30 XP boss hit'); }
+  else { opts[i].classList.add('wrong'); opts[Q.a].classList.add('correct'); bossStreak = 0; breakStreak(); }
+  setTimeout(() => { bossIdx += 1; renderBoss(); }, 900);
+}
+
+</script>
+
+</body>
+</html>
