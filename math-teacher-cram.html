@@ -264,7 +264,8 @@ tr:last-child td { border-bottom: none; }
   <a href="#lesson-2"><span class="num">L2</span> Type I, Type II, β, and Power — the four error words</a>
   <a href="#lesson-3"><span class="num">L3</span> Critical value t* — what it is, how to read a t-table, how to compute it in R</a>
   <a href="#lesson-4"><span class="num">L4</span> Confidence Interval — the "range" view of the same decision</a>
-  <a href="#boss"><span class="num">🏆</span> Boss Battle — 10 mixed exam-style questions</a>
+  <a href="#lesson-5" style="background:linear-gradient(90deg, transparent, #fbbf2422); border-left-color:#fbbf24;"><span class="num" style="color:#fbbf24;">L5</span> <strong>Interactions + Partial F-test (NEW — from Lec 12)</strong></a>
+  <a href="#boss"><span class="num">🏆</span> Boss Battle — 15 mixed exam-style questions</a>
 </div>
 
 <!-- ============================================================== -->
@@ -1026,7 +1027,233 @@ tr:last-child td { border-bottom: none; }
 
 
 <!-- ============================================================== -->
-<!-- ===== BOSS BATTLE — 10 mixed exam-style questions =========== -->
+<!-- ===== LESSON 5: Interactions + Partial F-test (Lec 12) ====== -->
+<!-- ============================================================== -->
+<div class="lesson" id="lesson-5" style="border-color:#fbbf24;">
+  <div class="lesson-header" style="background:linear-gradient(135deg, #5b21b6 0%, #fbbf24aa 100%);">
+    <h2><span class="lesson-num" style="background:#2d1b69; color:#fbbf24;">L5</span>Interactions + Partial F-test (from Lecture 12)</h2>
+  </div>
+  <div class="lesson-body">
+
+  <!-- 1 SIMPLE -->
+  <div class="part part-1">
+    <div class="part-title">🧠 Simple explanation (very easy English)</div>
+    <p>Imagine you ask: <em>"Does going to the gym make me happier?"</em> Then you add: <em>"Does meditating make me happier?"</em> Maybe both help.</p>
+    <p>But here's the twist: <strong>maybe meditation helps MORE if you also go to the gym</strong> (they boost each other). Or maybe meditation only helps if you DON'T go to the gym. The two things might <em>interact</em>.</p>
+    <p>An <strong>interaction term</strong> in a regression is a new column you build by multiplying two variables together. It captures "the effect of one depends on the other."</p>
+    <p>A <strong>partial F-test</strong> is a way to ask: <em>"is this fancy model with extra terms actually better than a simpler model?"</em></p>
+  </div>
+
+  <!-- 2 MATH -->
+  <div class="part part-2">
+    <div class="part-title">📐 Math language (exam style)</div>
+    <p>Linear model with one interaction:</p>
+    <div class="formula">ŷ = β₀ + β₁·x₁ + β₂·x₂ + β₃·(x₁·x₂)</div>
+    <ul>
+      <li><strong>β₁</strong> = effect of x₁ when x₂ = 0 (the "main effect" of x₁).</li>
+      <li><strong>β₂</strong> = effect of x₂ when x₁ = 0.</li>
+      <li><strong>β₃</strong> = the <em>interaction</em>. When x₁ goes up by 1, the slope of x₂ changes by β₃.</li>
+    </ul>
+    <p><strong>Partial F-test:</strong> compare a <em>full model</em> with k extra parameters to a <em>nested null model</em>. Test statistic:</p>
+    <div class="formula">F = [ (RSS_null − RSS_full) / q ] / [ RSS_full / (n − p − 1) ]</div>
+    <p>where q = number of dropped parameters, p = parameters in full model. In R: <code>anova(null_model, full_model)</code>.</p>
+    <p>Common null hypotheses:</p>
+    <ul>
+      <li><code>H₀: β₃ = 0</code> — "no interaction."</li>
+      <li><code>H₀: β₁ = β₂ = β₃ = 0</code> — "none of these variables matter."</li>
+      <li><code>H₀: β₁ = β₂</code> — "gym and meditate have the SAME effect." (Tested by forcing the model to use <code>I(x₁ + x₂)</code> as one term.)</li>
+    </ul>
+  </div>
+
+  <!-- 3 CONNECTION -->
+  <div class="part part-3">
+    <div class="part-title">🔗 Connection (idea ↔ math)</div>
+    <table>
+      <tr><th>Plain English</th><th>Math / R</th></tr>
+      <tr><td>"the effect of X1 depends on X2"</td><td>interaction term β₃·x₁·x₂</td></tr>
+      <tr><td>"the two regression lines are parallel"</td><td>β₃ = 0 (no interaction)</td></tr>
+      <tr><td>"the two regression lines have different slopes"</td><td>β₃ ≠ 0 (interaction present)</td></tr>
+      <tr><td>"is the fancier model better?"</td><td>partial F-test: <code>anova(null, full)</code></td></tr>
+      <tr><td>"do these two variables have the SAME effect?"</td><td>Refit with <code>I(x1 + x2)</code>, then F-test vs. full</td></tr>
+      <tr><td>"adjusting for X" is NOT the same as "interacting with X"</td><td><code>y ~ smoke + age</code> vs <code>y ~ smoke * age</code></td></tr>
+    </table>
+  </div>
+
+  <!-- 4 EXAMPLE -->
+  <div class="part part-4">
+    <div class="part-title">🍎 Worked example — FEV (lung function) vs smoking</div>
+    <p>From Lec 12: lung function (FEV) of kids ages 3-19, with <code>smoke</code> (0 = non-smoker, 1 = smoker) and <code>age</code> in years.</p>
+    <p><strong>Without interaction</strong> — Lec 8 model:</p>
+    <pre>model1 &lt;- lm(fev ~ smoke + age, data=FEV)
+# smoke coef ≈ -0.21  →  smokers have FEV about 0.21 lower than non-smokers
+#                         <em>at the same age</em></pre>
+    <p>This says smokers always sit 0.21 below non-smokers — <strong>parallel lines</strong>.</p>
+    <p><strong>With interaction</strong> — Lec 12 model:</p>
+    <pre>model2 &lt;- lm(fev ~ smoke * age, data=FEV)
+# (Intercept)  =  0.253
+# smoke        = +1.944  ← SURPRISE: this is what we add for a smoker AT AGE 0
+# age          = +0.243  ← slope for non-smokers
+# smoke:age    = -0.163  ← <em>smokers' slope is lower by 0.163</em></pre>
+    <p>Now the lines have DIFFERENT slopes: non-smokers gain ~0.243 FEV per year of age; smokers gain only ~0.080. The gap WIDENS with age.</p>
+    <p><strong>Partial F-test of H₀: no smoke effect (β₁ = β₃ = 0):</strong></p>
+    <pre>null_model &lt;- lm(fev ~ age, data=FEV)
+anova(null_model, model2)
+# F = 17.498,  p = 3.96e-08  →  REJECT H₀
+# Smoking matters, AND its effect depends on age.</pre>
+  </div>
+
+  <!-- 5 INTERACTIVE -->
+  <div class="part part-5">
+    <div class="part-title">🎮 Interactive — slide β₃ and watch parallel lines turn into "interaction"</div>
+    <div class="widget">
+      <canvas id="canvas-interaction"></canvas>
+      <label>β₁ (smoker main effect — vertical gap at age 0): <span id="int-b1-shown">+1.94</span></label>
+      <input type="range" id="int-b1" min="-2" max="3" step="0.05" value="1.94">
+      <label>β₃ (interaction — slope difference for smokers): <span id="int-b3-shown">-0.16</span></label>
+      <input type="range" id="int-b3" min="-0.4" max="0.4" step="0.01" value="-0.16">
+      <div class="out" id="int-out"></div>
+    </div>
+  </div>
+
+  <!-- 6 PRACTICE -->
+  <div class="part part-6">
+    <div class="part-title">❓ Practice questions</div>
+
+    <h4 style="color:#cbd5e1;">A · Basic</h4>
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Basic Q1</div>
+      <div class="q-text">An interaction term in regression is created by:</div>
+      <div class="opt" data-i="0">adding two variables: x₁ + x₂</div>
+      <div class="opt" data-i="1">subtracting: x₁ − x₂</div>
+      <div class="opt" data-i="2">multiplying: x₁ · x₂</div>
+      <div class="opt" data-i="3">taking the average: (x₁ + x₂) / 2</div>
+      <div class="reveal">Interaction = product. In R: <code>x1:x2</code> or <code>x1*x2</code> (the * also adds main effects).</div>
+    </div>
+
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Basic Q2</div>
+      <div class="q-text">If β₃ = 0 in <code>y = β₀ + β₁x₁ + β₂x₂ + β₃x₁x₂</code>, then…</div>
+      <div class="opt" data-i="0">there is NO interaction; the two regression lines are parallel</div>
+      <div class="opt" data-i="1">x₁ has no effect on y</div>
+      <div class="opt" data-i="2">x₂ has no effect on y</div>
+      <div class="opt" data-i="3">the model becomes nonlinear</div>
+      <div class="reveal">β₃ = 0 → no interaction → main-effects model only. The two lines (for x₂=0 and x₂=1) have the same slope in x₁ — parallel.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">B · Medium</h4>
+
+    <div class="quiz" data-correct="1">
+      <div class="q-tag">Medium Q1</div>
+      <div class="q-text">In R, what's the difference between <code>lm(y ~ x1 + x2)</code> and <code>lm(y ~ x1 * x2)</code>?</div>
+      <div class="opt" data-i="0">no difference</div>
+      <div class="opt" data-i="1"><code>*</code> adds main effects AND the interaction x₁:x₂</div>
+      <div class="opt" data-i="2"><code>+</code> includes the interaction by default</div>
+      <div class="opt" data-i="3"><code>*</code> means multiply the y by something</div>
+      <div class="reveal"><code>y ~ x1 * x2</code> is shorthand for <code>y ~ x1 + x2 + x1:x2</code> — main effects + interaction.</div>
+    </div>
+
+    <div class="quiz" data-correct="3">
+      <div class="q-tag">Medium Q2</div>
+      <div class="q-text">In the FEV interaction model, the coefficient on <code>smoke:age</code> is −0.163. Which interpretation is correct?</div>
+      <div class="opt" data-i="0">smokers' average FEV is 0.163 lower than non-smokers'</div>
+      <div class="opt" data-i="1">non-smokers gain 0.163 FEV per year of age</div>
+      <div class="opt" data-i="2">smoking causes a 16.3% drop in lung function</div>
+      <div class="opt" data-i="3">smokers' age-slope is 0.163 LOWER than non-smokers' age-slope</div>
+      <div class="reveal">smoke:age = −0.163 means: when you switch from non-smoker (smoke=0) to smoker (smoke=1), the per-year FEV growth drops by 0.163.</div>
+    </div>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Medium Q3</div>
+      <div class="q-text">A partial F-test compares:</div>
+      <div class="opt" data-i="0">two unrelated models with completely different variables</div>
+      <div class="opt" data-i="1">two samples from different populations</div>
+      <div class="opt" data-i="2">a NESTED null model against a full model (extra parameters)</div>
+      <div class="opt" data-i="3">the t-test against the chi-squared test</div>
+      <div class="reveal">Partial F is for NESTED models — the null model's parameters must be a strict subset of the full model's.</div>
+    </div>
+
+    <div class="quiz" data-correct="1">
+      <div class="q-tag">Medium Q4</div>
+      <div class="q-text">"Adjusting for age" (adding age as a covariate) is the same as "including an interaction with age."</div>
+      <div class="opt" data-i="0">true</div>
+      <div class="opt" data-i="1">false — adjusting allows parallel slopes; interacting allows different slopes</div>
+      <div class="opt" data-i="2">only true for binary variables</div>
+      <div class="opt" data-i="3">only true if age is the response</div>
+      <div class="reveal">This is the Lec 12 Slide 30 point. <code>fev ~ smoke + age</code> = parallel lines. <code>fev ~ smoke * age</code> = lines with different slopes.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">C · Fun game — type the missing R code</h4>
+    <div class="quiz typequiz" data-target="anova(null_model, full_model)">
+      <div class="q-tag">Game</div>
+      <div class="q-text">Type the R command that runs a partial F-test comparing two fitted models. (Use names <code>null_model</code> and <code>full_model</code>, no quotes.)</div>
+      <input type="text" id="game-input-5" placeholder="anova(...)">
+      <button onclick="checkType('game-input-5','anova(null_model, full_model)', 25)">Submit</button>
+      <div class="reveal" id="game-rev-5"><code>anova(null_model, full_model)</code> — order matters: null first, full second.</div>
+    </div>
+
+    <h4 style="color:#cbd5e1; margin-top:14px;">D · Exam style</h4>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Exam Q1</div>
+      <div class="q-text">For the model <code>fev ~ smoke * age</code>, the H₀ tested by <code>anova(lm(fev~age), lm(fev~smoke*age))</code> is:</div>
+      <div class="opt" data-i="0">β_age = 0</div>
+      <div class="opt" data-i="1">β_smoke:age = 0</div>
+      <div class="opt" data-i="2">β_smoke = 0 AND β_smoke:age = 0  (smoke has no effect of any kind)</div>
+      <div class="opt" data-i="3">β_smoke = β_age</div>
+      <div class="reveal">The null model drops BOTH the main smoke effect and the smoke:age interaction. The partial F-test asks "do these two extra terms together add explanatory power?"</div>
+    </div>
+
+    <div class="quiz" data-correct="0">
+      <div class="q-tag">Exam Q2</div>
+      <div class="q-text">A partial F-test returns p = 0.00046. Decision at α = 0.05?</div>
+      <div class="opt" data-i="0">Reject H₀ — the full model fits significantly better than the null</div>
+      <div class="opt" data-i="1">Fail to reject H₀</div>
+      <div class="opt" data-i="2">Accept H₀</div>
+      <div class="opt" data-i="3">Need more data</div>
+      <div class="reveal">0.00046 &lt; 0.05 → reject. The extra parameter(s) in the full model carry real explanatory power.</div>
+    </div>
+
+    <div class="quiz" data-correct="2">
+      <div class="q-tag">Exam Q3</div>
+      <div class="q-text">To test "gym and meditate have the SAME effect on score" (H₀: β_gym = β_meditate), the appropriate null model is:</div>
+      <div class="opt" data-i="0"><code>lm(score ~ gym)</code></div>
+      <div class="opt" data-i="1"><code>lm(score ~ gym + meditate)</code></div>
+      <div class="opt" data-i="2"><code>lm(score ~ I(gym + meditate) + gym:meditate)</code></div>
+      <div class="opt" data-i="3"><code>lm(score ~ gym * meditate)</code></div>
+      <div class="reveal">Forcing β_gym = β_meditate is equivalent to using a single combined predictor (gym + meditate). The <code>I(...)</code> wrapper tells R "treat this sum as one variable." Then F-test vs full <code>gym * meditate</code> model.</div>
+    </div>
+  </div>
+
+  <!-- 7 ANSWERS recap -->
+  <div class="part part-7">
+    <div class="part-title">✅ Recap</div>
+    <p style="background:#0f172a; padding:12px; border-radius:8px; line-height:1.9;">
+      Interaction term β₃·x₁·x₂ → "effect of x₁ depends on x₂."<br>
+      Lines parallel ↔ β₃ = 0 ↔ no interaction.<br>
+      Partial F-test (<code>anova(null, full)</code>) compares NESTED models — drops q parameters and asks if RSS goes up significantly.<br>
+      "Adjusting for X" ≠ "interacting with X." Adjusting allows parallel lines; interacting allows different slopes.
+    </p>
+  </div>
+
+  <!-- 8 MISTAKES -->
+  <div class="part part-8">
+    <div class="part-title">⚠️ Common mistakes</div>
+    <div class="mistake"><strong>Mistake 1 — Interpreting the main effect coefficient WITHOUT considering the interaction.</strong>
+      <div class="why">In <code>fev ~ smoke * age</code>, the "smoke" coefficient (+1.94) is the gap at age = 0, not the average gap. To find the gap at age = 10, compute β_smoke + 10·β_smoke:age = 1.94 + 10·(−0.163) = 0.31.</div>
+    </div>
+    <div class="mistake"><strong>Mistake 2 — Including an interaction without the main effects.</strong>
+      <div class="why"><code>lm(y ~ x1:x2)</code> drops the main effects and breaks interpretation. Almost always use <code>lm(y ~ x1 * x2)</code> instead, which keeps everything.</div>
+    </div>
+    <div class="mistake"><strong>Mistake 3 — Running anova() on non-nested models.</strong>
+      <div class="why">Partial F requires nesting: the null model's terms must be a strict subset of the full model's. If you compare <code>y ~ a + b</code> with <code>y ~ c + d</code>, the F is meaningless. Use AIC/BIC instead for non-nested comparisons.</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<!-- ============================================================== -->
+<!-- ===== BOSS BATTLE — 15 mixed exam-style questions =========== -->
 <!-- ============================================================== -->
 <div class="boss-battle" id="boss">
   <h2>🏆 Boss Battle — 10 mixed exam-style questions</h2>
@@ -1311,6 +1538,12 @@ const BOSS_QS = [
   {q:"<code>t.test(x, mu = 6)$p.value</code> returns…", opts:["the t-statistic","the CI","the p-value","the critical value"], a:2},
   {q:"x̄ = 5, s = 4, n = 16, t* = 2.131. Margin of error =", opts:["2.131","8.524","1.066","4"], a:0},
   {q:"If μ₀ is OUTSIDE the 95% CI, the two-sided test at α = 0.05 will…", opts:["fail to reject H₀","reject H₀","be inconclusive","need a one-sided test"], a:1},
+  // ===== Lec 12 questions =====
+  {q:"In <code>y ~ x1 * x2</code>, R fits how many coefficients (besides intercept)?", opts:["1","2","3","4"], a:2},
+  {q:"In <code>fev ~ smoke * age</code>, if the smoke:age coefficient = 0, the lines for smokers and non-smokers are…", opts:["identical","parallel","perpendicular","horizontal"], a:1},
+  {q:"Partial F-test requires the two models to be…", opts:["identical","unrelated","nested (null is subset of full)","from different samples"], a:2},
+  {q:"To test H₀: β_gym = β_meditate (same effect), the null model uses…", opts:["<code>I(gym + meditate)</code> as a single combined term","just <code>gym</code>","just <code>meditate</code>","<code>gym * meditate</code>"], a:0},
+  {q:"\"Adjusting for age\" (<code>y ~ x + age</code>) versus \"interacting with age\" (<code>y ~ x * age</code>) — which is true?", opts:["they are equivalent","adjusting allows different slopes","interacting allows different slopes; adjusting forces parallel slopes","interacting drops the main effects"], a:2},
 ];
 let bossIdx = 0, bossPts = 0, bossStreak = 0;
 function startBoss() {
@@ -1325,7 +1558,7 @@ function renderBoss() {
       <h3 style="color:#fbbf24;">🏆 Boss Battle complete!</h3>
       <p style="margin:10px 0; font-size:1.1rem;">Score: <strong style="color:#fbbf24;">${bossPts} / ${BOSS_QS.length * 30}</strong></p>
       <p>Best streak: <strong>${bossStreak}</strong></p>
-      <p style="margin-top:14px; color:#94a3b8;">${bossPts >= 270 ? '🎯 You are quiz-ready.' : bossPts >= 180 ? '⚡ Strong. Review the missed items in the relevant lesson.' : '📚 Re-cram lessons 1-4 before the quiz.'}</p>
+      <p style="margin-top:14px; color:#94a3b8;">${bossPts >= 405 ? '🎯 You are quiz-ready.' : bossPts >= 270 ? '⚡ Strong. Review the missed items in the relevant lesson.' : '📚 Re-cram lessons 1-5 before the quiz.'}</p>
     </div>`;
     return;
   }
@@ -1342,6 +1575,72 @@ function bossPick(i) {
   if (i === Q.a) { opts[i].classList.add('correct'); bossPts += 30; bossStreak += 1; award(30, '+30 XP boss hit'); }
   else { opts[i].classList.add('wrong'); opts[Q.a].classList.add('correct'); bossStreak = 0; breakStreak(); }
   setTimeout(() => { bossIdx += 1; renderBoss(); }, 900);
+}
+
+// =================== L5 INTERACTIVE: interaction visualizer ===================
+const cvInt = document.getElementById('canvas-interaction');
+function drawInteraction() {
+  if (!cvInt) return;
+  const ctx = cvInt.getContext('2d');
+  const W = cvInt.width = cvInt.offsetWidth, H = cvInt.height = 280;
+  ctx.clearRect(0,0,W,H);
+  const b1 = parseFloat(document.getElementById('int-b1').value);
+  const b3 = parseFloat(document.getElementById('int-b3').value);
+  // Fix β0 = 0.25, β_age = 0.243 (from FEV model)
+  const b0 = 0.25, bAge = 0.243;
+  document.getElementById('int-b1-shown').textContent = (b1 >= 0 ? '+' : '') + b1.toFixed(2);
+  document.getElementById('int-b3-shown').textContent = (b3 >= 0 ? '+' : '') + b3.toFixed(2);
+  // Plot age (3..19) on x, FEV on y
+  const xMin = 3, xMax = 19, yMin = 0, yMax = 6;
+  const pad = 40;
+  function px(x) { return pad + (x - xMin)/(xMax - xMin) * (W - 2*pad); }
+  function py(y) { return H - pad - (y - yMin)/(yMax - yMin) * (H - 2*pad); }
+  // Axes
+  ctx.strokeStyle = '#475569'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad, pad); ctx.lineTo(pad, H-pad); ctx.lineTo(W-pad, H-pad); ctx.stroke();
+  // Axis labels
+  ctx.fillStyle = '#94a3b8'; ctx.font = '11px sans-serif';
+  for (let a = 5; a <= 15; a += 5) { ctx.fillText(a, px(a) - 6, H - pad + 14); }
+  for (let f = 1; f <= 5; f += 1) { ctx.fillText(f.toFixed(1), 8, py(f) + 4); }
+  ctx.fillStyle = '#cbd5e1';
+  ctx.fillText('age →', W - pad - 30, H - pad + 28);
+  ctx.fillText('FEV ↑', 8, pad - 8);
+  // Non-smokers line (blue): y = β0 + βage·x
+  ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  for (let x = xMin; x <= xMax; x += 0.5) {
+    const y = b0 + bAge * x;
+    if (x === xMin) ctx.moveTo(px(x), py(y)); else ctx.lineTo(px(x), py(y));
+  }
+  ctx.stroke();
+  // Smokers line (red): y = (β0 + β1) + (βage + β3)·x
+  ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  for (let x = xMin; x <= xMax; x += 0.5) {
+    const y = (b0 + b1) + (bAge + b3) * x;
+    if (x === xMin) ctx.moveTo(px(x), py(y)); else ctx.lineTo(px(x), py(y));
+  }
+  ctx.stroke();
+  // Legend
+  ctx.fillStyle = '#22d3ee'; ctx.fillRect(W - 150, 15, 14, 4);
+  ctx.fillStyle = '#e2e8f0'; ctx.font = '12px sans-serif';
+  ctx.fillText('non-smokers', W - 130, 22);
+  ctx.fillStyle = '#f87171'; ctx.fillRect(W - 150, 32, 14, 4);
+  ctx.fillStyle = '#e2e8f0'; ctx.fillText('smokers', W - 130, 39);
+  // Status text
+  const isParallel = Math.abs(b3) < 0.005;
+  const label = isParallel
+    ? '<span style="color:#4ade80;"><strong>β₃ ≈ 0 → lines parallel → NO interaction</strong></span>'
+    : (b3 < 0
+        ? '<span style="color:#f87171;"><strong>β₃ &lt; 0 → smokers\' slope is FLATTER → interaction PRESENT</strong></span>'
+        : '<span style="color:#fbbf24;"><strong>β₃ &gt; 0 → smokers\' slope is STEEPER → interaction PRESENT</strong></span>');
+  document.getElementById('int-out').innerHTML =
+    `Smoker line: <code>FEV = (0.25 + ${b1.toFixed(2)}) + (0.243 + ${b3.toFixed(2)})·age = ${(0.25+b1).toFixed(2)} + ${(0.243+b3).toFixed(3)}·age</code><br>${label}`;
+}
+if (cvInt) {
+  ['int-b1','int-b3'].forEach(id => document.getElementById(id).addEventListener('input', drawInteraction));
+  setTimeout(drawInteraction, 50);
+  window.addEventListener('resize', () => setTimeout(drawInteraction, 100));
 }
 
 </script>
